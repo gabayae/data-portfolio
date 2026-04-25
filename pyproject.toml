@@ -1,0 +1,56 @@
+[project]
+name = "gabayae-data-portfolio"
+version = "0.1.0"
+description = "13 end-to-end data-science projects on real public data — forecasting, GLMs, survival, hierarchical reconciliation, stochastic optimization."
+authors = [{ name = "Yaé Gaba", email = "yaeulrich.gaba@gmail.com" }]
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = [
+    "data-science", "forecasting", "time-series", "ARIMA", "state-space",
+    "GLM", "survival-analysis", "MinT-reconciliation", "MDP", "Q-learning",
+    "African-data", "applied-mathematics",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "pandas>=2.0",
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "matplotlib>=3.7",
+    "seaborn>=0.12",
+    "scikit-learn>=1.3",
+    "statsmodels>=0.14",
+    "lifelines>=0.27",
+    "xgboost>=2.0",
+    "jupyter>=1.0",
+    "nbconvert>=7.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "ruff>=0.1.0",
+    "nbstripout>=0.6",
+    "kaggle>=1.5",
+]
+
+[project.urls]
+Homepage = "https://gabayae.github.io/data-portfolio"
+Repository = "https://github.com/gabayae/data-portfolio"
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B"]
+ignore = ["E501"]  # don't enforce line length on notebooks

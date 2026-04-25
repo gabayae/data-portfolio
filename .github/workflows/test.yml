@@ -1,0 +1,61 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate-notebooks:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Validate notebook JSON
+        run: |
+          python - <<'PY'
+          import json, glob, sys
+          failed = []
+          for p in sorted(glob.glob('[0-9][0-9]-*/notebook.ipynb')):
+              try:
+                  with open(p, encoding='utf-8') as f:
+                      json.load(f)
+                  print(f'ok   {p}')
+              except Exception as e:
+                  print(f'FAIL {p}: {e}')
+                  failed.append(p)
+          sys.exit(1 if failed else 0)
+          PY
+
+      - name: Validate index.html parses
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          import sys
+          class P(HTMLParser): pass
+          ok = True
+          try:
+              p = P()
+              with open('index.html', encoding='utf-8') as f:
+                  p.feed(f.read())
+              print('ok   index.html')
+          except Exception as e:
+              print('FAIL index.html:', e); ok = False
+          sys.exit(0 if ok else 1)
+          PY
+
+      - name: Lint download scripts with ruff
+        run: |
+          python -m pip install ruff
+          ruff check $(git ls-files '*/download_data.py') --select E,F,W,I --line-length 110 || true
