@@ -174,8 +174,27 @@ footer a { color: #ffd7c5; }
     </div>
   </article>
 
+  <article class="cs-card">
+    <div class="cs-card__body">
+      <span class="cs-card__eyebrow">Health Ops · Stochastic Optimization</span>
+      <h2 class="cs-card__title">Mobile-clinic scheduling — Kenya</h2>
+      <div class="cs-card__metric">Q-learning +122% · LP-capped +39% with explicit equity</div>
+      <p class="cs-card__lede">Mobile-clinic dispatch as a Markov decision process on real KMPDC + SHA Kenyan data. Three policies — manual round-robin, capped LP, tabular Q-learning — compared on patients-served, travel cost, and equity. The honest finding: the algorithm matters less than how the constraints are written.</p>
+      <div class="cs-card__chips">
+        <span class="cs-card__chip">MDP</span><span class="cs-card__chip">Q-learning</span><span class="cs-card__chip">Linear programming</span><span class="cs-card__chip">scipy.linprog</span><span class="cs-card__chip">Real KMPDC + SHA</span>
+      </div>
+      <div class="cs-card__cta">
+        <a href="./kenya/">Read case study →</a>
+        <a href="../05-resource-allocation-kenya/notebook.ipynb" class="secondary">Notebook</a>
+      </div>
+    </div>
+    <div class="cs-card__media">
+      <img src="kenya/plot-04.png" alt="Q-learning training reward curve over 400 episodes">
+    </div>
+  </article>
+
   <div class="upcoming">
-    More deep-dives in the queue — next likely candidate: <strong>MDP / Q-learning on Kenya health facilities</strong> (stochastic optimization, project 05). The 10 other portfolio projects each have their own folder-level <a href="../#projects">README and executable notebook</a>.
+    Four deep-dives now span four methodology families — time-series (PJM), time-series with exogenous covariates (Kariba), GLMs / actuarial pricing (freMTPL2), and stochastic optimization (Kenya). The 9 other portfolio projects each have their own folder-level <a href="../#projects">README and executable notebook</a>.
   </div>
 
 </main>
