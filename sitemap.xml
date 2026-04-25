@@ -5,6 +5,16 @@
     <lastmod>2026-04-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/fr/</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/"/>
   </url>
   <url><loc>https://gabayae.github.io/data-portfolio/01-demand-forecasting-rwanda/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://gabayae.github.io/data-portfolio/02-electricity-load-forecasting-pjm/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>

@@ -225,10 +225,11 @@ def project_card(p: cfg.Project) -> str:
         for c in p.categories
     )
     tech_html = "".join(f'<span class="pill">{t}</span>' for t in p.tech)
+    base = cfg.STATIC_BASE
     primary_link = (
-        f'<a class="primary" href="{p.case_study}" target="_blank">Case study →</a>'
+        f'<a class="primary" href="{base}{p.case_study}" target="_blank">Case study →</a>'
         if p.case_study
-        else f'<a class="primary" href="{p.folder}/" target="_blank">Project →</a>'
+        else f'<a class="primary" href="{base}{p.folder}/" target="_blank">Project →</a>'
     )
     return f"""
     <div class="pcard">
@@ -241,7 +242,7 @@ def project_card(p: cfg.Project) -> str:
         <div class="dataset">📊 {p.dataset}</div>
         <div class="links">
             {primary_link}
-            <a href="{p.folder}/notebook.ipynb" target="_blank">Notebook</a>
+            <a href="{base}{p.folder}/notebook.ipynb" target="_blank">Notebook</a>
         </div>
     </div>
     """

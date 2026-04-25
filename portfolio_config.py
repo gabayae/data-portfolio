@@ -22,6 +22,11 @@ SCHOLAR = "https://scholar.google.com/citations?user=UTszjV4AAAAJ"
 BOOK = "https://nostarch.com/shapeofdata"
 LOCATION = "Cotonou, Benin"
 
+# Absolute base for the published static site. Used by the Streamlit app so
+# project / case-study / notebook links keep resolving when the app is served
+# from <name>.streamlit.app (a different origin than GitHub Pages).
+STATIC_BASE = "https://gabayae.github.io/data-portfolio/"
+
 # ── Visual tokens (PasserellAI editorial palette) ─────────────────────────────
 COLOR_BG = "#fafaf7"
 COLOR_SURFACE = "#ffffff"
