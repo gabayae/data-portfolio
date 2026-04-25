@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url><loc>https://gabayae.github.io/data-portfolio/01-demand-forecasting-rwanda/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gabayae.github.io/data-portfolio/02-electricity-load-forecasting-pjm/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gabayae.github.io/data-portfolio/03-insurance-claims-fremtpl2/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gabayae.github.io/data-portfolio/04-retail-demand-m5/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gabayae.github.io/data-portfolio/05-resource-allocation-kenya/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gabayae.github.io/data-portfolio/06-river-flow-forecasting-kariba/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gabayae.github.io/data-portfolio/07-solar-forecasting-nairobi/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gabayae.github.io/data-portfolio/08-customer-survival-mtn-tenure/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gabayae.github.io/data-portfolio/09-flight-demand-southern-africa/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gabayae.github.io/data-portfolio/10-property-valuation-lagos/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gabayae.github.io/data-portfolio/11-geospatial-farm-households/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gabayae.github.io/data-portfolio/12-churn-prediction-mtn/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gabayae.github.io/data-portfolio/13-ab-test-marketing/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+</urlset>
