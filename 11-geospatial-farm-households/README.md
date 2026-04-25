@@ -1,3 +1,8 @@
+<!-- nav-chip -->
+[← Portfolio](https://gabayae.github.io/data-portfolio/) · [Notebook](./notebook.ipynb)
+
+---
+
 # Geospatial Farm-Output Forecasting — African Farm Households
 
 ## Business question

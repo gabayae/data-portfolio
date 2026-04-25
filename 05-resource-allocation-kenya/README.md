@@ -1,3 +1,8 @@
+<!-- nav-chip -->
+[← Portfolio](https://gabayae.github.io/data-portfolio/) · [Notebook](./notebook.ipynb)
+
+---
+
 # Stochastic Optimization for Resource Allocation — Kenya Health Facilities
 
 ## Business question

@@ -1,3 +1,8 @@
+<!-- nav-chip -->
+[← Portfolio](https://gabayae.github.io/data-portfolio/) · [Notebook](./notebook.ipynb) · [Case study →](https://gabayae.github.io/data-portfolio/case-studies/kariba/)
+
+---
+
 # River Flow Forecasting — Lake Kariba (Zambezi Basin)
 
 ## Business question

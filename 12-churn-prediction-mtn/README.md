@@ -1,3 +1,8 @@
+<!-- nav-chip -->
+[← Portfolio](https://gabayae.github.io/data-portfolio/) · [Notebook](./notebook.ipynb)
+
+---
+
 # Churn Prediction — MTN Nigeria Telecom
 
 ## Business question

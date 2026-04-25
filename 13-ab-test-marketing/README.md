@@ -1,3 +1,8 @@
+<!-- nav-chip -->
+[← Portfolio](https://gabayae.github.io/data-portfolio/) · [Notebook](./notebook.ipynb)
+
+---
+
 # A/B Test Framework — Multi-arm Marketing Promotion
 
 ## Business question

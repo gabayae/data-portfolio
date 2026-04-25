@@ -1,3 +1,8 @@
+<!-- nav-chip -->
+[← Portfolio](https://gabayae.github.io/data-portfolio/) · [Notebook](./notebook.ipynb) · [Case study →](https://gabayae.github.io/data-portfolio/case-studies/pjm/)
+
+---
+
 # Electricity Load Forecasting with State-Space Models — PJM
 
 ## Business question
