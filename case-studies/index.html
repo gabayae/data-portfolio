@@ -155,8 +155,27 @@ footer a { color: #ffd7c5; }
     </div>
   </article>
 
+  <article class="cs-card">
+    <div class="cs-card__body">
+      <span class="cs-card__eyebrow">Insurance · GLM / Pricing</span>
+      <h2 class="cs-card__title">Pure-premium pricing — freMTPL2</h2>
+      <div class="cs-card__metric">Tweedie Gini 0.310 · Poisson+Gamma top-decile lift 2.66</div>
+      <p class="cs-card__lede">Three GLM families and a gradient-boosted challenger compared on the canonical French motor third-party liability dataset (678k policies). Tweedie wins on segmentation power (Gini); Poisson + Gamma wins on top-decile lift. Picking between them is an actuarial decision, not a modelling one.</p>
+      <div class="cs-card__chips">
+        <span class="cs-card__chip">Poisson GLM</span><span class="cs-card__chip">Gamma GLM</span><span class="cs-card__chip">Tweedie</span><span class="cs-card__chip">XGBoost</span><span class="cs-card__chip">Gini · Lorenz · lift</span>
+      </div>
+      <div class="cs-card__cta">
+        <a href="./fremtpl2/">Read case study →</a>
+        <a href="../03-insurance-claims-fremtpl2/notebook.ipynb" class="secondary">Notebook</a>
+      </div>
+    </div>
+    <div class="cs-card__media">
+      <img src="fremtpl2/plot-02.png" alt="Lorenz curves comparing Tweedie, Poisson+Gamma, and GBM">
+    </div>
+  </article>
+
   <div class="upcoming">
-    More deep-dives coming — likely candidates: <strong>Tweedie GLM on freMTPL2</strong> (insurance pricing) and <strong>MDP / Q-learning on Kenya health facilities</strong> (stochastic optimization). The 11 other portfolio projects each have their own folder-level <a href="../#projects">README and executable notebook</a>.
+    More deep-dives in the queue — next likely candidate: <strong>MDP / Q-learning on Kenya health facilities</strong> (stochastic optimization, project 05). The 10 other portfolio projects each have their own folder-level <a href="../#projects">README and executable notebook</a>.
   </div>
 
 </main>
