@@ -1,0 +1,3 @@
+# Minimal dependencies for the Streamlit twin (portfolio_app.py).
+# Used by Streamlit Community Cloud — point the deploy config at this file.
+streamlit>=1.30

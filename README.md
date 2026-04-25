@@ -76,6 +76,23 @@ jupyter nbconvert --to notebook --execute notebook.ipynb
 
 Each notebook is self-contained — open it on GitHub and the rendered plots and tables are visible without running anything.
 
+## Streamlit twin
+
+`portfolio_app.py` is an interactive twin of `index.html` — same content, same color palette, with project filtering and clickable cards. Run it locally:
+
+```bash
+pip install -r requirements-app.txt
+streamlit run portfolio_app.py
+```
+
+To deploy on Streamlit Community Cloud:
+1. [share.streamlit.io](https://share.streamlit.io) → **New app**
+2. Repository: `gabayae/data-portfolio` · Branch: `main` · Main file path: `portfolio_app.py`
+3. Advanced settings → Python requirements file: `requirements-app.txt`
+4. Deploy. Free, public, takes ~1 minute.
+
+`portfolio_config.py` is the single source of truth for project metadata — edit there and both surfaces update.
+
 ## Profile photo
 
 Drop a square headshot at `profile.jpg` in the repo root and the hero avatar on `index.html` automatically swaps the "YG" monogram for the photo (no code change — handled by `onerror="this.remove()"` on the `<img>`). Recommended ≥240×240 px; JPG / PNG / WebP all work.
