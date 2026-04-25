@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case studies · Yaé Gaba — Data Science Portfolio</title>
+<meta name="description" content="Long-form case studies on selected portfolio projects: business context, methodology, results, trade-offs, and deployment sketches.">
+<meta name="author" content="Yaé Gaba">
+<link rel="canonical" href="https://gabayae.github.io/data-portfolio/case-studies/">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gabayae.github.io/data-portfolio/case-studies/">
+<meta property="og:title" content="Case studies — Yaé Gaba Data Science Portfolio">
+<meta property="og:description" content="Long-form deep-dives on selected portfolio projects.">
+<meta property="og:image" content="https://gabayae.github.io/data-portfolio/og-card.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://gabayae.github.io/data-portfolio/og-card.png">
+
+<style>
+:root {
+  --color-bg: #fafaf7; --color-surface: #ffffff; --color-surface-alt: #f2efe8;
+  --color-ink: #171717; --color-muted: #555555; --color-border: #e4e1d8;
+  --color-primary: #0f2a4a; --color-primary-soft: #e3e8ef;
+  --color-accent: #c85c3c; --color-accent-hover: #b04b2e; --color-accent-soft: #f4e4dd;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --radius-md: 8px; --radius-lg: 16px;
+  --shadow-sm: 0 1px 2px rgba(15,42,74,0.04), 0 1px 3px rgba(15,42,74,0.06);
+  --shadow-md: 0 4px 10px rgba(15,42,74,0.06), 0 8px 24px rgba(15,42,74,0.08);
+}
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; background: var(--color-bg); color: var(--color-ink); font-family: var(--font-sans); font-size: 16px; line-height: 1.7; }
+a { color: var(--color-primary); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; transition: color 0.2s ease; }
+a:hover { color: var(--color-accent); }
+img { max-width: 100%; display: block; }
+
+.nav { background: var(--color-surface); border-bottom: 1px solid var(--color-border); position: sticky; top: 0; z-index: 50; }
+.nav__inner { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; display: flex; align-items: center; height: 3.5rem; gap: 1.5rem; }
+.nav__brand { font-family: var(--font-serif); font-size: 1.15rem; font-weight: 600; color: var(--color-primary); text-decoration: none; }
+.nav__brand .dot { color: var(--color-accent); }
+.nav__brand:hover { text-decoration: none; }
+.nav__back { margin-left: auto; font-size: 0.9rem; color: var(--color-muted); text-decoration: none; }
+.nav__back:hover { color: var(--color-accent); text-decoration: none; }
+
+header.head {
+  background: linear-gradient(135deg, #0f2a4a 0%, #1a3d66 100%);
+  color: #fafaf7; padding: 4rem 1.5rem 3rem; position: relative; overflow: hidden;
+}
+header.head::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(circle at 80% 30%, rgba(200,92,60,0.10) 0%, transparent 55%);
+}
+header.head .inner { max-width: 72rem; margin: 0 auto; position: relative; }
+header.head .eyebrow { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-accent); font-weight: 600; }
+header.head h1 { font-family: var(--font-serif); font-size: clamp(2rem, 1.4rem + 2.4vw, 2.6rem); font-weight: 700; letter-spacing: -0.02em; margin: 0.6rem 0; color: #fafaf7; }
+header.head p { font-size: 1.05rem; color: #b5c1d1; max-width: 50rem; line-height: 1.65; }
+
+main.list { max-width: 72rem; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+.cs-card {
+  display: grid; grid-template-columns: 1.4fr 1fr; gap: 2.5rem; align-items: stretch;
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm);
+  margin-bottom: 1.8rem; transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.cs-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.cs-card__body { padding: 2rem 0 2rem 2rem; display: flex; flex-direction: column; }
+.cs-card__eyebrow { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); font-weight: 600; margin-bottom: 0.5rem; }
+.cs-card__title { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 600; color: var(--color-primary); margin-bottom: 0.4rem; }
+.cs-card__metric { font-family: var(--font-serif); font-size: 1.15rem; font-weight: 600; color: var(--color-accent); margin-bottom: 0.8rem; }
+.cs-card__lede { color: var(--color-muted); font-size: 0.96rem; line-height: 1.65; margin-bottom: 0.8rem; }
+.cs-card__chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+.cs-card__chip { padding: 0.18rem 0.6rem; border-radius: var(--radius-md); font-size: 0.74rem; font-weight: 600; background: var(--color-surface-alt); color: var(--color-muted); border: 1px solid var(--color-border); }
+.cs-card__cta { margin-top: auto; }
+.cs-card__cta a { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.1rem; border-radius: var(--radius-md); background: var(--color-accent); color: #fff; text-decoration: none; font-weight: 500; font-size: 0.92rem; }
+.cs-card__cta a:hover { background: var(--color-accent-hover); color: #fff; text-decoration: none; }
+.cs-card__cta .secondary { background: transparent; color: var(--color-primary); border: 1px solid var(--color-primary); margin-left: 0.4rem; }
+.cs-card__cta .secondary:hover { background: var(--color-primary); color: #fff; }
+.cs-card__media { background: linear-gradient(135deg, #0f2a4a, #1a3d66); display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+.cs-card__media img { max-height: 240px; width: auto; border-radius: var(--radius-md); box-shadow: 0 4px 14px rgba(0,0,0,0.25); }
+
+.upcoming {
+  background: var(--color-surface-alt); border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg); padding: 1.8rem;
+  text-align: center; color: var(--color-muted); margin-top: 2rem;
+}
+.upcoming strong { color: var(--color-primary); }
+
+footer { background: var(--color-primary); color: #b5c1d1; padding: 1.8rem 1.5rem; font-size: 0.85rem; text-align: center; }
+footer a { color: #ffd7c5; }
+
+@media (max-width: 768px) {
+  .cs-card { grid-template-columns: 1fr; gap: 0; }
+  .cs-card__body { padding: 1.5rem; }
+  .cs-card__media { padding: 1rem; min-height: 180px; }
+  header.head { padding: 2.5rem 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="../" class="nav__brand">Yaé Gaba<span class="dot">.</span></a>
+    <a href="../#projects" class="nav__back">← All projects</a>
+  </div>
+</nav>
+
+<header class="head">
+  <div class="inner">
+    <span class="eyebrow">Long-form deep-dives</span>
+    <h1>Case studies</h1>
+    <p>Selected portfolio projects with full narrative — business context, methodology, results, trade-offs, and deployment sketches. Each case study draws plots from its executed notebook so the page stands alone.</p>
+  </div>
+</header>
+
+<main class="list">
+
+  <article class="cs-card">
+    <div class="cs-card__body">
+      <span class="cs-card__eyebrow">Energy · Time-series</span>
+      <h2 class="cs-card__title">Hourly load forecasting — PJM East</h2>
+      <div class="cs-card__metric">GBM 6.2% MAPE · UC PI coverage 99%</div>
+      <p class="cs-card__lede">Day-ahead and short-horizon load forecasts on 16 years of real PJME hourly consumption — comparing SARIMA, state-space (UnobservedComponents + Fourier exog), and gradient-boosted forecasters. The "best" model depends on whether procurement or risk teams are reading.</p>
+      <div class="cs-card__chips">
+        <span class="cs-card__chip">SARIMA</span><span class="cs-card__chip">UnobservedComponents</span><span class="cs-card__chip">Fourier exog</span><span class="cs-card__chip">GBM</span><span class="cs-card__chip">PJM Hourly Consumption</span>
+      </div>
+      <div class="cs-card__cta">
+        <a href="./pjm/">Read case study →</a>
+        <a href="../02-electricity-load-forecasting-pjm/notebook.ipynb" class="secondary">Notebook</a>
+      </div>
+    </div>
+    <div class="cs-card__media">
+      <img src="pjm/plot-03.png" alt="60-day forecast comparison: SARIMA vs UC vs GBM on PJM data">
+    </div>
+  </article>
+
+  <article class="cs-card">
+    <div class="cs-card__body">
+      <span class="cs-card__eyebrow">Hydropower · Time-series</span>
+      <h2 class="cs-card__title">River flow forecasting — Lake Kariba</h2>
+      <div class="cs-card__metric">GBM 7 cm RMSE · SARIMA PI coverage 100%</div>
+      <p class="cs-card__lede">Daily lake-level forecasting for the world's largest man-made reservoir, on real Zambezi River Authority data. A 7 cm RMSE on a 7 m operational band turns "are we going to breach turbine safety thresholds in the next 30 days?" from a guess into a calibrated probability.</p>
+      <div class="cs-card__chips">
+        <span class="cs-card__chip">SARIMA</span><span class="cs-card__chip">State-space</span><span class="cs-card__chip">GBM with exog</span><span class="cs-card__chip">Lake Kariba reservoir</span><span class="cs-card__chip">Zambezi basin</span>
+      </div>
+      <div class="cs-card__cta">
+        <a href="./kariba/">Read case study →</a>
+        <a href="../06-river-flow-forecasting-kariba/notebook.ipynb" class="secondary">Notebook</a>
+      </div>
+    </div>
+    <div class="cs-card__media">
+      <img src="kariba/plot-04.png" alt="30-day forecast comparison: SARIMA vs UC vs GBM on Lake Kariba data">
+    </div>
+  </article>
+
+  <div class="upcoming">
+    More deep-dives coming — likely candidates: <strong>Tweedie GLM on freMTPL2</strong> (insurance pricing) and <strong>MDP / Q-learning on Kenya health facilities</strong> (stochastic optimization). The 11 other portfolio projects each have their own folder-level <a href="../#projects">README and executable notebook</a>.
+  </div>
+
+</main>
+
+<footer>
+  <p>© 2026 Yaé Gaba · Built end-to-end on real public data · MIT licensed · <a href="../">Back to portfolio</a></p>
+</footer>
+
+</body>
+</html>

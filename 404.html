@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — Page not found · Yaé Gaba</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="/data-portfolio/favicon.svg">
+<style>
+:root {
+  --color-bg: #fafaf7; --color-ink: #171717; --color-muted: #555555;
+  --color-primary: #0f2a4a; --color-accent: #c85c3c; --color-accent-hover: #b04b2e;
+  --color-border: #e4e1d8; --color-surface: #ffffff;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  background: var(--color-bg); color: var(--color-ink);
+  font-family: var(--font-sans); font-size: 16px; line-height: 1.6;
+  display: flex; flex-direction: column; min-height: 100vh;
+}
+a { color: var(--color-primary); text-decoration: underline; text-underline-offset: 3px; }
+a:hover { color: var(--color-accent); }
+
+.wrap {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 3rem 1.5rem; text-align: center;
+}
+.code {
+  font-family: var(--font-serif);
+  font-size: clamp(5rem, 12vw, 9rem);
+  font-weight: 700; color: var(--color-accent);
+  line-height: 1; letter-spacing: -0.04em;
+  margin-bottom: 0.4rem;
+}
+h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 1.2rem + 1.5vw, 2.2rem);
+  font-weight: 600; color: var(--color-primary);
+  margin: 0 0 0.8rem; letter-spacing: -0.01em;
+}
+p.lede {
+  font-size: 1.05rem; color: var(--color-muted);
+  max-width: 36rem; margin: 0 auto 2rem; line-height: 1.65;
+}
+.cta {
+  display: flex; gap: 0.7rem; flex-wrap: wrap; justify-content: center;
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  padding: 0.65rem 1.3rem; border-radius: 8px;
+  font-weight: 500; font-size: 0.95rem; text-decoration: none;
+  border: 1px solid transparent; transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.btn--primary { background: var(--color-accent); border-color: var(--color-accent); color: #fff; }
+.btn--primary:hover { background: var(--color-accent-hover); border-color: var(--color-accent-hover); color: #fff; text-decoration: none; }
+.btn--outline { background: transparent; color: var(--color-primary); border-color: var(--color-primary); }
+.btn--outline:hover { background: var(--color-primary); color: #fff; text-decoration: none; }
+
+.suggested {
+  margin-top: 3rem;
+  padding: 1.5rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  max-width: 32rem;
+  text-align: left;
+}
+.suggested h2 {
+  font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--color-accent); font-weight: 600; margin: 0 0 0.8rem;
+  font-family: var(--font-sans);
+}
+.suggested ul { list-style: none; padding: 0; margin: 0; }
+.suggested li { padding: 0.3rem 0; }
+.suggested li::before { content: "→"; color: var(--color-accent); margin-right: 0.5rem; }
+
+footer {
+  border-top: 1px solid var(--color-border);
+  padding: 1.4rem; text-align: center;
+  color: var(--color-muted); font-size: 0.84rem;
+  background: var(--color-surface);
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="code">404</div>
+  <h1>This page didn't make it through validation.</h1>
+  <p class="lede">
+    That URL doesn't resolve to anything on this portfolio. It may have moved, or never existed. Either way, the rest of the site is alive and well.
+  </p>
+
+  <div class="cta">
+    <a href="/data-portfolio/" class="btn btn--primary">Back to portfolio</a>
+    <a href="/data-portfolio/#projects" class="btn btn--outline">All projects</a>
+    <a href="/data-portfolio/case-studies/" class="btn btn--outline">Case studies</a>
+  </div>
+
+  <div class="suggested">
+    <h2>You might be looking for</h2>
+    <ul>
+      <li><a href="/data-portfolio/">Portfolio home</a></li>
+      <li><a href="/data-portfolio/#projects">All 13 projects</a></li>
+      <li><a href="/data-portfolio/case-studies/pjm/">Case study — PJM hourly load forecasting</a></li>
+      <li><a href="/data-portfolio/case-studies/kariba/">Case study — Lake Kariba river flow</a></li>
+      <li><a href="/data-portfolio/fr/">Version française</a></li>
+    </ul>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Yaé Gaba · MIT licensed · <a href="https://github.com/gabayae/data-portfolio">github.com/gabayae/data-portfolio</a></p>
+</footer>
+
+</body>
+</html>
