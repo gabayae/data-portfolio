@@ -41,4 +41,11 @@
     <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/case-studies/pjm/"/>
     <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/case-studies/pjm/"/>
   </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/fr/case-studies/kariba/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/case-studies/kariba/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/case-studies/kariba/"/>
+  </url>
 </urlset>

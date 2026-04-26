@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Étude de cas — Prévision du débit fluvial du lac Kariba · Yaé Gaba</title>
+<meta name="description" content="Prévision journalière du niveau du lac Kariba (bassin du Zambèze) — horizon 30 jours, GBM avec débit turbiné comme covariable exogène atteint 7 cm de RMSE ; couverture des IP de SARIMA à 100 %.">
+<meta name="author" content="Yaé Gaba">
+<link rel="canonical" href="https://gabayae.github.io/data-portfolio/fr/case-studies/kariba/">
+<link rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/case-studies/kariba/">
+<link rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/case-studies/kariba/">
+<link rel="icon" type="image/svg+xml" href="/data-portfolio/favicon.svg">
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:url" content="https://gabayae.github.io/data-portfolio/fr/case-studies/kariba/">
+<meta property="og:title" content="Étude de cas — Prévision du débit du lac Kariba">
+<meta property="og:description" content="GBM avec covariables exogènes atteint 7 cm de RMSE sur la prévision à 30 jours du niveau du lac Kariba. SARIMA délivre une couverture des IP de 100 %. Données réelles du barrage du Zambèze.">
+<meta property="og:image" content="https://gabayae.github.io/data-portfolio/case-studies/kariba/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://gabayae.github.io/data-portfolio/case-studies/kariba/og-card.png">
+
+<style>
+:root {
+  --color-bg: #fafaf7;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f2efe8;
+  --color-ink: #171717;
+  --color-muted: #555555;
+  --color-border: #e4e1d8;
+  --color-primary: #0f2a4a;
+  --color-primary-soft: #e3e8ef;
+  --color-accent: #c85c3c;
+  --color-accent-hover: #b04b2e;
+  --color-accent-soft: #f4e4dd;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 2px rgba(15, 42, 74, 0.04), 0 1px 3px rgba(15, 42, 74, 0.06);
+  --shadow-md: 0 4px 10px rgba(15, 42, 74, 0.06), 0 8px 24px rgba(15, 42, 74, 0.08);
+}
+*,*::before,*::after { box-sizing: border-box; margin:0; padding:0; }
+html { scroll-behavior: smooth; background: var(--color-bg); color: var(--color-ink); font-family: var(--font-sans); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+a { color: var(--color-primary); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; transition: color 0.2s ease; }
+a:hover { color: var(--color-accent); }
+img { max-width: 100%; display: block; }
+
+.nav { background: var(--color-surface); border-bottom: 1px solid var(--color-border); position: sticky; top: 0; z-index: 50; }
+.nav__inner { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; display: flex; align-items: center; height: 3.5rem; gap: 1.5rem; }
+.nav__brand { font-family: var(--font-serif); font-size: 1.15rem; font-weight: 600; color: var(--color-primary); text-decoration: none; }
+.nav__brand .dot { color: var(--color-accent); }
+.nav__brand:hover { text-decoration: none; }
+.nav__back { margin-left: auto; font-size: 0.9rem; color: var(--color-muted); text-decoration: none; }
+.nav__back:hover { color: var(--color-accent); text-decoration: none; }
+
+.case-hero {
+  background: linear-gradient(135deg, #0f2a4a 0%, #1a3d66 100%);
+  color: #fafaf7;
+  padding: 4rem 1.5rem 3.5rem;
+  position: relative; overflow: hidden;
+}
+.case-hero::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(circle at 80% 30%, rgba(200,92,60,0.10) 0%, transparent 55%);
+  pointer-events: none;
+}
+.case-hero__content { max-width: 72rem; margin: 0 auto; position: relative; }
+.case-hero__eyebrow { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-accent); font-weight: 600; }
+.case-hero__title { font-family: var(--font-serif); font-size: clamp(2rem, 1.4rem + 2.4vw, 2.8rem); font-weight: 700; letter-spacing: -0.02em; margin: 0.6rem 0; color: #fafaf7; max-width: 50rem; }
+.case-hero__sub { font-size: 1.05rem; color: #b5c1d1; max-width: 50rem; line-height: 1.65; }
+.case-hero__meta { display: flex; flex-wrap: wrap; gap: 1.2rem 2rem; margin-top: 1.6rem; font-size: 0.88rem; color: #dfe6ef; }
+.case-hero__meta span strong { color: var(--color-accent); font-weight: 600; }
+
+.case-layout { max-width: 72rem; margin: 0 auto; padding: 3rem 1.5rem 5rem; display: grid; grid-template-columns: 13rem 1fr; gap: 3rem; }
+.toc { position: sticky; top: 4.5rem; align-self: start; font-size: 0.88rem; padding-top: 0.4rem; }
+.toc__title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-muted); font-weight: 600; margin-bottom: 0.8rem; }
+.toc ol { list-style: none; padding: 0; margin: 0; }
+.toc li { padding: 0.35rem 0; border-left: 2px solid var(--color-border); padding-left: 0.85rem; }
+.toc a { text-decoration: none; color: var(--color-muted); display: block; }
+.toc a:hover { color: var(--color-accent); }
+
+article.case-body { max-width: 50rem; }
+article h2 { font-family: var(--font-serif); font-size: 1.6rem; color: var(--color-primary); margin: 2.5rem 0 0.6rem; letter-spacing: -0.01em; }
+article h2:first-child { margin-top: 0; }
+article h3 { font-family: var(--font-serif); font-size: 1.2rem; color: var(--color-primary); margin: 1.5rem 0 0.4rem; }
+article p { margin-bottom: 1rem; color: var(--color-ink); }
+article ul, article ol { margin: 0 0 1.2rem 1.5rem; }
+article li { margin-bottom: 0.35rem; color: var(--color-ink); }
+article code { font-family: var(--font-mono); font-size: 0.86em; background: var(--color-surface-alt); padding: 0.1rem 0.4rem; border-radius: 4px; color: var(--color-primary); }
+article strong { color: var(--color-primary); font-weight: 600; }
+
+.lede { font-size: 1.15rem; color: var(--color-muted); line-height: 1.65; margin-bottom: 1.5rem; }
+
+.figure { margin: 1.6rem 0; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1rem; box-shadow: var(--shadow-sm); }
+.figure img { border-radius: 4px; }
+.figure figcaption { font-size: 0.84rem; color: var(--color-muted); margin-top: 0.7rem; line-height: 1.55; }
+.figure figcaption strong { color: var(--color-primary); }
+
+.callout { background: var(--color-accent-soft); border-left: 3px solid var(--color-accent); padding: 1rem 1.2rem; border-radius: 0 var(--radius-md) var(--radius-md) 0; margin: 1.5rem 0; font-size: 0.96rem; color: var(--color-ink); }
+.callout strong { color: var(--color-accent-hover); }
+
+.results-table { width: 100%; border-collapse: collapse; margin: 1.2rem 0 1.5rem; font-size: 0.92rem; }
+.results-table th, .results-table td { text-align: left; padding: 0.55rem 0.85rem; border-bottom: 1px solid var(--color-border); vertical-align: top; }
+.results-table th { background: var(--color-surface-alt); color: var(--color-primary); font-weight: 600; font-family: var(--font-sans); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.results-table tr.winner td { background: var(--color-accent-soft); }
+.results-table tr.winner td:first-child { font-weight: 600; color: var(--color-accent-hover); }
+.results-table td.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+.chip-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.4rem 0 1.2rem; }
+.chip { display: inline-block; padding: 0.2rem 0.65rem; border-radius: var(--radius-md); font-size: 0.74rem; font-weight: 600; background: var(--color-surface-alt); border: 1px solid var(--color-border); color: var(--color-muted); }
+
+.cta-row { display: flex; flex-wrap: wrap; gap: 0.7rem; margin: 2.5rem 0 0; }
+.btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.1rem; border-radius: var(--radius-md); font-weight: 500; font-size: 0.92rem; text-decoration: none; border: 1px solid transparent; cursor: pointer; }
+.btn--primary { background: var(--color-accent); border-color: var(--color-accent); color: #fff; }
+.btn--primary:hover { background: var(--color-accent-hover); border-color: var(--color-accent-hover); color: #fff; text-decoration: none; }
+.btn--outline { background: transparent; color: var(--color-primary); border-color: var(--color-primary); }
+.btn--outline:hover { background: var(--color-primary); color: #fff; text-decoration: none; }
+
+footer { background: var(--color-primary); color: #b5c1d1; padding: 1.8rem 1.5rem; font-size: 0.85rem; text-align: center; }
+footer a { color: #ffd7c5; }
+
+@media (max-width: 768px) {
+  .case-layout { grid-template-columns: 1fr; padding: 2rem 1.2rem 3.5rem; }
+  .toc { position: static; }
+  .case-hero { padding: 2.5rem 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="/data-portfolio/fr/" class="nav__brand">Yaé Gaba<span class="dot">.</span></a>
+    <a href="/data-portfolio/fr/#projects" class="nav__back">← Tous les projets</a>
+  </div>
+</nav>
+
+<section class="case-hero">
+  <div class="case-hero__content">
+    <span class="case-hero__eyebrow">Étude de cas · Hydroélectricité · Séries temporelles</span>
+    <h1 class="case-hero__title">Prévision du débit fluvial — lac Kariba</h1>
+    <p class="case-hero__sub">
+      Prévision journalière du niveau et des débits sortants pour le plus grand réservoir artificiel au monde, sur données réelles de la Zambezi River Authority — horizon 30 jours, régresseur gradient boosté avec le débit turbiné en covariable exogène atteint un remarquable 7 cm de RMSE sur un niveau qui dérive dans une bande opérationnelle de 7 m.
+    </p>
+    <div class="case-hero__meta">
+      <span><strong>Meilleur modèle</strong> · GBM avec covariables exogènes</span>
+      <span><strong>RMSE</strong> · 0,07 m (vs SARIMA 0,18 m, naïf 0,50 m)</span>
+      <span><strong>Couverture IP 95 % de SARIMA</strong> · 100 %</span>
+      <span><strong>Données</strong> · 1 155 obs. journalières · 2020–2023</span>
+    </div>
+  </div>
+</section>
+
+<div class="case-layout">
+
+  <aside class="toc">
+    <div class="toc__title">Sur cette page</div>
+    <ol>
+      <li><a href="#summary">Résumé</a></li>
+      <li><a href="#stakes">Pourquoi c'est important</a></li>
+      <li><a href="#question">La question métier</a></li>
+      <li><a href="#data">Données</a></li>
+      <li><a href="#eda">EDA</a></li>
+      <li><a href="#approach">Approche de modélisation</a></li>
+      <li><a href="#results">Résultats</a></li>
+      <li><a href="#tradeoffs">Compromis</a></li>
+      <li><a href="#deployment">Déploiement</a></li>
+      <li><a href="#lessons">Leçons</a></li>
+    </ol>
+  </aside>
+
+  <article class="case-body">
+
+    <h2 id="summary">Résumé</h2>
+    <p class="lede">
+      Un régresseur gradient boosté utilisant le débit turbiné en temps réel comme covariable exogène prévoit le niveau journalier du lac Kariba avec <strong>7 cm de RMSE</strong> sur un horizon de 30 jours — contre 18 cm pour SARIMA, 24 cm pour un modèle à espace d'états (composantes non observées) et 50 cm pour la référence naïve « dernière observation ». SARIMA et l'espace d'états offrent tous deux des intervalles de prédiction bien calibrés (couverture empirique de 95–100 % au niveau nominal 95 %), ce qui en fait le meilleur choix pour des décisions de dispatch conscientes du risque, même si leurs prévisions ponctuelles sont en retrait.
+    </p>
+    <p>
+      Le même compromis que PJM, dans un contexte à plus forts enjeux : le ML gagne sur la précision ponctuelle, les modèles structurels gagnent sur l'incertitude calibrée. Livrez l'ensemble.
+    </p>
+
+    <h2 id="stakes">Pourquoi c'est important</h2>
+    <p>
+      Le lac Kariba est le plus grand réservoir artificiel au monde en volume d'eau, sur le fleuve Zambèze entre la Zambie et le Zimbabwe. Son niveau pilote environ <strong>1 800 MW de production hydroélectrique</strong> à travers les centrales de Kariba South (Zimbabwe) et Kariba North (Zambie). La bande opérationnelle est étroite :
+    </p>
+    <ul>
+      <li>Sous ~475 m : les turbines ne peuvent pas fonctionner en sécurité ; la production tombe à zéro.</li>
+      <li>~475–482 m : déclassement progressif ; chaque baisse de 1 m coûte des centaines de GWh de production par an.</li>
+      <li>Au-dessus de ~488 m : le déversoir s'ouvre ; l'eau est lâchée sans produire d'électricité.</li>
+    </ul>
+    <p>
+      Les sécheresses de 2015–2016 et 2019–2020 ont poussé le lac à moins d'un mètre de son niveau opérationnel minimum, forçant des délestages tournants dans les deux pays. Une prévision précise au centimètre près sur un horizon de 30 jours informe directement : le dispatch turbiné, la coordination en aval avec Cahora Bassa (Mozambique) et les négociations de partage de l'eau entre les deux États membres de la Zambezi River Authority.
+    </p>
+
+    <h2 id="question">La question métier</h2>
+    <p>Deux décisions opérationnelles consomment la prévision :</p>
+    <ul>
+      <li><strong>Planification de production</strong> — avec quelle agressivité dispatcher sur les 30 prochains jours, en équilibrant les revenus d'aujourd'hui contre les réserves d'eau du mois prochain.</li>
+      <li><strong>Négociation risque & délestage</strong> — quantifier la probabilité que le lac passe sous les seuils opérationnels dans les scénarios où les apports sous-performent.</li>
+    </ul>
+    <p>
+      La première veut la prévision ponctuelle la plus précise ; la seconde veut des bandes d'incertitude honnêtes. Même entrée de prévision, décisions aval différentes — le même schéma que l'étude PJM, avec des enjeux bien plus élevés par point de pourcentage d'erreur.
+    </p>
+
+    <h2 id="data">Données</h2>
+    <p>
+      Données du réservoir du lac Kariba depuis le jeu de données public Kaggle <a href="https://www.kaggle.com/datasets/marbin/lake-kariba-reservoir-data">marbin/lake-kariba-reservoir-data</a> : <strong>1 155 observations journalières</strong> du 1<sup>er</sup> jan. 2020 au 28 fév. 2023, couvrant :
+    </p>
+    <ul>
+      <li><code>lake_level</code> (m) — la cible à prévoir</li>
+      <li><code>usable_storage</code>, <code>live_storage</code> — volumes dérivés</li>
+      <li><code>turbine_discharge</code> (m³/s) — eau lâchée pour la production</li>
+      <li><code>spillage</code> (m³/s) — déversement d'urgence (quasi nul sur cette période)</li>
+      <li><code>total_outflow</code> (m³/s) — turbiné + déversé combinés</li>
+    </ul>
+    <div class="chip-row">
+      <span class="chip">CSV · Kaggle</span><span class="chip">Résolution journalière</span><span class="chip">~3 ans</span><span class="chip">Multivariée</span>
+    </div>
+
+    <h2 id="eda">EDA</h2>
+    <p>
+      La série du niveau du lac est dominée par un cycle annuel lent (la saison des pluies de nov. à avr. remplit le lac ; la saison sèche de mai à oct. le vide) et une tendance de récupération à long terme jusqu'en 2022 après le creux de la sécheresse de 2019–2020. Le débit turbiné est anti-corrélé au niveau du lac à l'échelle saisonnière (les opérateurs turbinent plus quand le lac est haut) et montre une variation hebdomadaire liée aux schémas de demande du réseau.
+    </p>
+
+    <figure class="figure">
+      <img src="/data-portfolio/case-studies/kariba/plot-01.png" alt="Niveau journalier du lac, débit turbiné et débit total sortant de 2020 à 2023">
+      <figcaption><strong>Figure 1.</strong> Haut : niveau journalier du lac montrant la récupération 2020–2023 depuis le creux de sécheresse, modulée par un cycle annuel. Milieu : débit turbiné avec variabilité opérationnelle. Bas : le débit total sortant suit de près le débit turbiné (le déversement était quasi nul sur cette fenêtre).</figcaption>
+    </figure>
+
+    <figure class="figure">
+      <img src="/data-portfolio/case-studies/kariba/plot-02.png" alt="Cycle annuel : niveau moyen mensuel du lac vs débit turbiné">
+      <figcaption><strong>Figure 2.</strong> Cycle annuel. Le niveau moyen du lac (bleu) culmine en mai–juillet (après les pluies), creuse en nov.–déc. (fin de saison sèche). Le débit turbiné (orange) est en retard sur le niveau — les opérateurs capitalisent sur l'eau haute pendant les mois secs.</figcaption>
+    </figure>
+
+    <figure class="figure">
+      <img src="/data-portfolio/case-studies/kariba/plot-03.png" alt="Matrice de corrélation des variables du réservoir">
+      <figcaption><strong>Figure 3.</strong> Matrice de corrélation. Le niveau du lac, le stockage utilisable et le stockage vif bougent comme un seul (r &gt; 0,99) — les volumes de stockage sont des fonctions mécaniques du niveau. Le débit turbiné corrèle faiblement avec le niveau à l'échelle journalière ; la relation est surtout saisonnière et décalée.</figcaption>
+    </figure>
+
+    <h2 id="approach">Approche de modélisation</h2>
+    <p>
+      Trois candidats, tous prévoyant la série journalière <code>lake_level</code> à 30 jours. La fenêtre de validation est constituée des 30 derniers jours du jeu de données.
+    </p>
+
+    <h3>1. SARIMA en référence</h3>
+    <p>
+      <code>SARIMAX(1,1,1)(1,1,1)<sub>7</sub></code>. Capture l'autocorrélation à courte portée et les cycles hebdomadaires. Le cycle annuel doit être absorbé implicitement par le terme d'intégration — une faiblesse connue sur une série aussi fortement saisonnière.
+    </p>
+
+    <h3>2. Espace d'états — UnobservedComponents + Fourier exogène</h3>
+    <p>
+      <code>UnobservedComponents</code> avec une composante de niveau à tendance localement linéaire, niveau et pente stochastiques, et trois paires d'harmoniques annuelles de Fourier passées en régresseurs exogènes. Le filtre de Kalman fournit les intervalles de prédiction.
+    </p>
+
+    <h3>3. Concurrent ML — régression gradient boostée avec covariables exogènes</h3>
+    <p>
+      <code>GradientBoostingRegressor(n_estimators=400, max_depth=3, learning_rate=0.05)</code> sur les variables construites :
+    </p>
+    <ul>
+      <li>Calendaires : <code>dow</code>, <code>month</code>, <code>doy_sin</code>, <code>doy_cos</code></li>
+      <li>Décalages de <code>lake_level</code> : 1, 2, 7, 14, 30 jours</li>
+      <li>Moyennes glissantes (décalées de 1 pour éviter la fuite) : 7 jours, 30 jours</li>
+      <li><strong>Covariables exogènes</strong> : <code>turbine_discharge</code> et <code>total_outflow</code>, décalage 1 et moyennes glissantes 7 jours</li>
+    </ul>
+    <p>
+      C'est le levier qui fait passer le RMSE de ~18 cm (SARIMA, niveau seul) à 7 cm (GBM, avec débit en exogène). La relation structurelle « niveau du lac demain = niveau aujourd'hui + (apports − sorties) » est quelque chose que le GBM peut apprendre directement quand on lui donne les données de sorties ; SARIMA, ne travaillant que sur l'historique du niveau, doit la déduire.
+    </p>
+
+    <h2 id="results">Résultats</h2>
+    <p>Test de validation à 30 jours, RMSE en mètres, MAPE sur le niveau du lac (borné autour de 478 m, donc les valeurs de MAPE sont minuscules) :</p>
+
+    <table class="results-table">
+      <thead>
+        <tr><th>Modèle</th><th>MAPE</th><th>RMSE (m)</th><th>Couverture IP 95 %</th></tr>
+      </thead>
+      <tbody>
+        <tr class="winner"><td>GBM (avec exog. : débit turbiné, débit sortant)</td><td class="num">0.013%</td><td class="num">0.07</td><td class="num">—</td></tr>
+        <tr><td>SARIMA(1,1,1)(1,1,1)<sub>7</sub></td><td class="num">0.027%</td><td class="num">0.18</td><td class="num">100%</td></tr>
+        <tr><td>UC + Fourier annual exog</td><td class="num">0.046%</td><td class="num">0.24</td><td class="num">90%</td></tr>
+        <tr><td>Naïf — dernière obs.</td><td class="num">0.085%</td><td class="num">0.50</td><td class="num">—</td></tr>
+        <tr><td>Naïf — saisonnier (décalage 365 jours)</td><td class="num">0.39%</td><td class="num">1.90</td><td class="num">—</td></tr>
+      </tbody>
+    </table>
+
+    <figure class="figure">
+      <img src="/data-portfolio/case-studies/kariba/plot-04.png" alt="Comparaison de prévision à 30 jours : SARIMA, UC et GBM par rapport au niveau réel">
+      <figcaption><strong>Figure 4.</strong> Comparaison de prévision sur fenêtre de validation de 30 jours. La ligne noire est le niveau réalisé. GBM (avec débit en exogène) suit le niveau réalisé si étroitement qu'il est difficile de les distinguer visuellement. L'IP 95 % de SARIMA (zone ombrée) est assez large pour que la ligne réelle reste confortablement à l'intérieur. L'UC dérive sous le niveau réalisé de quelques centimètres.</figcaption>
+    </figure>
+
+    <div class="callout">
+      <strong>Le chiffre phare dans son contexte.</strong> 7 cm de RMSE sur un niveau qui varie dans une bande opérationnelle de ~7 m est une erreur relative de ~1 %. Sur un réservoir dont la baisse de 1 m coûte des centaines de GWh de production par an, c'est la différence entre planifier six semaines de production avec confiance et vivre au jour le jour sur la télémétrie des apports.
+    </div>
+
+    <h2 id="tradeoffs">Compromis</h2>
+    <ul>
+      <li><strong>Le chiffre phare du GBM dépend de la disponibilité du débit en temps réel.</strong> Si le comptage du débit est retardé ou manquant — un risque réel sur un réservoir transfrontalier — le GBM se dégrade vers la même famille de précision que SARIMA. Les modèles structurels tiennent quoi qu'il arrive.</li>
+      <li><strong>Le régime de sécheresse 2019–2020 est dans les données d'entraînement.</strong> Le modèle a vu un cycle complet sécheresse-récupération, pas plusieurs. Une seconde sécheresse de gravité égale ne serait pas sans précédent du point de vue de la distribution d'entraînement, mais une plus sévère extrapolerait.</li>
+      <li><strong>Les prévisions d'apports manquent volontairement.</strong> Coupler des prévisions de pluie / ruissellement (CHIRPS, précipitations NASA POWER) en covariables exogènes supplémentaires resserrerait probablement les trois modèles. L'objectif de l'étude était de comparer les familles de modélisation sur le même ensemble d'information, pas d'ingénier un système de production à précision maximale.</li>
+      <li><strong>Interprétabilité.</strong> SARIMA et UC exposent des composantes décomposées (niveau, pente, saisonnalité). L'importance des variables du GBM est informative mais moins auditable dans un contexte de service public régulé.</li>
+    </ul>
+
+    <h2 id="deployment">Esquisse de déploiement</h2>
+    <p>Pour la Zambezi River Authority et les opérateurs des centrales de Kariba :</p>
+    <ul>
+      <li><strong>Service :</strong> FastAPI <code>GET /forecast?horizon=30d</code> renvoyant le niveau moyen journalier (ensemble GBM) + intervalle de prédiction 95 % (espace d'états UC) pour le mois suivant.</li>
+      <li><strong>Endpoint complémentaire :</strong> <code>/outflow</code> pour les prévisions de débit total sortant, utilisé par la coordination en aval avec Cahora Bassa.</li>
+      <li><strong>Tableau de bord :</strong> panneau Streamlit pour la ZRA — niveau actuel, bande de prévision à 30 jours, scénario défavorable (10<sup>e</sup> percentile d'apport), estimation d'impact sur la production par scénario.</li>
+      <li><strong>Réentraînement :</strong> cron hebdomadaire reconstruit les modèles sur les 3 dernières années.</li>
+      <li><strong>Alertes :</strong> PagerDuty si un quelconque quantile de la prévision à 30 jours franchit 475 m (seuil de sécurité turbine) — préalerte pour les négociations de délestage.</li>
+    </ul>
+
+    <h2 id="lessons">Leçons</h2>
+    <ol>
+      <li><strong>Les covariables exogènes dominent lorsqu'elles existent.</strong> La réduction de 60 % du RMSE (SARIMA → GBM) est presque entièrement attribuable à l'inclusion du débit turbiné dans les variables. Choisir les bonnes entrées bat choisir le bon algorithme.</li>
+      <li><strong>Les cibles lentes à fort enjeu ont besoin d'IP étroits, pas seulement d'un MAPE bas.</strong> Une erreur ponctuelle de 7 cm est serrée — mais sur ce type d'actif, « quelle est la probabilité de franchir le seuil opérationnel dans les 30 prochains jours » est la question qui pilote les décisions. L'intervalle calibré de SARIMA est souvent plus utile que la moyenne plus serrée du GBM.</li>
+      <li><strong>Les données ouvertes africaines réelles sont suffisantes.</strong> Le lac Kariba est un réservoir transfrontalier entre deux pays africains ; les données journalières existent et sont publiquement accessibles sur Kaggle. Le modèle s'étendrait proprement à Cahora Bassa et à d'autres barrages africains une fois des données équivalentes publiées.</li>
+    </ol>
+
+    <div class="cta-row">
+      <a href="/data-portfolio/06-river-flow-forecasting-kariba/notebook.ipynb" class="btn btn--primary">Ouvrir le carnet ↗</a>
+      <a href="https://github.com/gabayae/data-portfolio/blob/main/06-river-flow-forecasting-kariba/" class="btn btn--outline">Voir le code source sur GitHub</a>
+      <a href="/data-portfolio/fr/#projects" class="btn btn--outline">Tous les projets</a>
+    </div>
+
+  </article>
+</div>
+
+<footer>
+  <p>© 2026 Yaé Gaba · Conçu de bout en bout sur données publiques réelles · sous licence MIT · <a href="/data-portfolio/fr/">Retour au portfolio</a></p>
+</footer>
+
+</body>
+</html>
