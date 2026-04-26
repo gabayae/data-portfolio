@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Étude de cas — Prévision de charge horaire (PJM) · Yaé Gaba</title>
+<meta name="description" content="Prévision horaire de charge à l'horizon J+1 sur données réelles PJM East : SARIMA vs. espace d'états (UnobservedComponents + Fourier) vs. modèle gradient boosté. GBM gagne avec un MAPE de 6,2 % ; couverture des IP de l'UC à 99 %.">
+<meta name="author" content="Yaé Gaba">
+<link rel="canonical" href="https://gabayae.github.io/data-portfolio/fr/case-studies/pjm/">
+<link rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/case-studies/pjm/">
+<link rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/case-studies/pjm/">
+<link rel="icon" type="image/svg+xml" href="/data-portfolio/favicon.svg">
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:url" content="https://gabayae.github.io/data-portfolio/fr/case-studies/pjm/">
+<meta property="og:title" content="Étude de cas — Prévision de charge horaire PJM">
+<meta property="og:description" content="GBM avec MAPE 6,2 % sur 145 000 heures de données réelles de charge PJM East. SARIMA, espace d'états et benchmarks ML comparés sur une fenêtre de validation de 60 jours.">
+<meta property="og:image" content="https://gabayae.github.io/data-portfolio/case-studies/pjm/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://gabayae.github.io/data-portfolio/case-studies/pjm/og-card.png">
+
+<style>
+:root {
+  --color-bg: #fafaf7;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f2efe8;
+  --color-ink: #171717;
+  --color-muted: #555555;
+  --color-border: #e4e1d8;
+  --color-primary: #0f2a4a;
+  --color-primary-soft: #e3e8ef;
+  --color-accent: #c85c3c;
+  --color-accent-hover: #b04b2e;
+  --color-accent-soft: #f4e4dd;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 2px rgba(15, 42, 74, 0.04), 0 1px 3px rgba(15, 42, 74, 0.06);
+  --shadow-md: 0 4px 10px rgba(15, 42, 74, 0.06), 0 8px 24px rgba(15, 42, 74, 0.08);
+}
+*,*::before,*::after { box-sizing: border-box; margin:0; padding:0; }
+html { scroll-behavior: smooth; background: var(--color-bg); color: var(--color-ink); font-family: var(--font-sans); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+a { color: var(--color-primary); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; transition: color 0.2s ease; }
+a:hover { color: var(--color-accent); }
+img { max-width: 100%; display: block; }
+
+/* Nav */
+.nav { background: var(--color-surface); border-bottom: 1px solid var(--color-border); position: sticky; top: 0; z-index: 50; }
+.nav__inner { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; display: flex; align-items: center; height: 3.5rem; gap: 1.5rem; }
+.nav__brand { font-family: var(--font-serif); font-size: 1.15rem; font-weight: 600; color: var(--color-primary); text-decoration: none; }
+.nav__brand .dot { color: var(--color-accent); }
+.nav__brand:hover { text-decoration: none; }
+.nav__back { margin-left: auto; font-size: 0.9rem; color: var(--color-muted); text-decoration: none; }
+.nav__back:hover { color: var(--color-accent); text-decoration: none; }
+
+/* Hero */
+.case-hero {
+  background: linear-gradient(135deg, #0f2a4a 0%, #1a3d66 100%);
+  color: #fafaf7;
+  padding: 4rem 1.5rem 3.5rem;
+  position: relative; overflow: hidden;
+}
+.case-hero::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(circle at 80% 30%, rgba(200,92,60,0.10) 0%, transparent 55%);
+  pointer-events: none;
+}
+.case-hero__content { max-width: 72rem; margin: 0 auto; position: relative; }
+.case-hero__eyebrow { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-accent); font-weight: 600; }
+.case-hero__title {
+  font-family: var(--font-serif); font-size: clamp(2rem, 1.4rem + 2.4vw, 2.8rem);
+  font-weight: 700; letter-spacing: -0.02em; margin: 0.6rem 0 0.6rem;
+  color: #fafaf7; max-width: 50rem;
+}
+.case-hero__sub { font-size: 1.05rem; color: #b5c1d1; max-width: 50rem; line-height: 1.65; }
+.case-hero__meta { display: flex; flex-wrap: wrap; gap: 1.2rem 2rem; margin-top: 1.6rem; font-size: 0.88rem; color: #dfe6ef; }
+.case-hero__meta span strong { color: var(--color-accent); font-weight: 600; }
+
+/* Layout */
+.case-layout { max-width: 72rem; margin: 0 auto; padding: 3rem 1.5rem 5rem; display: grid; grid-template-columns: 13rem 1fr; gap: 3rem; }
+.toc { position: sticky; top: 4.5rem; align-self: start; font-size: 0.88rem; padding-top: 0.4rem; }
+.toc__title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-muted); font-weight: 600; margin-bottom: 0.8rem; }
+.toc ol { list-style: none; padding: 0; margin: 0; }
+.toc li { padding: 0.35rem 0; border-left: 2px solid var(--color-border); padding-left: 0.85rem; }
+.toc a { text-decoration: none; color: var(--color-muted); display: block; }
+.toc a:hover { color: var(--color-accent); }
+
+article.case-body { max-width: 50rem; }
+article h2 { font-family: var(--font-serif); font-size: 1.6rem; color: var(--color-primary); margin: 2.5rem 0 0.6rem; letter-spacing: -0.01em; }
+article h2:first-child { margin-top: 0; }
+article h3 { font-family: var(--font-serif); font-size: 1.2rem; color: var(--color-primary); margin: 1.5rem 0 0.4rem; }
+article p { margin-bottom: 1rem; color: var(--color-ink); }
+article ul, article ol { margin: 0 0 1.2rem 1.5rem; }
+article li { margin-bottom: 0.35rem; color: var(--color-ink); }
+article code { font-family: var(--font-mono); font-size: 0.86em; background: var(--color-surface-alt); padding: 0.1rem 0.4rem; border-radius: 4px; color: var(--color-primary); }
+article strong { color: var(--color-primary); font-weight: 600; }
+
+.lede { font-size: 1.15rem; color: var(--color-muted); line-height: 1.65; margin-bottom: 1.5rem; }
+
+.figure { margin: 1.6rem 0; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1rem; box-shadow: var(--shadow-sm); }
+.figure img { border-radius: 4px; }
+.figure figcaption { font-size: 0.84rem; color: var(--color-muted); margin-top: 0.7rem; line-height: 1.55; }
+.figure figcaption strong { color: var(--color-primary); }
+
+.callout {
+  background: var(--color-accent-soft); border-left: 3px solid var(--color-accent);
+  padding: 1rem 1.2rem; border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  margin: 1.5rem 0; font-size: 0.96rem; color: var(--color-ink);
+}
+.callout strong { color: var(--color-accent-hover); }
+
+.results-table { width: 100%; border-collapse: collapse; margin: 1.2rem 0 1.5rem; font-size: 0.92rem; }
+.results-table th, .results-table td { text-align: left; padding: 0.55rem 0.85rem; border-bottom: 1px solid var(--color-border); vertical-align: top; }
+.results-table th { background: var(--color-surface-alt); color: var(--color-primary); font-weight: 600; font-family: var(--font-sans); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.results-table tr.winner td { background: var(--color-accent-soft); }
+.results-table tr.winner td:first-child { font-weight: 600; color: var(--color-accent-hover); }
+.results-table td.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+.chip-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.4rem 0 1.2rem; }
+.chip { display: inline-block; padding: 0.2rem 0.65rem; border-radius: var(--radius-md); font-size: 0.74rem; font-weight: 600; background: var(--color-surface-alt); border: 1px solid var(--color-border); color: var(--color-muted); }
+
+.cta-row { display: flex; flex-wrap: wrap; gap: 0.7rem; margin: 2.5rem 0 0; }
+.btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.1rem; border-radius: var(--radius-md); font-weight: 500; font-size: 0.92rem; text-decoration: none; border: 1px solid transparent; cursor: pointer; }
+.btn--primary { background: var(--color-accent); border-color: var(--color-accent); color: #fff; }
+.btn--primary:hover { background: var(--color-accent-hover); border-color: var(--color-accent-hover); color: #fff; text-decoration: none; }
+.btn--outline { background: transparent; color: var(--color-primary); border-color: var(--color-primary); }
+.btn--outline:hover { background: var(--color-primary); color: #fff; text-decoration: none; }
+
+footer { background: var(--color-primary); color: #b5c1d1; padding: 1.8rem 1.5rem; font-size: 0.85rem; text-align: center; }
+footer a { color: #ffd7c5; }
+
+@media (max-width: 768px) {
+  .case-layout { grid-template-columns: 1fr; padding: 2rem 1.2rem 3.5rem; }
+  .toc { position: static; }
+  .case-hero { padding: 2.5rem 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="/data-portfolio/fr/" class="nav__brand">Yaé Gaba<span class="dot">.</span></a>
+    <a href="/data-portfolio/fr/#projects" class="nav__back">← Tous les projets</a>
+  </div>
+</nav>
+
+<section class="case-hero">
+  <div class="case-hero__content">
+    <span class="case-hero__eyebrow">Étude de cas · Énergie · Séries temporelles</span>
+    <h1 class="case-hero__title">Prévision de charge horaire — PJM East</h1>
+    <p class="case-hero__sub">
+      Prévisions de charge à l'horizon J+1 et court-terme sur 16 ans de données réelles de consommation horaire PJME — comparaison entre SARIMA, espace d'états (UnobservedComponents + Fourier exogène) et modèles gradient boostés sur une fenêtre de validation de 60 jours.
+    </p>
+    <div class="case-hero__meta">
+      <span><strong>Meilleur modèle</strong> · GBM avec variables construites</span>
+      <span><strong>MAPE</strong> · 6,2 % (vs SARIMA 14,5 %, UC 19,3 %)</span>
+      <span><strong>Données</strong> · 145 392 observations horaires · 2002–2018</span>
+      <span><strong>Couverture IP 95 % de l'UC</strong> · 99 %</span>
+    </div>
+  </div>
+</section>
+
+<div class="case-layout">
+
+  <aside class="toc">
+    <div class="toc__title">Sur cette page</div>
+    <ol>
+      <li><a href="#summary">Résumé</a></li>
+      <li><a href="#question">La question métier</a></li>
+      <li><a href="#data">Données</a></li>
+      <li><a href="#eda">EDA</a></li>
+      <li><a href="#approach">Approche de modélisation</a></li>
+      <li><a href="#results">Résultats</a></li>
+      <li><a href="#tradeoffs">Compromis</a></li>
+      <li><a href="#deployment">Déploiement</a></li>
+      <li><a href="#lessons">Leçons</a></li>
+    </ol>
+  </aside>
+
+  <article class="case-body">
+
+    <h2 id="summary">Résumé</h2>
+    <p class="lede">
+      Un régresseur gradient boosté utilisant des variables construites — décalages, moyennes glissantes et harmoniques calendaires — bat SARIMA classique sur la charge PJM East à J+1 de plus de moitié — <strong>MAPE 6,2 % vs. 14,5 %</strong>. Un modèle structurel à espace d'états (UnobservedComponents avec Fourier annuel exogène) reste en retrait sur la précision ponctuelle, mais offre une calibration des intervalles de prédiction quasi parfaite (couverture empirique de 99 % au niveau nominal 95 %), ce qui compte pour un approvisionnement conscient du risque.
+    </p>
+    <p>
+      Le bon modèle dépend de ce que la salle des marchés cherche à optimiser. Si le seul objectif est l'erreur attendue la plus faible, GBM gagne ; si la salle dimensionne ses couvertures et a besoin de bandes d'incertitude honnêtes, l'espace d'états gagne.
+    </p>
+
+    <h2 id="question">La question métier</h2>
+    <p>
+      Un opérateur de réseau régional achète l'électricité à J+1 et rééquilibre en intra-journée. Les erreurs de prévision se traduisent directement par des <em>pénalités de déséquilibre</em> — l'opérateur est court ou long par rapport à la demande réelle et paie l'écart. Deux questions opérationnelles reposent sur la même prévision :
+    </p>
+    <ul>
+      <li><strong>Achats</strong> a besoin de la prévision ponctuelle la plus précise pour la charge horaire du lendemain.</li>
+      <li><strong>Risque / couverture</strong> a besoin d'une bande d'incertitude honnête — connaître les quantiles 5 %/95 % vaut plus qu'une estimation moyenne légèrement plus serrée mais sans bande.</li>
+    </ul>
+    <p>
+      Une référence SARIMA était déjà en place. Un modèle à espace d'états ou un modèle ML pourrait-il faire mieux, et sur quelle dimension ?
+    </p>
+
+    <h2 id="data">Données</h2>
+    <p>
+      Consommation horaire mesurée réelle de PJM East (PJME) depuis le jeu de données public Kaggle <a href="https://www.kaggle.com/datasets/robikscube/hourly-energy-consumption">robikscube/hourly-energy-consumption</a> : <strong>145 392 observations horaires</strong> du 1<sup>er</sup> jan. 2002 au 3 août 2018. L'étude utilise la fenêtre 2015-01-01 → 2018-08-03 (~31 400 heures / ~3,6 ans) pour garder l'entraînement gérable sur une seule machine.
+    </p>
+    <div class="chip-row">
+      <span class="chip">CSV · Kaggle</span><span class="chip">Résolution horaire</span><span class="chip">Série unique</span><span class="chip">Aucun NaN après interpolation</span>
+    </div>
+
+    <h2 id="eda">EDA</h2>
+    <p>
+      Trois régularités dominent la série : un fort <strong>cycle journalier</strong> (pic vers 18 h, creux vers 4 h), un <strong>cycle hebdomadaire</strong> avec creux le week-end, et un <strong>cycle annuel</strong> piloté par la climatisation estivale et le chauffage hivernal. Un effet jours fériés est visible (Noël, fête nationale) mais plus petit que l'enveloppe saisonnière.
+    </p>
+
+    <figure class="figure">
+      <img src="/data-portfolio/case-studies/pjm/plot-01.png" alt="Charge PJME : 30 derniers jours horaires, moyenne journalière et moyenne mensuelle">
+      <figcaption><strong>Figure 1.</strong> Haut : 30 derniers jours de charge horaire montrant le cycle journalier et le creux du week-end. Milieu : moyenne journalière sur tout le sous-ensemble 2015–2018. Bas : moyenne mensuelle exposant le cycle annuel en U (pics de climatisation estivale et de chauffage hivernal).</figcaption>
+    </figure>
+
+    <figure class="figure">
+      <img src="/data-portfolio/case-studies/pjm/plot-02.png" alt="Carte de chaleur heure × jour-de-semaine de la charge moyenne">
+      <figcaption><strong>Figure 2.</strong> Charge moyenne par heure-de-la-journée × jour-de-semaine. Les après-midi de semaine concentrent la charge ; les week-ends sont uniformément plus bas. Tout modèle de prévision doit absorber au moins ces deux cycles pour être compétitif.</figcaption>
+    </figure>
+
+    <h2 id="approach">Approche de modélisation</h2>
+    <p>
+      Trois candidats, tous entraînés sur la série de moyennes journalières pour la traçabilité, et prévisions sur une fenêtre de validation de 60 jours :
+    </p>
+
+    <h3>1. SARIMA en référence</h3>
+    <p>
+      <code>SARIMAX(2,1,2)(1,1,1)<sub>7</sub></code> — AR/MA non saisonnier + AR/MA saisonnier hebdomadaire. Capture directement le cycle hebdomadaire, mais n'absorbe le cycle annuel que via le terme d'intégration non stationnaire lent, ce qui sous-ajuste la forme en U.
+    </p>
+
+    <h3>2. Espace d'états — UnobservedComponents + Fourier exogène</h3>
+    <p>
+      <code>UnobservedComponents(level='local linear trend', seasonal=7, exog=Fourier(365.25, order=3))</code>. La composante de tendance localement linéaire absorbe la dérive lente, la saisonnalité hebdomadaire discrète gère le jour-de-semaine, et trois paires d'harmoniques annuelles de Fourier passées en régresseurs exogènes absorbent doucement le cycle annuel. Estimation par maximum de vraisemblance avec filtre de Kalman pour les intervalles prédictifs.
+    </p>
+
+    <h3>3. Concurrent ML — régression gradient boostée</h3>
+    <p>
+      <code>GradientBoostingRegressor(n_estimators=400, max_depth=3, learning_rate=0.05)</code> sur les variables construites :
+    </p>
+    <ul>
+      <li>Calendaires : <code>dow</code>, <code>month</code>, <code>doy_sin</code>, <code>doy_cos</code></li>
+      <li>Décalages : 1, 2, 7, 14, 28 jours</li>
+      <li>Moyennes glissantes : 7 jours et 28 jours, toutes deux décalées de 1 pour éviter la fuite</li>
+    </ul>
+    <p>
+      Aucune entrée météo exogène — la température améliorerait presque certainement les trois, mais l'objectif ici est de comparer les <em>familles de modélisation</em> sur le même ensemble d'information purement endogène.
+    </p>
+
+    <h2 id="results">Résultats</h2>
+    <p>Sur la fenêtre de validation de 60 jours :</p>
+
+    <table class="results-table">
+      <thead>
+        <tr><th>Modèle</th><th>MAPE</th><th>RMSE (MW)</th><th>Couverture IP 95 %</th></tr>
+      </thead>
+      <tbody>
+        <tr class="winner"><td>GBM (variables construites)</td><td class="num">6.24%</td><td class="num">2,653</td><td class="num">—</td></tr>
+        <tr><td>SARIMA(2,1,2)(1,1,1)<sub>7</sub></td><td class="num">14.45%</td><td class="num">6,676</td><td class="num">90.0%</td></tr>
+        <tr><td>UC + Fourier annual exog</td><td class="num">19.28%</td><td class="num">8,295</td><td class="num">100.0%</td></tr>
+      </tbody>
+    </table>
+
+    <figure class="figure">
+      <img src="/data-portfolio/case-studies/pjm/plot-03.png" alt="Comparaison de prévision sur 60 jours : SARIMA vs UC vs GBM">
+      <figcaption><strong>Figure 3.</strong> Prévision sur fenêtre de validation de 60 jours. Le GBM suit l'enveloppe saisonnière visiblement plus serrée que SARIMA ou UC ; l'intervalle de prédiction 95 % de SARIMA (zone ombrée) donne une incertitude bien calibrée ; l'UC dérive légèrement bas sur la moyenne mais son intervalle contient chaque observation réalisée.</figcaption>
+    </figure>
+
+    <div class="callout">
+      <strong>Le compromis en une ligne.</strong> Si la question est « quelle sera la charge demain ? », GBM gagne (~57 % de réduction du MAPE par rapport à SARIMA). Si la question est « donnez-moi une plage à 95 % de confiance pour la charge de demain », l'espace d'états gagne — sa couverture empirique colle de près au niveau nominal, tandis que GBM n'a pas d'intervalle natif (il faudrait du boosting par régression quantile ou de la prédiction conforme pour rivaliser sur cette dimension).
+    </div>
+
+    <h2 id="tradeoffs">Compromis</h2>
+    <ul>
+      <li><strong>GBM est fragile face au glissement des variables.</strong> Un changement de régime pandémique (2020–21 sur PJM) ne serait pas dans cet ensemble d'entraînement arrêté en 2018 ; GBM extrapolerait silencieusement à partir de décalages obsolètes. SARIMA / UC, structurels, se dégradent plus gracieusement.</li>
+      <li><strong>L'espace d'états donne des composantes explicites.</strong> Le modèle UC ajusté expose séparément les pièces niveau, pente et saisonnalité — utile pour le diagnostic et pour expliquer une prévision à un interlocuteur non technique. GBM est une boîte noire.</li>
+      <li><strong>La couverture des IP de SARIMA à 90 % au niveau nominal 95 % est acceptable mais non idéale.</strong> Les 100 % de l'UC suggèrent une légère sur-couverture (intervalles un peu trop larges). L'un comme l'autre est plus utile pour la gestion du risque que l'absence totale d'intervalle.</li>
+      <li><strong>Coût de calcul.</strong> GBM s'entraîne en quelques secondes ; UC prend ~10–15 s sur cette tranche ; SARIMA est entre les deux. Aucun n'est un goulot d'étranglement.</li>
+    </ul>
+
+    <h2 id="deployment">Esquisse de déploiement</h2>
+    <p>
+      En production, je <strong>livrerais l'ensemble</strong>, pas seulement le gagnant : GBM pour la prévision ponctuelle, UC pour l'intervalle de prédiction. Opérationnellement :
+    </p>
+    <ul>
+      <li>FastAPI <code>GET /forecast?horizon=24h</code> renvoie moyenne (GBM) + IP 95 % (UC) pour les N prochaines heures.</li>
+      <li>Cron nocturne ré-entraîne les deux sur les 3 dernières années ; les poids de l'ensemble sont ajustés chaque semaine contre la performance à origine glissante.</li>
+      <li>Postgres stocke les instantanés de prévision pour le backtesting ; tableau de bord Grafana suit le MAPE à 7 jours glissants et la couverture des IP.</li>
+      <li>Alerte PagerDuty si le MAPE &gt; 7 % pendant 3 jours consécutifs, ou si la couverture observée des IP tombe sous 88 % sur une fenêtre de 30 jours — les deux étant des signes de changement de régime.</li>
+    </ul>
+
+    <h2 id="lessons">Leçons</h2>
+    <ol>
+      <li><strong>« Meilleur » dépend de la métrique.</strong> 6 % de MAPE paraît décisif face à 14 % — mais les intervalles calibrés du modèle à espace d'états sont opérationnellement plus utiles pour certains usages aval que la moyenne plus serrée du GBM.</li>
+      <li><strong>Les variables construites battent les priors structurels quand les données sont riches.</strong> 31 000 heures suffisent largement à GBM pour apprendre la saisonnalité que le modèle structurel doit recevoir explicitement. Avec 5 ans de données mensuelles au lieu de 4 ans de données horaires, ce classement s'inverserait probablement.</li>
+      <li><strong>Ne choisissez pas un modèle — choisissez un <em>système</em> de prévision.</strong> La moyenne vient du modèle ML, l'intervalle du modèle structurel, le monitoring couvre les deux.</li>
+    </ol>
+
+    <div class="cta-row">
+      <a href="/data-portfolio/02-electricity-load-forecasting-pjm/notebook.ipynb" class="btn btn--primary">Ouvrir le carnet ↗</a>
+      <a href="https://github.com/gabayae/data-portfolio/blob/main/02-electricity-load-forecasting-pjm/" class="btn btn--outline">Voir le code source sur GitHub</a>
+      <a href="/data-portfolio/fr/#projects" class="btn btn--outline">Tous les projets</a>
+    </div>
+
+  </article>
+</div>
+
+<footer>
+  <p>© 2026 Yaé Gaba · Conçu de bout en bout sur données publiques réelles · sous licence MIT · <a href="/data-portfolio/fr/">Retour au portfolio</a></p>
+</footer>
+
+</body>
+</html>

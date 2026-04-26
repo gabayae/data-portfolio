@@ -34,4 +34,11 @@
   <url><loc>https://gabayae.github.io/data-portfolio/case-studies/kariba/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://gabayae.github.io/data-portfolio/case-studies/fremtpl2/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://gabayae.github.io/data-portfolio/case-studies/kenya/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/fr/case-studies/pjm/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/case-studies/pjm/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/case-studies/pjm/"/>
+  </url>
 </urlset>
