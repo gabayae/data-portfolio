@@ -48,4 +48,11 @@
     <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/case-studies/kariba/"/>
     <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/case-studies/kariba/"/>
   </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/fr/case-studies/fremtpl2/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/case-studies/fremtpl2/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/case-studies/fremtpl2/"/>
+  </url>
 </urlset>

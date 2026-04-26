@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Étude de cas — Sinistres assurance (freMTPL2) · Yaé Gaba</title>
+<meta name="description" content="Tarification de prime pure sur les données françaises de responsabilité civile auto freMTPL2 : GLM Poisson + Gamma, GLM Poisson-composé Tweedie et concurrent gradient boosté comparés sur le Gini et le lift du décile supérieur.">
+<meta name="author" content="Yaé Gaba">
+<link rel="canonical" href="https://gabayae.github.io/data-portfolio/fr/case-studies/fremtpl2/">
+<link rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/case-studies/fremtpl2/">
+<link rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/case-studies/fremtpl2/">
+<link rel="icon" type="image/svg+xml" href="/data-portfolio/favicon.svg">
+<meta name="theme-color" content="#0f2a4a">
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:url" content="https://gabayae.github.io/data-portfolio/fr/case-studies/fremtpl2/">
+<meta property="og:title" content="Étude de cas — Tarification GLM Tweedie sur freMTPL2">
+<meta property="og:description" content="678 000 polices auto françaises, trois familles de GLM et un concurrent GBM comparés sur le Gini et le lift du décile supérieur. Tweedie gagne avec un Gini de 0,31 ; Poisson+Gamma gagne avec un lift de 2,66.">
+<meta property="og:image" content="https://gabayae.github.io/data-portfolio/case-studies/fremtpl2/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://gabayae.github.io/data-portfolio/case-studies/fremtpl2/og-card.png">
+
+<style>
+:root {
+  --color-bg: #fafaf7; --color-surface: #ffffff; --color-surface-alt: #f2efe8;
+  --color-ink: #171717; --color-muted: #555555; --color-border: #e4e1d8;
+  --color-primary: #0f2a4a; --color-primary-soft: #e3e8ef;
+  --color-accent: #c85c3c; --color-accent-hover: #b04b2e; --color-accent-soft: #f4e4dd;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --radius-md: 8px; --radius-lg: 16px;
+  --shadow-sm: 0 1px 2px rgba(15,42,74,0.04), 0 1px 3px rgba(15,42,74,0.06);
+  --shadow-md: 0 4px 10px rgba(15,42,74,0.06), 0 8px 24px rgba(15,42,74,0.08);
+}
+*,*::before,*::after { box-sizing: border-box; margin:0; padding:0; }
+html { scroll-behavior: smooth; background: var(--color-bg); color: var(--color-ink); font-family: var(--font-sans); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+a { color: var(--color-primary); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; transition: color 0.2s ease; }
+a:hover { color: var(--color-accent); }
+img { max-width: 100%; display: block; }
+
+.nav { background: var(--color-surface); border-bottom: 1px solid var(--color-border); position: sticky; top: 0; z-index: 50; }
+.nav__inner { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; display: flex; align-items: center; height: 3.5rem; gap: 1.5rem; }
+.nav__brand { font-family: var(--font-serif); font-size: 1.15rem; font-weight: 600; color: var(--color-primary); text-decoration: none; }
+.nav__brand .dot { color: var(--color-accent); }
+.nav__brand:hover { text-decoration: none; }
+.nav__back { margin-left: auto; font-size: 0.9rem; color: var(--color-muted); text-decoration: none; }
+.nav__back:hover { color: var(--color-accent); text-decoration: none; }
+
+.case-hero {
+  background: linear-gradient(135deg, #0f2a4a 0%, #1a3d66 100%);
+  color: #fafaf7;
+  padding: 4rem 1.5rem 3.5rem;
+  position: relative; overflow: hidden;
+}
+.case-hero::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(circle at 80% 30%, rgba(200,92,60,0.10) 0%, transparent 55%);
+  pointer-events: none;
+}
+.case-hero__content { max-width: 72rem; margin: 0 auto; position: relative; }
+.case-hero__eyebrow { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-accent); font-weight: 600; }
+.case-hero__title { font-family: var(--font-serif); font-size: clamp(2rem, 1.4rem + 2.4vw, 2.8rem); font-weight: 700; letter-spacing: -0.02em; margin: 0.6rem 0; color: #fafaf7; max-width: 50rem; }
+.case-hero__sub { font-size: 1.05rem; color: #b5c1d1; max-width: 50rem; line-height: 1.65; }
+.case-hero__meta { display: flex; flex-wrap: wrap; gap: 1.2rem 2rem; margin-top: 1.6rem; font-size: 0.88rem; color: #dfe6ef; }
+.case-hero__meta span strong { color: var(--color-accent); font-weight: 600; }
+
+.case-layout { max-width: 72rem; margin: 0 auto; padding: 3rem 1.5rem 5rem; display: grid; grid-template-columns: 13rem 1fr; gap: 3rem; }
+.toc { position: sticky; top: 4.5rem; align-self: start; font-size: 0.88rem; padding-top: 0.4rem; }
+.toc__title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-muted); font-weight: 600; margin-bottom: 0.8rem; }
+.toc ol { list-style: none; padding: 0; margin: 0; }
+.toc li { padding: 0.35rem 0; border-left: 2px solid var(--color-border); padding-left: 0.85rem; }
+.toc a { text-decoration: none; color: var(--color-muted); display: block; }
+.toc a:hover { color: var(--color-accent); }
+
+article.case-body { max-width: 50rem; }
+article h2 { font-family: var(--font-serif); font-size: 1.6rem; color: var(--color-primary); margin: 2.5rem 0 0.6rem; letter-spacing: -0.01em; }
+article h2:first-child { margin-top: 0; }
+article h3 { font-family: var(--font-serif); font-size: 1.2rem; color: var(--color-primary); margin: 1.5rem 0 0.4rem; }
+article p { margin-bottom: 1rem; color: var(--color-ink); }
+article ul, article ol { margin: 0 0 1.2rem 1.5rem; }
+article li { margin-bottom: 0.35rem; color: var(--color-ink); }
+article code { font-family: var(--font-mono); font-size: 0.86em; background: var(--color-surface-alt); padding: 0.1rem 0.4rem; border-radius: 4px; color: var(--color-primary); }
+article strong { color: var(--color-primary); font-weight: 600; }
+
+.lede { font-size: 1.15rem; color: var(--color-muted); line-height: 1.65; margin-bottom: 1.5rem; }
+
+.figure { margin: 1.6rem 0; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1rem; box-shadow: var(--shadow-sm); }
+.figure img { border-radius: 4px; }
+.figure figcaption { font-size: 0.84rem; color: var(--color-muted); margin-top: 0.7rem; line-height: 1.55; }
+.figure figcaption strong { color: var(--color-primary); }
+
+.callout { background: var(--color-accent-soft); border-left: 3px solid var(--color-accent); padding: 1rem 1.2rem; border-radius: 0 var(--radius-md) var(--radius-md) 0; margin: 1.5rem 0; font-size: 0.96rem; color: var(--color-ink); }
+.callout strong { color: var(--color-accent-hover); }
+
+.results-table { width: 100%; border-collapse: collapse; margin: 1.2rem 0 1.5rem; font-size: 0.92rem; }
+.results-table th, .results-table td { text-align: left; padding: 0.55rem 0.85rem; border-bottom: 1px solid var(--color-border); vertical-align: top; }
+.results-table th { background: var(--color-surface-alt); color: var(--color-primary); font-weight: 600; font-family: var(--font-sans); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.results-table tr.winner td { background: var(--color-accent-soft); }
+.results-table tr.winner td:first-child { font-weight: 600; color: var(--color-accent-hover); }
+.results-table td.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+.chip-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.4rem 0 1.2rem; }
+.chip { display: inline-block; padding: 0.2rem 0.65rem; border-radius: var(--radius-md); font-size: 0.74rem; font-weight: 600; background: var(--color-surface-alt); border: 1px solid var(--color-border); color: var(--color-muted); }
+
+.cta-row { display: flex; flex-wrap: wrap; gap: 0.7rem; margin: 2.5rem 0 0; }
+.btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.1rem; border-radius: var(--radius-md); font-weight: 500; font-size: 0.92rem; text-decoration: none; border: 1px solid transparent; cursor: pointer; }
+.btn--primary { background: var(--color-accent); border-color: var(--color-accent); color: #fff; }
+.btn--primary:hover { background: var(--color-accent-hover); border-color: var(--color-accent-hover); color: #fff; text-decoration: none; }
+.btn--outline { background: transparent; color: var(--color-primary); border-color: var(--color-primary); }
+.btn--outline:hover { background: var(--color-primary); color: #fff; text-decoration: none; }
+
+footer { background: var(--color-primary); color: #b5c1d1; padding: 1.8rem 1.5rem; font-size: 0.85rem; text-align: center; }
+footer a { color: #ffd7c5; }
+
+@media (max-width: 768px) {
+  .case-layout { grid-template-columns: 1fr; padding: 2rem 1.2rem 3.5rem; }
+  .toc { position: static; }
+  .case-hero { padding: 2.5rem 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="/data-portfolio/fr/" class="nav__brand">Yaé Gaba<span class="dot">.</span></a>
+    <a href="/data-portfolio/case-studies/" class="nav__back">← Études de cas</a>
+  </div>
+</nav>
+
+<section class="case-hero">
+  <div class="case-hero__content">
+    <span class="case-hero__eyebrow">Étude de cas · Assurance · GLM / Tarification</span>
+    <h1 class="case-hero__title">Tarification de prime pure — freMTPL2</h1>
+    <p class="case-hero__sub">
+      Trois familles de GLM et un concurrent gradient boosté comparés sur le jeu de données canonique de responsabilité civile auto français (678 000 polices). Tweedie gagne sur le pouvoir de segmentation ; Poisson + Gamma gagne sur le lift du décile supérieur. Choisir entre les deux est une décision actuarielle, pas une décision de modélisation.
+    </p>
+    <div class="case-hero__meta">
+      <span><strong>Meilleur sur Gini</strong> · GLM Tweedie (0,310)</span>
+      <span><strong>Meilleur sur lift décile sup.</strong> · GLM Poisson + Gamma (2,66)</span>
+      <span><strong>Données</strong> · 678 013 polices · ~5 % avec sinistre</span>
+      <span><strong>Surdispersion</strong> · Var/Moy = 1,083 (légère, en faveur de Tweedie)</span>
+    </div>
+  </div>
+</section>
+
+<div class="case-layout">
+
+  <aside class="toc">
+    <div class="toc__title">Sur cette page</div>
+    <ol>
+      <li><a href="#summary">Résumé</a></li>
+      <li><a href="#question">La question métier</a></li>
+      <li><a href="#data">Données</a></li>
+      <li><a href="#eda">EDA & surdispersion</a></li>
+      <li><a href="#approach">Approche de modélisation</a></li>
+      <li><a href="#results">Résultats</a></li>
+      <li><a href="#tradeoffs">Compromis</a></li>
+      <li><a href="#deployment">Déploiement</a></li>
+      <li><a href="#lessons">Leçons</a></li>
+    </ol>
+  </aside>
+
+  <article class="case-body">
+
+    <h2 id="summary">Résumé</h2>
+    <p class="lede">
+      Sur le jeu de données canonique freMTPL2 de responsabilité civile auto français, un GLM Tweedie Poisson-composé bat à la fois un GLM Poisson + Gamma ajusté séparément et un concurrent gradient boosté sur la métrique de segmentation standard (coefficient de Gini sur la prime pure par police). Mais Poisson + Gamma gagne sur une autre métrique opérationnellement pertinente — le lift du décile supérieur — et reste le choix le plus défendable lorsque les déterminants de la fréquence et de la gravité divergent. Le « bon » modèle de tarification est celui dont les biais correspondent à la façon dont le moteur de tarification et l'équipe de souscription utiliseront effectivement le score.
+    </p>
+
+    <h2 id="question">La question métier</h2>
+    <p>
+      Un assureur auto veut des <strong>estimations de pertes attendues par police</strong> — la prime pure — assez précises pour alimenter un moteur de tarification par paliers et assez explicables pour validation actuarielle. Deux usages opérationnels reposent sur le score :
+    </p>
+    <ul>
+      <li><strong>Tarification</strong>. Chaque police a besoin d'un montant qui, en espérance, couvre ses sinistres plus une marge. Les erreurs se traduisent directement par un profit (ou une perte) de souscription.</li>
+      <li><strong>Segmentation</strong>. L'équipe actuarielle veut identifier et tarifer correctement le décile le plus risqué, où se concentre l'essentiel des sinistres.</li>
+    </ul>
+    <p>
+      Un GLM Poisson historique était déjà en production (standard du secteur). La question : Tweedie ou un concurrent ML pourrait-il améliorer significativement l'une ou l'autre dimension ?
+    </p>
+
+    <h2 id="data">Données</h2>
+    <p>
+      Vrai freMTPL2 de la Fédération française des sociétés d'assurances, redistribué via Kaggle sous <a href="https://www.kaggle.com/datasets/floser/french-motor-claims-datasets-fremtpl2freq">floser/french-motor-claims-datasets-fremtpl2freq</a> (sinistres) et <a href="https://www.kaggle.com/datasets/floser/fremtpl2sev">floser/fremtpl2sev</a> (gravités). Après jointure et plafonnement des gravités au 99,9<sup>e</sup> percentile (pratique standard pour limiter la distorsion des sinistres catastrophiques) :
+    </p>
+    <ul>
+      <li><strong>678 013 polices</strong>, <strong>~5 %</strong> ont eu au moins un sinistre pendant leur fenêtre d'exposition.</li>
+      <li>Taux moyen de fréquence ~0,10 sinistre/an/police ; gravité moyenne des sinistres positifs ~1 500 EUR.</li>
+      <li>Covariables : <code>exposure</code>, <code>area</code>, <code>veh_power</code>, <code>veh_age</code>, <code>driv_age</code>, <code>bonus_malus</code>, <code>veh_brand</code>, <code>veh_gas</code>, <code>density</code>, <code>region</code>.</li>
+    </ul>
+    <div class="chip-row">
+      <span class="chip">CSV · Kaggle</span><span class="chip">Niveau police</span><span class="chip">Gravités plafonnées à 99,9 %</span><span class="chip">Validation 80/20</span>
+    </div>
+
+    <h2 id="eda">EDA & surdispersion</h2>
+    <p>
+      Deux faits empiriques dominent la décision de modélisation :
+    </p>
+    <ol>
+      <li><strong>La distribution du nombre de sinistres est très concentrée sur zéro.</strong> Près de 95 % des polices ne déclarent aucun sinistre. Parmi celles qui le font, la plupart en déclarent exactement un — la queue lourde des deux-ou-plus est réellement petite.</li>
+      <li><strong>La gravité a une queue droite épaisse.</strong> La plupart des sinistres positifs sont modestes (~1 000 EUR), mais une longue queue s'étend jusqu'au plafond par police. Modéliser la gravité en espace linéaire sans lien logarithmique est exclu.</li>
+    </ol>
+
+    <figure class="figure">
+      <img src="/data-portfolio/case-studies/fremtpl2/plot-01.png" alt="Distribution du nombre de sinistres et histogramme de la gravité">
+      <figcaption><strong>Figure 1.</strong> Gauche : nombre de sinistres par police en axe log-y — 95 % à zéro, ~5 % avec un sinistre, très peu avec deux ou plus. Droite : distribution de la gravité sur les sinistres positifs, plafonnée à 30 000 EUR pour la lisibilité — la queue droite s'étend bien au-delà du graphique.</figcaption>
+    </figure>
+
+    <p>
+      Le <strong>ratio variance/moyenne empirique du nombre de sinistres est de 1,083</strong>. Surdispersion légère — Poisson est une référence défendable, mais une famille binomiale négative ou Tweedie capture la variance supplémentaire plus proprement.
+    </p>
+
+    <h2 id="approach">Approche de modélisation</h2>
+    <p>
+      Trois familles de modélisation sur le même découpage 80/20. Toutes entraînées avec offset = log(exposure) pour la fréquence, et la gravité restreinte aux sinistres positifs. Les prédictions de prime pure sont produites sur l'ensemble de test en combinant fréquence et gravité quand elles vivent dans des modèles séparés, ou directement quand elles ne le font pas.
+    </p>
+
+    <h3>1. GLM Poisson + Gamma (référence du secteur)</h3>
+    <p>
+      La décomposition actuarielle classique : modéliser la fréquence des sinistres avec un <code>Poisson GLM</code>  (lien log, offset d'exposition) et la gravité conditionnelle avec un <code>Gamma GLM</code>  sur les sinistres positifs. Prime pure = <code>E[N|X] / exposure × E[Y|X, N≥1]</code>. Facile à interpréter coefficient par coefficient ; facile à consommer pour le moteur de tarification ; facile à expliquer à un régulateur.
+    </p>
+
+    <h3>2. GLM Tweedie Poisson-composé</h3>
+    <p>
+      Un seul modèle sur la cible « prime pure par unité d'exposition » avec une distribution <code>Tweedie(var_power=1.5)</code>  et lien log. Gère l'inflation de zéros et la queue positive en un seul ajustement. Expose une histoire plus propre : un seul jeu de coefficients sur la même réponse. Le compromis est que fréquence et gravité ne sont plus modélisées séparément, donc un coefficient ne peut plus se décomposer en « ce conducteur a plus de chances de déclarer » vs. « ce conducteur déclare des sinistres plus gros ».
+    </p>
+
+    <h3>3. Régression gradient boostée (concurrent)</h3>
+    <p>
+      Une paire de modèles <code>GradientBoostingRegressor</code> — un sur la fréquence par unité d'exposition, un sur la log-gravité — multipliés pour donner la prime pure. Aucune contrainte de monotonie (un système de production en ajouterait sur <code>bonus_malus</code>), aucun prior d'interaction. L'objectif est de voir ce que la famille de méthodes capte que les GLM ratent.
+    </p>
+
+    <h2 id="results">Résultats</h2>
+    <p>
+      Validation 80/20. Deux métriques :
+    </p>
+    <ul>
+      <li><strong>Coefficient de Gini sur la prime pure</strong> — mesure de la qualité de l'ordonnancement des polices par sinistralité réalisée. Plus haut = meilleure segmentation.</li>
+      <li><strong>Lift du décile supérieur</strong> — parmi les 10 % de polices que le modèle juge les plus risquées, quel est le multiple de sinistralité réalisée par rapport à la moyenne de la population ? Plus haut = capture de risque plus concentrée dans le palier le plus élevé.</li>
+    </ul>
+
+    <table class="results-table">
+      <thead>
+        <tr><th>Modèle</th><th>Gini (PP)</th><th>Lift décile sup.</th></tr>
+      </thead>
+      <tbody>
+        <tr class="winner"><td>GLM Tweedie (var_power = 1,5)</td><td class="num">0.310</td><td class="num">2.52</td></tr>
+        <tr><td>GLM Poisson + Gamma</td><td class="num">0.241</td><td class="num"><strong>2.66</strong></td></tr>
+        <tr><td>GBM (Poisson + Gamma)</td><td class="num">0.211</td><td class="num">1.45</td></tr>
+      </tbody>
+    </table>
+
+    <figure class="figure">
+      <img src="/data-portfolio/case-studies/fremtpl2/plot-02.png" alt="Courbes de Lorenz pour Tweedie, Poisson+Gamma et GBM">
+      <figcaption><strong>Figure 2.</strong> Courbes de Lorenz sur l'ensemble de test. La diagonale est la référence aléatoire. Plus la courbe s'incurve sous la diagonale, mieux le modèle concentre les pertes dans les polices les moins risquées (et de manière équivalente, mieux il concentre le risque prédit dans les polices à plus forte sinistralité). Tweedie passe globalement sous Poisson + Gamma, mais les GLM se croisent en haut à droite — exactement la région à laquelle le lift du décile supérieur est sensible.</figcaption>
+    </figure>
+
+    <div class="callout">
+      <strong>Deux métriques, deux gagnants.</strong> Tweedie capte davantage du signal d'ordonnancement sur l'ensemble du portefeuille (Gini), donc il tariferait mieux en moyenne. Mais Poisson + Gamma identifie plus nettement l'extrême queue supérieure (lift du décile supérieur 2,66 vs 2,52 pour Tweedie), donc il oriente plus correctement vers le palier de tarification le plus élevé. Quel modèle « gagne » dépend de la consommation continue du score par le moteur de tarification ou de sa segmentation par paliers — et de quel palier compte le plus.
+    </div>
+
+    <h2 id="tradeoffs">Compromis</h2>
+    <ul>
+      <li><strong>L'histoire des coefficients de Tweedie est unifiée mais moins granulaire.</strong> Chaque coefficient affecte directement la prime pure ; vous perdez l'habitude actuarielle de décomposer un changement de palier en « plus de sinistres » vs. « sinistres plus gros ». Si votre équipe pense ainsi, Poisson + Gamma reste plus clair.</li>
+      <li><strong>Poisson + Gamma compose deux erreurs de modèle.</strong> Prime pure = fréquence × gravité, donc tout biais sur l'un se propage. Tweedie contourne cela en ajustant conjointement.</li>
+      <li><strong>Le GBM est le plus faible des trois sur ces données.</strong> Sans contraintes de monotonie, il est aussi le plus difficile à défendre — une version production en ajouterait sur <code>bonus_malus</code> et peut-être <code>driv_age</code>, et fermerait probablement la majeure partie de l'écart de Gini. Conservé comme artefact de recherche, pas comme candidat de production.</li>
+      <li><strong>Tous les trois sous-segmentent la queue la plus lourde.</strong> Un jeu de données à 5 % de taux de sinistre récompense les modèles capables de trouver les polices à sinistres rares ; même le Gini de 0,31 de Tweedie signifie que le modèle est loin d'un ordonnancement parfait. C'est un plafond imposé par les variables, pas un plafond algorithmique — ajouter un signal de télématique ou un zonage géographique plus fin compterait davantage que changer de modèle.</li>
+    </ul>
+
+    <h2 id="deployment">Esquisse de déploiement</h2>
+    <p>Pour le moteur de tarification et l'équipe actuarielle :</p>
+    <ul>
+      <li><strong>Artefact de scoring.</strong> Exporter les coefficients Tweedie en CSV, plus le GBM en modèle picklé. Le moteur de tarification évalue les deux et renvoie la prédiction gagnante (configurable) ; un emplacement de test A/B permet à l'équipe de les comparer sur des cohortes en production.</li>
+      <li><strong>Note actuarielle.</strong> Graphiques de dépendance partielle pour chaque covariable (surtout <code>bonus_malus</code> et <code>driv_age</code>), tables de calibration regroupées par décile prédit, et courbes de Lorenz sur cohortes glissantes.</li>
+      <li><strong>Surveillance de la dérive.</strong> Gini mensuel sur une cohorte de validation ; alerte si Gini tombe sous 0,25 sur une fenêtre de 60 jours. Réajustement complet annuel ; revue trimestrielle.</li>
+      <li><strong>Audit d'équité.</strong> Tables de calibration par décile d'âge conducteur et par région — signalées pour revue actuarielle dès que l'erreur de calibration sur la cohorte de test dépasse 5 %.</li>
+    </ul>
+
+    <h2 id="lessons">Leçons</h2>
+    <ol>
+      <li><strong>Choisissez la métrique que votre consommateur aval utilise réellement, puis choisissez le modèle.</strong> Tweedie gagne sur le Gini global ; Poisson + Gamma gagne sur le lift du décile supérieur. Si votre moteur de tarification segmente par paliers, la bonne réponse n'est pas le modèle au Gini le plus élevé.</li>
+      <li><strong>Une surdispersion légère ne rend pas Tweedie obligatoire.</strong> Var/Moy = 1,083 signifie que Poisson n'est pas mal spécifié. La victoire de Tweedie est réelle mais modeste ; le vrai différenciateur est l'adéquation à la philosophie de modélisation (un modèle vs. deux).</li>
+      <li><strong>Les GLM battent toujours le ML non contraint sur ce type de données.</strong> Sans priors de monotonie et régularisation des variables, un GBM est structurellement trop flexible pour le ratio signal/bruit de l'assurance auto. Le bon déploiement ML dans ce domaine est le boosting à contraintes monotones plus la calibration — la version non contrainte est un point de recherche, pas un gain de production.</li>
+    </ol>
+
+    <div class="cta-row">
+      <a href="/data-portfolio/03-insurance-claims-fremtpl2/notebook.ipynb" class="btn btn--primary">Ouvrir le carnet ↗</a>
+      <a href="https://github.com/gabayae/data-portfolio/blob/main/03-insurance-claims-fremtpl2/" class="btn btn--outline">Voir le code source sur GitHub</a>
+      <a href="/data-portfolio/case-studies/" class="btn btn--outline">Toutes les études de cas</a>
+    </div>
+
+  </article>
+</div>
+
+<footer>
+  <p>© 2026 Yaé Gaba · Conçu de bout en bout sur données publiques réelles · sous licence MIT · <a href="/data-portfolio/fr/">Retour au portfolio</a></p>
+</footer>
+
+</body>
+</html>
