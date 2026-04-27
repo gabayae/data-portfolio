@@ -138,6 +138,38 @@ footer a { color: #ffd7c5; }
 .case-nav__row > a.case-nav__prev > span:first-child::before { content: "← "; }
 .case-nav__row > a.case-nav__next > span:first-child::after { content: " →"; }
 @media (max-width: 640px) { .case-nav__row { grid-template-columns: 1fr; } .case-nav__next { text-align: left; } }
+
+@media print {
+  @page { size: A4; margin: 1.5cm 1.6cm 2cm; }
+  html, body { background: #fff; color: #000; font-size: 11pt; line-height: 1.45; }
+  /* Drop chrome that doesn't belong on paper. */
+  .nav, .toc, .case-nav, .cta-row, footer, .case-hero::before { display: none !important; }
+  /* Flatten hero — kill the dark gradient, keep the title. */
+  .case-hero { background: #fff !important; color: #000; padding: 0 0 0.6cm; border-bottom: 1.5pt solid #0f2a4a; margin-bottom: 0.5cm; }
+  .case-hero__content { max-width: none; }
+  .case-hero__eyebrow { color: #c85c3c; font-size: 8pt; }
+  .case-hero__title { color: #0f2a4a; font-size: 22pt; max-width: none; margin: 0.2cm 0; }
+  .case-hero__sub { color: #333; font-size: 11pt; max-width: none; }
+  .case-hero__meta { color: #444; gap: 0.3cm 0.8cm; margin-top: 0.4cm; font-size: 9pt; }
+  .case-hero__meta span strong { color: #c85c3c; }
+  /* Body — strip the grid, expand to full width. */
+  .case-layout { display: block; max-width: none; padding: 0; }
+  article.case-body { max-width: none; }
+  article h2 { color: #0f2a4a; page-break-after: avoid; margin-top: 0.7cm; }
+  article h3 { color: #0f2a4a; page-break-after: avoid; }
+  article p, article li { orphans: 3; widows: 3; }
+  /* Figures stay together. */
+  .figure { page-break-inside: avoid; border-color: #ccc; box-shadow: none; margin: 0.4cm 0; padding: 0.3cm; }
+  .figure figcaption { color: #444; font-size: 9pt; }
+  .results-table { page-break-inside: avoid; font-size: 10pt; }
+  .results-table th { background: #f2f2f2 !important; color: #000; }
+  .results-table tr.winner td { background: #fef3ed !important; }
+  .callout { background: #fef3ed !important; border-left-color: #c85c3c !important; page-break-inside: avoid; }
+  /* Print URL after every external link so the page stands alone on paper. */
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #666; word-break: break-all; }
+  /* Avoid printing background images. */
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
 </style>
 <script type="application/ld+json">
 {
