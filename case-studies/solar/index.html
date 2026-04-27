@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case study — Solar Forecasting Nairobi (NASA POWER) · Yaé Gaba</title>
+<meta name="description" content="Daily solar irradiance forecasting for Nairobi on 10 years of NASA POWER data. GBM with weather covariates hits 9.4% MAPE; SARIMA delivers 99% PI coverage. Why monthly climatology is a stronger baseline than expected.">
+<meta name="author" content="Yaé Gaba">
+<link rel="canonical" href="https://gabayae.github.io/data-portfolio/case-studies/solar/">
+<link rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/case-studies/solar/">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<meta name="theme-color" content="#0f2a4a">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://gabayae.github.io/data-portfolio/case-studies/solar/">
+<meta property="og:title" content="Case study — Solar Forecasting Nairobi (NASA POWER)">
+<meta property="og:description" content="GBM with weather covariates hits 9.4% MAPE on 10 years of daily Nairobi irradiance. Climatology is a stronger baseline than expected; SARIMA's PI coverage is the operationally useful signal.">
+<meta property="og:image" content="https://gabayae.github.io/data-portfolio/og-card.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://gabayae.github.io/data-portfolio/og-card.png">
+
+<style>
+:root {
+  --color-bg: #fafaf7; --color-surface: #ffffff; --color-surface-alt: #f2efe8;
+  --color-ink: #171717; --color-muted: #555555; --color-border: #e4e1d8;
+  --color-primary: #0f2a4a; --color-primary-soft: #e3e8ef;
+  --color-accent: #c85c3c; --color-accent-hover: #b04b2e; --color-accent-soft: #f4e4dd;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --radius-md: 8px; --radius-lg: 16px;
+  --shadow-sm: 0 1px 2px rgba(15,42,74,0.04), 0 1px 3px rgba(15,42,74,0.06);
+  --shadow-md: 0 4px 10px rgba(15,42,74,0.06), 0 8px 24px rgba(15,42,74,0.08);
+}
+*,*::before,*::after { box-sizing: border-box; margin:0; padding:0; }
+html { scroll-behavior: smooth; background: var(--color-bg); color: var(--color-ink); font-family: var(--font-sans); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+a { color: var(--color-primary); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; transition: color 0.2s ease; }
+a:hover { color: var(--color-accent); }
+img { max-width: 100%; display: block; }
+
+.nav { background: var(--color-surface); border-bottom: 1px solid var(--color-border); position: sticky; top: 0; z-index: 50; }
+.nav__inner { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; display: flex; align-items: center; height: 3.5rem; gap: 1.5rem; }
+.nav__brand { font-family: var(--font-serif); font-size: 1.15rem; font-weight: 600; color: var(--color-primary); text-decoration: none; }
+.nav__brand .dot { color: var(--color-accent); }
+.nav__brand:hover { text-decoration: none; }
+.nav__back { margin-left: auto; font-size: 0.9rem; color: var(--color-muted); text-decoration: none; }
+.nav__back:hover { color: var(--color-accent); text-decoration: none; }
+
+.case-hero {
+  background: linear-gradient(135deg, #0f2a4a 0%, #1a3d66 100%);
+  color: #fafaf7; padding: 4rem 1.5rem 3.5rem;
+  position: relative; overflow: hidden;
+}
+.case-hero::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(circle at 80% 30%, rgba(200,92,60,0.10) 0%, transparent 55%);
+  pointer-events: none;
+}
+.case-hero__content { max-width: 72rem; margin: 0 auto; position: relative; }
+.case-hero__eyebrow { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-accent); font-weight: 600; }
+.case-hero__title { font-family: var(--font-serif); font-size: clamp(2rem, 1.4rem + 2.4vw, 2.8rem); font-weight: 700; letter-spacing: -0.02em; margin: 0.6rem 0; color: #fafaf7; max-width: 50rem; }
+.case-hero__sub { font-size: 1.05rem; color: #b5c1d1; max-width: 50rem; line-height: 1.65; }
+.case-hero__meta { display: flex; flex-wrap: wrap; gap: 1.2rem 2rem; margin-top: 1.6rem; font-size: 0.88rem; color: #dfe6ef; }
+.case-hero__meta span strong { color: var(--color-accent); font-weight: 600; }
+
+.case-layout { max-width: 72rem; margin: 0 auto; padding: 3rem 1.5rem 5rem; display: grid; grid-template-columns: 13rem 1fr; gap: 3rem; }
+.toc { position: sticky; top: 4.5rem; align-self: start; font-size: 0.88rem; padding-top: 0.4rem; }
+.toc__title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-muted); font-weight: 600; margin-bottom: 0.8rem; }
+.toc ol { list-style: none; padding: 0; margin: 0; }
+.toc li { padding: 0.35rem 0; border-left: 2px solid var(--color-border); padding-left: 0.85rem; }
+.toc a { text-decoration: none; color: var(--color-muted); display: block; }
+.toc a:hover { color: var(--color-accent); }
+
+article.case-body { max-width: 50rem; }
+article h2 { font-family: var(--font-serif); font-size: 1.6rem; color: var(--color-primary); margin: 2.5rem 0 0.6rem; letter-spacing: -0.01em; }
+article h2:first-child { margin-top: 0; }
+article h3 { font-family: var(--font-serif); font-size: 1.2rem; color: var(--color-primary); margin: 1.5rem 0 0.4rem; }
+article p { margin-bottom: 1rem; color: var(--color-ink); }
+article ul, article ol { margin: 0 0 1.2rem 1.5rem; }
+article li { margin-bottom: 0.35rem; color: var(--color-ink); }
+article code { font-family: var(--font-mono); font-size: 0.86em; background: var(--color-surface-alt); padding: 0.1rem 0.4rem; border-radius: 4px; color: var(--color-primary); }
+article strong { color: var(--color-primary); font-weight: 600; }
+
+.lede { font-size: 1.15rem; color: var(--color-muted); line-height: 1.65; margin-bottom: 1.5rem; }
+
+.figure { margin: 1.6rem 0; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1rem; box-shadow: var(--shadow-sm); }
+.figure img { border-radius: 4px; }
+.figure figcaption { font-size: 0.84rem; color: var(--color-muted); margin-top: 0.7rem; line-height: 1.55; }
+.figure figcaption strong { color: var(--color-primary); }
+
+.callout { background: var(--color-accent-soft); border-left: 3px solid var(--color-accent); padding: 1rem 1.2rem; border-radius: 0 var(--radius-md) var(--radius-md) 0; margin: 1.5rem 0; font-size: 0.96rem; color: var(--color-ink); }
+.callout strong { color: var(--color-accent-hover); }
+
+.results-table { width: 100%; border-collapse: collapse; margin: 1.2rem 0 1.5rem; font-size: 0.92rem; }
+.results-table th, .results-table td { text-align: left; padding: 0.55rem 0.85rem; border-bottom: 1px solid var(--color-border); vertical-align: top; }
+.results-table th { background: var(--color-surface-alt); color: var(--color-primary); font-weight: 600; font-family: var(--font-sans); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.results-table tr.winner td { background: var(--color-accent-soft); }
+.results-table tr.winner td:first-child { font-weight: 600; color: var(--color-accent-hover); }
+.results-table td.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+.chip-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.4rem 0 1.2rem; }
+.chip { display: inline-block; padding: 0.2rem 0.65rem; border-radius: var(--radius-md); font-size: 0.74rem; font-weight: 600; background: var(--color-surface-alt); border: 1px solid var(--color-border); color: var(--color-muted); }
+
+.cta-row { display: flex; flex-wrap: wrap; gap: 0.7rem; margin: 2.5rem 0 0; }
+.btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.1rem; border-radius: var(--radius-md); font-weight: 500; font-size: 0.92rem; text-decoration: none; border: 1px solid transparent; cursor: pointer; }
+.btn--primary { background: var(--color-accent); border-color: var(--color-accent); color: #fff; }
+.btn--primary:hover { background: var(--color-accent-hover); border-color: var(--color-accent-hover); color: #fff; text-decoration: none; }
+.btn--outline { background: transparent; color: var(--color-primary); border-color: var(--color-primary); }
+.btn--outline:hover { background: var(--color-primary); color: #fff; text-decoration: none; }
+
+footer { background: var(--color-primary); color: #b5c1d1; padding: 1.8rem 1.5rem; font-size: 0.85rem; text-align: center; }
+footer a { color: #ffd7c5; }
+
+@media (max-width: 768px) {
+  .case-layout { grid-template-columns: 1fr; padding: 2rem 1.2rem 3.5rem; }
+  .toc { position: static; }
+  .case-hero { padding: 2.5rem 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="../../" class="nav__brand">Yaé Gaba<span class="dot">.</span></a>
+    <a href="../" class="nav__back">← Case studies</a>
+  </div>
+</nav>
+
+<section class="case-hero">
+  <div class="case-hero__content">
+    <span class="case-hero__eyebrow">Case study · Energy · Time-series</span>
+    <h1 class="case-hero__title">Solar irradiance forecasting — Nairobi</h1>
+    <p class="case-hero__sub">
+      90-day daily irradiance forecasting for Nairobi on a free, programmatic, decade-long dataset. GBM with weather covariates wins on point accuracy; monthly climatology is a stronger baseline than most people expect; structural state-space models give the operationally useful uncertainty signal — the same three-way trade-off as PJM, in a different physical regime.
+    </p>
+    <div class="case-hero__meta">
+      <span><strong>Best model</strong> · GBM with weather covariates</span>
+      <span><strong>MAPE</strong> · 9.4% (vs SARIMA 13.8%, climatology 12.3%)</span>
+      <span><strong>SARIMA / UC PI coverage</strong> · 99% / 99%</span>
+      <span><strong>Data</strong> · 3,652 daily obs · 2014–2023 · NASA POWER</span>
+    </div>
+  </div>
+</section>
+
+<div class="case-layout">
+
+  <aside class="toc">
+    <div class="toc__title">On this page</div>
+    <ol>
+      <li><a href="#summary">Summary</a></li>
+      <li><a href="#stakes">Why this matters</a></li>
+      <li><a href="#question">The business question</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#eda">EDA</a></li>
+      <li><a href="#approach">Modelling approach</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#tradeoffs">Trade-offs</a></li>
+      <li><a href="#deployment">Deployment</a></li>
+      <li><a href="#lessons">Lessons</a></li>
+    </ol>
+  </aside>
+
+  <article class="case-body">
+
+    <h2 id="summary">Summary</h2>
+    <p class="lede">
+      A gradient-boosted regressor that uses lagged irradiance + same-day weather covariates (cloud cover, humidity, precipitation, temperature, wind) forecasts daily Nairobi irradiance with <strong>9.4% MAPE</strong> across a 90-day horizon — versus SARIMA at 13.8% and a UC state-space at 21.6%. Two findings worth keeping: <strong>monthly climatology hits 12.3% MAPE</strong> (better than SARIMA) — the seasonal envelope alone explains most of the predictability. And <strong>both SARIMA and UC deliver 99% empirical PI coverage</strong> — for a battery-sizing or grid-balancing decision, the calibrated interval is what actually drives sizing, not the GBM's tighter mean.
+    </p>
+
+    <h2 id="stakes">Why this matters</h2>
+    <p>
+      Kenya runs one of the largest pay-as-you-go solar markets in Africa — millions of household systems with sub-day battery capacity. The forecast question repeats every evening: <em>charge the battery hard tonight, or assume tomorrow's sun will be enough?</em> Same question at the utility level for grid integrators balancing solar against thermal and hydro. A 1-day-ahead irradiance error of 5% can flip whether a battery should be filled tonight or held in reserve. At 90-day horizons the question shifts to budgeting and storage-contract negotiation, but the metric vocabulary is the same.
+    </p>
+
+    <h2 id="question">The business question</h2>
+    <p>
+      Three operational consumers sit on the same forecast:
+    </p>
+    <ul>
+      <li><strong>Pay-as-you-go solar operators</strong> — battery-state-of-charge planning per household per night. Wants tight point forecasts at 1–7 day horizons.</li>
+      <li><strong>Utility-scale solar developers</strong> — generation expectations across 30+ day horizons; loss/over-supply decisions feed dispatch.</li>
+      <li><strong>Grid integrators &amp; treasury</strong> — quantified worst-case scenarios for budgeting and risk-sharing contracts. Wants honest interval calibration.</li>
+    </ul>
+    <p>
+      Three customers, same forecast, three different things they look at. The case study compares a SARIMA baseline, a structural state-space model, and an ML challenger to see which fits which need.
+    </p>
+
+    <h2 id="data">Data</h2>
+    <p>
+      <strong>NASA POWER API</strong> — free, programmatic, no auth required. 10 years (2014-01-01 → 2023-12-31) of daily values for Nairobi (lat -1.2921, lon 36.8219):
+    </p>
+    <ul>
+      <li><code>ALLSKY_SFC_SW_DWN</code> — surface shortwave irradiance (kWh/m²/day) — the forecast target</li>
+      <li><code>T2M</code> — temperature at 2 m</li>
+      <li><code>RH2M</code> — relative humidity at 2 m</li>
+      <li><code>WS2M</code> — wind speed at 2 m</li>
+      <li><code>PRECTOTCORR</code> — corrected precipitation</li>
+      <li><code>CLOUD_AMT</code> — cloud cover %</li>
+    </ul>
+    <p>
+      Last 90 days held out as the test window; everything before that is training. NASA POWER's free-tier is generous and the API endpoint is one URL — same pipeline switches to Lagos, Cape Town, Cairo, or Dakar by changing two numbers in <code>download_data.py</code>.
+    </p>
+    <div class="chip-row">
+      <span class="chip">NASA POWER API</span><span class="chip">No auth</span><span class="chip">Daily resolution</span><span class="chip">10 years</span><span class="chip">6 weather variables</span>
+    </div>
+
+    <h2 id="eda">EDA</h2>
+    <p>
+      Three regularities dominate Nairobi's irradiance series, and they're physical not statistical: <strong>twice-yearly low</strong> in March–May and October–December (the "long rains" and "short rains"), <strong>twice-yearly high</strong> in January–February and July–September, and a <strong>cloud-cover anti-correlation</strong> at the daily level that's the whole story for short-horizon variance.
+    </p>
+
+    <figure class="figure">
+      <img src="plot-01.png" alt="Daily irradiance, cloud cover, and precipitation 2014-2023" loading="lazy">
+      <figcaption><strong>Figure 1.</strong> Top: daily surface irradiance for Nairobi. The bimodal annual pattern is visible — two annual peaks, two annual lows, modulated by inter-annual variability. Middle: daily cloud cover, with the same bimodal cycle inverted. Bottom: precipitation, peaking around the rainy seasons; the events explain the worst irradiance days.</figcaption>
+    </figure>
+
+    <figure class="figure">
+      <img src="plot-02.png" alt="Annual cycle: monthly mean irradiance vs cloud cover and precipitation" loading="lazy">
+      <figcaption><strong>Figure 2.</strong> Annual cycle, monthly means. Irradiance (gold) and cloud cover (blue) are mirror-image bimodal: lowest irradiance and highest cloud cover hit twice a year (April-May and Oct-Nov, the rainy seasons). Precipitation (dark blue) reinforces the same pattern. This is the structure all three models have to learn.</figcaption>
+    </figure>
+
+    <figure class="figure">
+      <img src="plot-03.png" alt="Correlation matrix of NASA POWER variables for Nairobi" loading="lazy">
+      <figcaption><strong>Figure 3.</strong> Correlation matrix. Irradiance correlates strongly with cloud cover (negative, ~−0.7) and humidity (negative, ~−0.4). Temperature is weakly positive — irradiance drives temperature, not the reverse. The cloud-cover signal is the lever that lets the GBM beat SARIMA: same-day cloud is a ground truth SARIMA can't access from lagged irradiance alone.</figcaption>
+    </figure>
+
+    <h2 id="approach">Modelling approach</h2>
+    <p>Three primary candidates plus three baselines, all forecasting daily <code>ALLSKY_SFC_SW_DWN</code> 90 days ahead.</p>
+
+    <h3>1. SARIMA</h3>
+    <p>
+      <code>SARIMAX(2,0,2)(1,0,1)<sub>7</sub></code> — non-stationary AR/MA + weekly seasonal AR/MA. Note the order: irradiance is stationary in mean (cloud cycles oscillate around a fixed climatology), so no integration term. The weekly seasonal component is mostly absorbing measurement noise — solar isn't really a "weekly cycle" phenomenon at this latitude, but day-of-week sometimes correlates with measurement smoothing.
+    </p>
+
+    <h3>2. State-space — UnobservedComponents + annual Fourier exog</h3>
+    <p>
+      <code>UnobservedComponents</code> with local-linear-trend and four pairs of annual Fourier harmonics passed as exogenous regressors. The Fourier order of 4 is chosen because Nairobi's bimodal annual pattern needs more flexibility than a single sinusoid.
+    </p>
+
+    <h3>3. ML challenger — GBM with weather covariates</h3>
+    <p>
+      <code>GradientBoostingRegressor(n_estimators=400, max_depth=3, learning_rate=0.05)</code> on engineered features:
+    </p>
+    <ul>
+      <li>Calendar: <code>dow</code>, <code>month</code>, <code>doy_sin</code>, <code>doy_cos</code></li>
+      <li>Lagged irradiance: 1, 2, 7, 14, 30 days</li>
+      <li>Rolling means (shift-1): 7-day and 30-day</li>
+      <li><strong>Weather exogenous variables</strong>: <code>T2M</code>, <code>RH2M</code>, <code>WS2M</code>, <code>PRECTOTCORR</code>, <code>CLOUD_AMT</code> — each at lag-1 and 7-day rolling mean</li>
+    </ul>
+    <p>
+      The cloud and humidity covariates are the lever. SARIMA and UC work only on lagged irradiance; GBM also gets yesterday's cloud cover and precipitation. The MAPE gap is mostly attributable to that information advantage.
+    </p>
+
+    <h3>Baselines</h3>
+    <p>
+      Three reference points: <strong>naive-last</strong> (predict tomorrow = today), <strong>naive-seasonal</strong> (predict tomorrow = irradiance one year ago), and <strong>monthly climatology</strong> (predict tomorrow = average irradiance for that calendar month, computed from the training window).
+    </p>
+
+    <h2 id="results">Results</h2>
+    <p>90-day held-out test:</p>
+
+    <table class="results-table">
+      <thead>
+        <tr><th>Model</th><th>MAPE</th><th>RMSE (kWh/m²/day)</th><th>95% PI coverage</th></tr>
+      </thead>
+      <tbody>
+        <tr class="winner"><td>GBM (weather exog)</td><td class="num">9.42%</td><td class="num">0.68</td><td class="num">—</td></tr>
+        <tr><td>Monthly climatology</td><td class="num">12.32%</td><td class="num">0.79</td><td class="num">—</td></tr>
+        <tr><td>SARIMA(2,0,2)(1,0,1)<sub>7</sub></td><td class="num">13.78%</td><td class="num">0.88</td><td class="num">99%</td></tr>
+        <tr><td>Naive-seasonal (365-day lag)</td><td class="num">16.49%</td><td class="num">1.13</td><td class="num">—</td></tr>
+        <tr><td>UC + Fourier annual exog</td><td class="num">21.63%</td><td class="num">1.34</td><td class="num">99%</td></tr>
+        <tr><td>Naive-last</td><td class="num">25.38%</td><td class="num">1.56</td><td class="num">—</td></tr>
+      </tbody>
+    </table>
+
+    <figure class="figure">
+      <img src="plot-04.png" alt="90-day forecast comparison for SARIMA, UC, and GBM against actual irradiance" loading="lazy">
+      <figcaption><strong>Figure 4.</strong> 90-day held-out forecast. The black line is realised irradiance. GBM (blue dashed) tracks the realised series tighter than SARIMA or UC; the UC's 95% PI (shaded) is wide enough that nearly every realised observation stays inside.</figcaption>
+    </figure>
+
+    <div class="callout">
+      <strong>Climatology is a strong baseline — and that's a feature, not a bug.</strong> Monthly climatology's 12.3% MAPE beats SARIMA's 13.8%. It tells you the predictability ceiling for an irradiance series at this latitude is mostly the seasonal envelope: knowing the calendar month gives you most of what's knowable. The GBM's 9.4% gain over climatology comes almost entirely from same-day cloud + humidity covariates — the part that <em>can't</em> be guessed from the calendar alone.
+    </div>
+
+    <h2 id="tradeoffs">Trade-offs</h2>
+    <ul>
+      <li><strong>The GBM's gain depends on having weather data at prediction time.</strong> If the forecast is run for a date 7+ days out, you're feeding it forecast-of-forecast values for cloud/humidity, which are themselves uncertain. Production deployment needs to either (a) cap the horizon at the weather-forecast confidence horizon, or (b) chain a weather forecast model. Climatology has neither problem and is the right fallback.</li>
+      <li><strong>SARIMA and UC's PI coverage is the operationally useful number.</strong> 99% coverage at 95% nominal means the intervals are slightly wide — but for a battery-sizing decision, "wider but honest" is the right bias. Over-narrow intervals would be worse.</li>
+      <li><strong>UC underperforms on point forecast despite being structurally appropriate.</strong> The Fourier-order-4 might be overfitting to the training window's specific bimodal shape; a simpler order-2 with more noise tolerance might generalise better. Worth iterating in production.</li>
+      <li><strong>"Monthly climatology beats SARIMA" is a useful sanity check.</strong> It says the AR/MA structure is barely doing anything for this series. Production deployments should monitor whether SARIMA actually beats climatology on the rolling cohort — if not, ship climatology and save the compute.</li>
+    </ul>
+
+    <h2 id="deployment">Deployment sketch</h2>
+    <p>For pay-as-you-go solar operators and grid integrators:</p>
+    <ul>
+      <li><strong>Service:</strong> FastAPI <code>GET /forecast?lat=...&lon=...&horizon=30d</code> returning daily irradiance + 95% PI for any African coordinate. Same pipeline applies — the lat/lon parameter is the only dimension that varies.</li>
+      <li><strong>Multi-city:</strong> NASA POWER serves the same data shape for any point on Earth; the same model artifacts work for Lagos, Cape Town, Cairo, Dakar with no code change.</li>
+      <li><strong>Refresh:</strong> daily cron pulls overnight NASA POWER updates; weekly retrain on the trailing 5 years; alert if rolling 30-day MAPE drifts past 12% (climatology floor).</li>
+      <li><strong>Dashboard:</strong> Streamlit page for solar developers showing forecast band, battery-state-of-charge simulator, and generation-impact estimator; for treasury, the same data with quantile-based scenarios.</li>
+    </ul>
+
+    <h2 id="lessons">Lessons</h2>
+    <ol>
+      <li><strong>Climatology is a real baseline; check it.</strong> A SARIMA that doesn't beat monthly climatology is a SARIMA that's overcomplicating the problem. The best forecast is sometimes the average of the calendar month, dressed up with a calibrated interval.</li>
+      <li><strong>Same-day weather covariates are the differentiator.</strong> The 4-percentage-point MAPE gain over climatology comes entirely from cloud-cover and humidity inputs. If your production system can't observe these in near-real-time, the structural model is your honest ceiling.</li>
+      <li><strong>NASA POWER plus a thirty-line download script is enough infrastructure for a city-level forecast service.</strong> No paid weather data, no licensing, no rate-limit anxieties. The pipeline trivially extends to any African city. The bottleneck is what you do with the forecast, not where the inputs come from.</li>
+    </ol>
+
+    <div class="cta-row">
+      <a href="../../07-solar-forecasting-nairobi/notebook.ipynb" class="btn btn--primary">Open the notebook ↗</a>
+      <a href="https://github.com/gabayae/data-portfolio/blob/main/07-solar-forecasting-nairobi/" class="btn btn--outline">View source on GitHub</a>
+      <a href="../" class="btn btn--outline">All case studies</a>
+    </div>
+
+  </article>
+</div>
+
+<footer>
+  <p>© 2026 Yaé Gaba · Built end-to-end on real public data · MIT licensed · <a href="../../">Back to portfolio</a></p>
+</footer>
+
+</body>
+</html>

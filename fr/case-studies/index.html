@@ -161,6 +161,25 @@ footer a { color: #ffd7c5; }
 
   <article class="cs-card">
     <div class="cs-card__body">
+      <span class="cs-card__eyebrow">Solaire · Séries temporelles</span>
+      <h2 class="cs-card__title">Prévision d'irradiance solaire — Nairobi</h2>
+      <div class="cs-card__metric">GBM MAPE 9,4 % · climatologie 12,3 % · couverture IP SARIMA/UC 99 %</div>
+      <p class="cs-card__lede">10 ans de données journalières NASA POWER au-dessus de Nairobi, trois prévisionnistes comparés à un baseline obstinément difficile : la climatologie mensuelle. Le constat est inconfortable pour les modélisateurs — à cette latitude, l'enveloppe saisonnière est l'essentiel du signal, et ce sont les covariables météo du jour qui font vraiment bouger la précision ponctuelle.</p>
+      <div class="cs-card__chips">
+        <span class="cs-card__chip">SARIMA</span><span class="cs-card__chip">UnobservedComponents</span><span class="cs-card__chip">Fourier annuel</span><span class="cs-card__chip">GBM exog. météo</span><span class="cs-card__chip">API NASA POWER</span>
+      </div>
+      <div class="cs-card__cta">
+        <a href="/data-portfolio/case-studies/solar/">Lire l'étude de cas (EN) →</a>
+        <a href="/data-portfolio/07-solar-forecasting-nairobi/notebook.ipynb" class="secondary">Carnet</a>
+      </div>
+    </div>
+    <div class="cs-card__media">
+      <img src="/data-portfolio/case-studies/solar/plot-04.png" alt="Comparaison de prévision d'irradiance solaire sur 90 jours : climatologie vs SARIMA vs GBM">
+    </div>
+  </article>
+
+  <article class="cs-card">
+    <div class="cs-card__body">
       <span class="cs-card__eyebrow">Assurance · GLM / Tarification</span>
       <h2 class="cs-card__title">Tarification de prime pure — freMTPL2</h2>
       <div class="cs-card__metric">Tweedie Gini 0,310 · lift décile sup. Poisson+Gamma 2,66</div>
@@ -198,7 +217,7 @@ footer a { color: #ffd7c5; }
   </article>
 
   <div class="upcoming">
-    Quatre analyses approfondies couvrent désormais quatre familles méthodologiques — séries temporelles (PJM), séries temporelles avec covariables exogènes (Kariba), GLM / tarification actuarielle (freMTPL2) et optimisation stochastique (Kenya). Les 9 autres projets du portfolio ont chacun leur propre <a href="/data-portfolio/fr/#projects">README de dossier et carnet exécutable</a>.
+    Cinq analyses approfondies couvrent désormais quatre familles méthodologiques — séries temporelles (PJM, Kariba, solaire Nairobi), GLM / tarification actuarielle (freMTPL2) et optimisation stochastique (Kenya). La version française de l'étude solaire suivra ; le contenu anglais reste lié ci-dessus. Les 8 autres projets du portfolio ont chacun leur propre <a href="/data-portfolio/fr/#projects">README de dossier et carnet exécutable</a>.
   </div>
 
 </main>

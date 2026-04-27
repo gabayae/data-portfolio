@@ -2,7 +2,13 @@
 
 Record of substantive changes to this portfolio. Newest entries first.
 
-The portfolio was built in a single intensive session on 2026-04-25; later sessions will live below `## v0.1.0` once they happen.
+## Unreleased
+
+### Added
+
+- **Fifth long-form case study** at `case-studies/solar/` — Nairobi solar irradiance forecasting on 10 years of NASA POWER daily data. SARIMA, UnobservedComponents (state-space + Fourier annual), GBM with same-day weather covariates, and three baselines (naive, seasonal-naive, monthly climatology). Headline finding: **monthly climatology (12.3% MAPE) beats SARIMA (13.8%)** — at this latitude the seasonal envelope is most of the signal, and same-day weather is what moves point accuracy. GBM wins point-error at 9.4% MAPE; SARIMA/UC win on calibrated 95% prediction intervals (99% empirical coverage).
+- Case-studies index now lists 5 deep-dives; sitemap and JSON-LD on the EN home updated to point project 07 at `case-studies/solar/` instead of the bare folder.
+- FR case-studies index card for solar links to the EN case study (FR translation pending).
 
 ## v0.1.0 — 2026-04-25
 

@@ -135,6 +135,7 @@ PROJECTS: list[Project] = [
         ["SARIMA", "UnobservedComponents", "Fourier annual", "GBM weather exog"],
         "NASA POWER · 3,652 days, 6 vars",
         "07-solar-forecasting-nairobi",
+        case_study="case-studies/solar/",
     ),
     Project(8,
         "Customer Survival — MTN Nigeria",

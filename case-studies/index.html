@@ -159,6 +159,25 @@ footer a { color: #ffd7c5; }
 
   <article class="cs-card">
     <div class="cs-card__body">
+      <span class="cs-card__eyebrow">Solar · Time-series</span>
+      <h2 class="cs-card__title">Solar irradiance forecasting — Nairobi</h2>
+      <div class="cs-card__metric">GBM 9.4% MAPE · climatology 12.3% MAPE · SARIMA/UC PI 99%</div>
+      <p class="cs-card__lede">10 years of daily NASA POWER data over Nairobi, three forecasters compared against a stubbornly hard baseline: monthly climatology. The headline finding is uncomfortable for forecasters — at this latitude the seasonal envelope is most of the signal, and same-day weather covariates are what actually move point accuracy.</p>
+      <div class="cs-card__chips">
+        <span class="cs-card__chip">SARIMA</span><span class="cs-card__chip">UnobservedComponents</span><span class="cs-card__chip">Fourier annual</span><span class="cs-card__chip">GBM weather exog</span><span class="cs-card__chip">NASA POWER API</span>
+      </div>
+      <div class="cs-card__cta">
+        <a href="./solar/">Read case study →</a>
+        <a href="../07-solar-forecasting-nairobi/notebook.ipynb" class="secondary">Notebook</a>
+      </div>
+    </div>
+    <div class="cs-card__media">
+      <img src="solar/plot-04.png" alt="90-day solar irradiance forecast comparison: climatology vs SARIMA vs GBM">
+    </div>
+  </article>
+
+  <article class="cs-card">
+    <div class="cs-card__body">
       <span class="cs-card__eyebrow">Insurance · GLM / Pricing</span>
       <h2 class="cs-card__title">Pure-premium pricing — freMTPL2</h2>
       <div class="cs-card__metric">Tweedie Gini 0.310 · Poisson+Gamma top-decile lift 2.66</div>
@@ -196,7 +215,7 @@ footer a { color: #ffd7c5; }
   </article>
 
   <div class="upcoming">
-    Four deep-dives now span four methodology families — time-series (PJM), time-series with exogenous covariates (Kariba), GLMs / actuarial pricing (freMTPL2), and stochastic optimization (Kenya). The 9 other portfolio projects each have their own folder-level <a href="../#projects">README and executable notebook</a>.
+    Five deep-dives now span four methodology families — time-series (PJM, Kariba, Nairobi solar), GLMs / actuarial pricing (freMTPL2), and stochastic optimization (Kenya). The 8 other portfolio projects each have their own folder-level <a href="../#projects">README and executable notebook</a>.
   </div>
 
 </main>

@@ -1,5 +1,5 @@
 <!-- nav-chip -->
-[← Portfolio](https://gabayae.github.io/data-portfolio/) · [Notebook](./notebook.ipynb)
+[← Portfolio](https://gabayae.github.io/data-portfolio/) · [Case study](https://gabayae.github.io/data-portfolio/case-studies/solar/) · [Notebook](./notebook.ipynb)
 
 ---
 
