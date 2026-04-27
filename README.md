@@ -4,10 +4,14 @@
 ![Python](https://img.shields.io/badge/python-3.11-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Projects](https://img.shields.io/badge/projects-13-orange)
+![Case studies](https://img.shields.io/badge/case%20studies-5-c85c3c)
+![Bilingual](https://img.shields.io/badge/EN%20%C2%B7%20FR-bilingual-0f2a4a)
 
-13 end-to-end data-science and machine-learning projects on **real public data** — forecasting, GLMs, survival analysis, hierarchical reconciliation, stochastic optimization, and experimental design.
+**13 end-to-end data-science projects** on real public data, **5 long-form bilingual case studies** (EN/FR), one Streamlit twin, all served as a static site styled with the [PasserellAI](https://passerellai.com/) editorial palette.
 
-**Live site:** [gabayae.github.io/data-portfolio](https://gabayae.github.io/data-portfolio/)
+Domains: forecasting · GLMs / actuarial pricing · survival analysis · hierarchical reconciliation · stochastic optimization / RL · experimental design.
+
+**Live site:** [gabayae.github.io/data-portfolio](https://gabayae.github.io/data-portfolio/) · [Version française](https://gabayae.github.io/data-portfolio/fr/)
 
 Each project follows the same pipeline:
 **business question → data & EDA → modeling → validation → deployment → business outcome.**
@@ -31,6 +35,22 @@ Each project follows the same pipeline:
 | 11 | Geospatial Farm-Output Forecasting | Agriculture | [African Farm Households](https://www.kaggle.com/datasets/crawford/agricultural-survey-of-african-farm-households) | GBM R² 0.66 |
 | 12 | Churn Classification — MTN Nigeria | Telecom | [MTN Nigeria Churn](https://www.kaggle.com/datasets/oluwademiladeadeniyi/mtn-nigeria-customer-churn) | XGBoost AUC 0.71 |
 | 13 | A/B Test Framework | Marketing | [Marketing Campaign A/B](https://www.kaggle.com/datasets/chebotinaa/fast-food-marketing-campaign-ab-test) | ANOVA F=21.95, p < 1e-9 |
+
+---
+
+## Case studies
+
+Five projects have a long-form narrative deep-dive — business context, methodology, results, trade-offs, deployment sketch. Each is fully bilingual (EN/FR) with reading time, prev/next nav, breadcrumb schema, and a per-case-study OG card.
+
+| Case study | Family | Honest finding |
+|---|---|---|
+| [PJM hourly load](https://gabayae.github.io/data-portfolio/case-studies/pjm/) · [FR](https://gabayae.github.io/data-portfolio/fr/case-studies/pjm/) | Time-series | UC state-space underperforms SARIMA on point error (19.3% vs 14.5% MAPE), but SARIMA's 99% PI coverage is what procurement actually uses. |
+| [Lake Kariba river flow](https://gabayae.github.io/data-portfolio/case-studies/kariba/) · [FR](https://gabayae.github.io/data-portfolio/fr/case-studies/kariba/) | Time-series + exog | 7 cm RMSE on a 7 m operational band; turbine discharge as exog is a 2× point-error improvement. |
+| [Nairobi solar irradiance](https://gabayae.github.io/data-portfolio/case-studies/solar/) · [FR](https://gabayae.github.io/data-portfolio/fr/case-studies/solar/) | Time-series | **Monthly climatology (12.3% MAPE) beats SARIMA (13.8%)** — at this latitude the seasonal envelope is most of the predictability. |
+| [freMTPL2 pricing](https://gabayae.github.io/data-portfolio/case-studies/fremtpl2/) · [FR](https://gabayae.github.io/data-portfolio/fr/case-studies/fremtpl2/) | GLMs / actuarial | Tweedie wins on segmentation (Gini 0.310); Poisson + Gamma wins on top-decile lift (2.66×). The choice is actuarial, not technical. |
+| [Kenya mobile clinics](https://gabayae.github.io/data-portfolio/case-studies/kenya/) · [FR](https://gabayae.github.io/data-portfolio/fr/case-studies/kenya/) | Stochastic optimization | Q-learning +122% over manual, but the *constraint formulation* matters more than the algorithm — capped LP with explicit equity at +39% is more defensible. |
+
+Browse all five at [`/case-studies/`](https://gabayae.github.io/data-portfolio/case-studies/) (or [`/fr/case-studies/`](https://gabayae.github.io/data-portfolio/fr/case-studies/)).
 
 ---
 
