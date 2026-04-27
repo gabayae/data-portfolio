@@ -1,5 +1,5 @@
 <!-- nav-chip -->
-[← Portfolio](https://gabayae.github.io/data-portfolio/fr/) · [Carnet](https://gabayae.github.io/data-portfolio/13-ab-test-marketing/notebook.ipynb)
+[← Portfolio](https://gabayae.github.io/data-portfolio/fr/) · [Carnet](https://github.com/gabayae/data-portfolio/blob/main/13-ab-test-marketing/notebook.ipynb)
 
 ---
 

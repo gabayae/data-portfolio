@@ -1,5 +1,5 @@
 <!-- nav-chip -->
-[← Portfolio](https://gabayae.github.io/data-portfolio/fr/) · [Carnet](https://gabayae.github.io/data-portfolio/09-flight-demand-southern-africa/notebook.ipynb)
+[← Portfolio](https://gabayae.github.io/data-portfolio/fr/) · [Carnet](https://github.com/gabayae/data-portfolio/blob/main/09-flight-demand-southern-africa/notebook.ipynb)
 
 ---
 

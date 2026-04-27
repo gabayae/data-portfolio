@@ -1,5 +1,5 @@
 <!-- nav-chip -->
-[← Portfolio](https://gabayae.github.io/data-portfolio/) · [Notebook](./notebook.ipynb)
+[← Portfolio](https://gabayae.github.io/data-portfolio/) · [Notebook](https://github.com/gabayae/data-portfolio/blob/main/01-demand-forecasting-rwanda/notebook.ipynb)
 
 ---
 

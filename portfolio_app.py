@@ -242,7 +242,7 @@ def project_card(p: cfg.Project) -> str:
         <div class="dataset">📊 {p.dataset}</div>
         <div class="links">
             {primary_link}
-            <a href="{base}{p.folder}/notebook.ipynb" target="_blank">Notebook</a>
+            <a href="https://github.com/gabayae/data-portfolio/blob/main/{p.folder}/notebook.ipynb" target="_blank">Notebook</a>
         </div>
     </div>
     """

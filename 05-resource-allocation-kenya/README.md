@@ -1,5 +1,5 @@
 <!-- nav-chip -->
-[← Portfolio](https://gabayae.github.io/data-portfolio/) · [Notebook](./notebook.ipynb) · [Case study →](https://gabayae.github.io/data-portfolio/case-studies/kenya/)
+[← Portfolio](https://gabayae.github.io/data-portfolio/) · [Notebook](https://github.com/gabayae/data-portfolio/blob/main/05-resource-allocation-kenya/notebook.ipynb) · [Case study →](https://gabayae.github.io/data-portfolio/case-studies/kenya/)
 
 ---
 

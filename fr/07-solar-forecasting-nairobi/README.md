@@ -1,5 +1,5 @@
 <!-- nav-chip -->
-[← Portfolio](https://gabayae.github.io/data-portfolio/fr/) · [Étude de cas](https://gabayae.github.io/data-portfolio/fr/case-studies/solar/) · [Carnet](https://gabayae.github.io/data-portfolio/07-solar-forecasting-nairobi/notebook.ipynb)
+[← Portfolio](https://gabayae.github.io/data-portfolio/fr/) · [Étude de cas](https://gabayae.github.io/data-portfolio/fr/case-studies/solar/) · [Carnet](https://github.com/gabayae/data-portfolio/blob/main/07-solar-forecasting-nairobi/notebook.ipynb)
 
 ---
 

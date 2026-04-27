@@ -1,5 +1,5 @@
 <!-- nav-chip -->
-[← Portfolio](https://gabayae.github.io/data-portfolio/) · [Notebook](./notebook.ipynb) · [Case study →](https://gabayae.github.io/data-portfolio/case-studies/pjm/)
+[← Portfolio](https://gabayae.github.io/data-portfolio/) · [Notebook](https://github.com/gabayae/data-portfolio/blob/main/02-electricity-load-forecasting-pjm/notebook.ipynb) · [Case study →](https://gabayae.github.io/data-portfolio/case-studies/pjm/)
 
 ---
 
