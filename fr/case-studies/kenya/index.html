@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Étude de cas — Planification de cliniques mobiles au Kenya (PDM) · Yaé Gaba</title>
+<meta name="description" content="Planification de cliniques mobiles comme processus décisionnel de Markov sur données réelles KMPDC et SHA du Kenya : Q-learning vs programmation linéaire plafonnée vs rotation manuelle. Le compromis intéressant est couverture vs équité, pas algorithme vs algorithme.">
+<meta name="author" content="Yaé Gaba">
+<link rel="canonical" href="https://gabayae.github.io/data-portfolio/fr/case-studies/kenya/">
+<link rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/case-studies/kenya/">
+<link rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/case-studies/kenya/">
+<link rel="icon" type="image/svg+xml" href="/data-portfolio/favicon.svg">
+<meta name="theme-color" content="#0f2a4a">
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:url" content="https://gabayae.github.io/data-portfolio/fr/case-studies/kenya/">
+<meta property="og:title" content="Étude de cas — Planification de cliniques mobiles au Kenya (PDM / Q-learning)">
+<meta property="og:description" content="Q-learning, PL plafonnée et rotation manuelle comparés sur données réelles KMPDC + SHA. Q-learning atteint +122 % de couverture ; PL plafonnée +39 % avec diversification explicite.">
+<meta property="og:image" content="https://gabayae.github.io/data-portfolio/case-studies/kenya/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://gabayae.github.io/data-portfolio/case-studies/kenya/og-card.png">
+
+<style>
+:root {
+  --color-bg: #fafaf7; --color-surface: #ffffff; --color-surface-alt: #f2efe8;
+  --color-ink: #171717; --color-muted: #555555; --color-border: #e4e1d8;
+  --color-primary: #0f2a4a; --color-primary-soft: #e3e8ef;
+  --color-accent: #c85c3c; --color-accent-hover: #b04b2e; --color-accent-soft: #f4e4dd;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --radius-md: 8px; --radius-lg: 16px;
+  --shadow-sm: 0 1px 2px rgba(15,42,74,0.04), 0 1px 3px rgba(15,42,74,0.06);
+  --shadow-md: 0 4px 10px rgba(15,42,74,0.06), 0 8px 24px rgba(15,42,74,0.08);
+}
+*,*::before,*::after { box-sizing: border-box; margin:0; padding:0; }
+html { scroll-behavior: smooth; background: var(--color-bg); color: var(--color-ink); font-family: var(--font-sans); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+a { color: var(--color-primary); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; transition: color 0.2s ease; }
+a:hover { color: var(--color-accent); }
+img { max-width: 100%; display: block; }
+
+.nav { background: var(--color-surface); border-bottom: 1px solid var(--color-border); position: sticky; top: 0; z-index: 50; }
+.nav__inner { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; display: flex; align-items: center; height: 3.5rem; gap: 1.5rem; }
+.nav__brand { font-family: var(--font-serif); font-size: 1.15rem; font-weight: 600; color: var(--color-primary); text-decoration: none; }
+.nav__brand .dot { color: var(--color-accent); }
+.nav__brand:hover { text-decoration: none; }
+.nav__back { margin-left: auto; font-size: 0.9rem; color: var(--color-muted); text-decoration: none; }
+.nav__back:hover { color: var(--color-accent); text-decoration: none; }
+
+.case-hero {
+  background: linear-gradient(135deg, #0f2a4a 0%, #1a3d66 100%);
+  color: #fafaf7; padding: 4rem 1.5rem 3.5rem;
+  position: relative; overflow: hidden;
+}
+.case-hero::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(circle at 80% 30%, rgba(200,92,60,0.10) 0%, transparent 55%);
+  pointer-events: none;
+}
+.case-hero__content { max-width: 72rem; margin: 0 auto; position: relative; }
+.case-hero__eyebrow { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-accent); font-weight: 600; }
+.case-hero__title { font-family: var(--font-serif); font-size: clamp(2rem, 1.4rem + 2.4vw, 2.8rem); font-weight: 700; letter-spacing: -0.02em; margin: 0.6rem 0; color: #fafaf7; max-width: 50rem; }
+.case-hero__sub { font-size: 1.05rem; color: #b5c1d1; max-width: 50rem; line-height: 1.65; }
+.case-hero__meta { display: flex; flex-wrap: wrap; gap: 1.2rem 2rem; margin-top: 1.6rem; font-size: 0.88rem; color: #dfe6ef; }
+.case-hero__meta span strong { color: var(--color-accent); font-weight: 600; }
+
+.case-layout { max-width: 72rem; margin: 0 auto; padding: 3rem 1.5rem 5rem; display: grid; grid-template-columns: 13rem 1fr; gap: 3rem; }
+.toc { position: sticky; top: 4.5rem; align-self: start; font-size: 0.88rem; padding-top: 0.4rem; }
+.toc__title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-muted); font-weight: 600; margin-bottom: 0.8rem; }
+.toc ol { list-style: none; padding: 0; margin: 0; }
+.toc li { padding: 0.35rem 0; border-left: 2px solid var(--color-border); padding-left: 0.85rem; }
+.toc a { text-decoration: none; color: var(--color-muted); display: block; }
+.toc a:hover { color: var(--color-accent); }
+
+article.case-body { max-width: 50rem; }
+article h2 { font-family: var(--font-serif); font-size: 1.6rem; color: var(--color-primary); margin: 2.5rem 0 0.6rem; letter-spacing: -0.01em; }
+article h2:first-child { margin-top: 0; }
+article h3 { font-family: var(--font-serif); font-size: 1.2rem; color: var(--color-primary); margin: 1.5rem 0 0.4rem; }
+article p { margin-bottom: 1rem; color: var(--color-ink); }
+article ul, article ol { margin: 0 0 1.2rem 1.5rem; }
+article li { margin-bottom: 0.35rem; color: var(--color-ink); }
+article code { font-family: var(--font-mono); font-size: 0.86em; background: var(--color-surface-alt); padding: 0.1rem 0.4rem; border-radius: 4px; color: var(--color-primary); }
+article strong { color: var(--color-primary); font-weight: 600; }
+
+.lede { font-size: 1.15rem; color: var(--color-muted); line-height: 1.65; margin-bottom: 1.5rem; }
+
+.figure { margin: 1.6rem 0; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1rem; box-shadow: var(--shadow-sm); }
+.figure img { border-radius: 4px; }
+.figure figcaption { font-size: 0.84rem; color: var(--color-muted); margin-top: 0.7rem; line-height: 1.55; }
+.figure figcaption strong { color: var(--color-primary); }
+
+.callout { background: var(--color-accent-soft); border-left: 3px solid var(--color-accent); padding: 1rem 1.2rem; border-radius: 0 var(--radius-md) var(--radius-md) 0; margin: 1.5rem 0; font-size: 0.96rem; color: var(--color-ink); }
+.callout strong { color: var(--color-accent-hover); }
+
+.results-table { width: 100%; border-collapse: collapse; margin: 1.2rem 0 1.5rem; font-size: 0.92rem; }
+.results-table th, .results-table td { text-align: left; padding: 0.55rem 0.85rem; border-bottom: 1px solid var(--color-border); vertical-align: top; }
+.results-table th { background: var(--color-surface-alt); color: var(--color-primary); font-weight: 600; font-family: var(--font-sans); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.results-table tr.winner td { background: var(--color-accent-soft); }
+.results-table tr.winner td:first-child { font-weight: 600; color: var(--color-accent-hover); }
+.results-table td.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+.chip-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.4rem 0 1.2rem; }
+.chip { display: inline-block; padding: 0.2rem 0.65rem; border-radius: var(--radius-md); font-size: 0.74rem; font-weight: 600; background: var(--color-surface-alt); border: 1px solid var(--color-border); color: var(--color-muted); }
+
+.cta-row { display: flex; flex-wrap: wrap; gap: 0.7rem; margin: 2.5rem 0 0; }
+.btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.1rem; border-radius: var(--radius-md); font-weight: 500; font-size: 0.92rem; text-decoration: none; border: 1px solid transparent; cursor: pointer; }
+.btn--primary { background: var(--color-accent); border-color: var(--color-accent); color: #fff; }
+.btn--primary:hover { background: var(--color-accent-hover); border-color: var(--color-accent-hover); color: #fff; text-decoration: none; }
+.btn--outline { background: transparent; color: var(--color-primary); border-color: var(--color-primary); }
+.btn--outline:hover { background: var(--color-primary); color: #fff; text-decoration: none; }
+
+footer { background: var(--color-primary); color: #b5c1d1; padding: 1.8rem 1.5rem; font-size: 0.85rem; text-align: center; }
+footer a { color: #ffd7c5; }
+
+@media (max-width: 768px) {
+  .case-layout { grid-template-columns: 1fr; padding: 2rem 1.2rem 3.5rem; }
+  .toc { position: static; }
+  .case-hero { padding: 2.5rem 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="/data-portfolio/fr/" class="nav__brand">Yaé Gaba<span class="dot">.</span></a>
+    <a href="/data-portfolio/case-studies/" class="nav__back">← Études de cas</a>
+  </div>
+</nav>
+
+<section class="case-hero">
+  <div class="case-hero__content">
+    <span class="case-hero__eyebrow">Étude de cas · Opérations santé · Optimisation stochastique</span>
+    <h1 class="case-hero__title">Planification de cliniques mobiles — Kenya</h1>
+    <p class="case-hero__sub">
+      PDM sur données réelles avec 7 876 établissements de santé kényans agréés KMPDC et la série temporelle des paiements SHA par établissement. Trois politiques — rotation manuelle, programme linéaire plafonné, Q-learning tabulaire — comparées sur les patients servis, le coût de déplacement et l'équité. Le constat honnête : l'algorithme compte moins que la façon dont les contraintes sont écrites.
+    </p>
+    <div class="case-hero__meta">
+      <span><strong>Q-learning</strong> · 83 patients/jour (+122 % vs manuel)</span>
+      <span><strong>PL (plafond 25 %)</strong> · 52/jour (+39 %, 4 comtés desservis)</span>
+      <span><strong>Rotation manuelle</strong> · 37/jour, 87 km/jour de déplacement</span>
+      <span><strong>Données</strong> · 7 876 établissements · 47 comtés</span>
+    </div>
+  </div>
+</section>
+
+<div class="case-layout">
+
+  <aside class="toc">
+    <div class="toc__title">Sur cette page</div>
+    <ol>
+      <li><a href="#summary">Résumé</a></li>
+      <li><a href="#stakes">Pourquoi c'est important</a></li>
+      <li><a href="#question">La question métier</a></li>
+      <li><a href="#data">Données</a></li>
+      <li><a href="#mdp">Formulation PDM</a></li>
+      <li><a href="#approach">Trois politiques</a></li>
+      <li><a href="#results">Résultats</a></li>
+      <li><a href="#tradeoffs">Compromis</a></li>
+      <li><a href="#deployment">Déploiement</a></li>
+      <li><a href="#lessons">Leçons</a></li>
+    </ol>
+  </aside>
+
+  <article class="case-body">
+
+    <h2 id="summary">Résumé</h2>
+    <p class="lede">
+      Trois politiques de planification sur le même dispatch simulé sur 180 jours. Q-learning <strong>double</strong> les patients servis par jour vs la rotation manuelle, mais y parvient en concentrant 100 % des visites sur Nairobi (qui domine le volume de paiements SHA dans les données réelles). Un programme linéaire avec un plafond de 25 % par comté diversifie sur quatre comtés, sacrifie un peu de patients servis, mais élimine 32 % du déplacement et respecte une contrainte d'équité qu'un régulateur imposerait réellement. Le bon « gagnant » est celui dont l'objectif correspond au mandat sous lequel le programme de cliniques mobiles a été financé.
+    </p>
+
+    <h2 id="stakes">Pourquoi c'est important</h2>
+    <p>
+      Les cliniques de santé mobiles au Kenya font le pont entre les hôpitaux de référence fixes et les bassins ruraux mal desservis. Chaque visite coûte du carburant, des heures de personnel et des consommables ; chaque visite sert aussi une file finie de patients. La décision de planification — <em>quel comté la clinique visite-t-elle demain</em> — est contraignante : une clinique à Nairobi est une clinique <em>pas</em> à Wajir. Trois contraintes réelles pèsent sur l'opérateur :
+    </p>
+    <ul>
+      <li><strong>Incertitude sur la demande</strong> — l'utilisation des établissements varie d'une semaine à l'autre et dépend en partie de la météo.</li>
+      <li><strong>Budget de déplacement</strong> — diesel limité, heures de conducteur limitées, et la distance inter-comtés n'est pas négligeable au Kenya.</li>
+      <li><strong>Mandat d'équité</strong> — la plupart des programmes de santé sont financés sur des critères de couverture (par ex., visites aux bassins du quartile inférieur d'utilisation), pas sur le nombre brut de patients servis.</li>
+    </ul>
+
+    <h2 id="question">La question métier</h2>
+    <p>
+      Étant donné une liste de comtés candidats avec leurs comptes (réels) d'établissements et la série temporelle des paiements SHA comme proxy de la demande, <strong>quel comté la clinique visite-t-elle chaque jour pendant les 180 prochains jours</strong> pour maximiser les patients servis sous contrainte de budget de déplacement — et qu'est-ce qui change quand on ajoute une contrainte d'équité ?
+    </p>
+
+    <h2 id="data">Données</h2>
+    <p>
+      Deux jeux de données réels du Kenya, joints au niveau du comté :
+    </p>
+    <ul>
+      <li><strong>Établissements agréés KMPDC (2024)</strong> via <a href="https://www.kaggle.com/datasets/xen0r0m/sha-kenya-licensed-health-facilities-and-funds">xen0r0m/sha-kenya-licensed-health-facilities-and-funds</a>  — 7 876 établissements répartis sur les 47 comtés, avec type, propriété, niveau, capacité en lits et comté.</li>
+      <li><strong>Série temporelle des paiements SHA par établissement</strong> (déc.–fév.), 2 589 établissements — utilisée comme proxy de la demande. Signal d'utilisation réel et variant dans le temps.</li>
+    </ul>
+    <p>
+      Après nettoyage des lignes sans comté et jointure, les 12 premiers comtés par volume de paiements SHA deviennent les emplacements candidats pour le PDM.
+    </p>
+    <div class="chip-row">
+      <span class="chip">Données réelles KMPDC</span><span class="chip">Paiements SHA réels</span><span class="chip">Coords 2D synthétiques (pas de GPS sur Kaggle)</span><span class="chip">PDM à 12 comtés</span>
+    </div>
+
+    <figure class="figure">
+      <img src="/data-portfolio/case-studies/kenya/plot-01.png" alt="Top 20 des comtés kényans par nombre d'établissements et volume de paiements SHA">
+      <figcaption><strong>Figure 1.</strong> Distribution réelle : top 20 des comtés kényans par nombre d'établissements agréés KMPDC (gauche) et volume de paiements SHA (droite). Nairobi domine les deux — 1 723 établissements, ~2,2 milliards KSH de paiements — d'un ordre de grandeur sur le deuxième. Ce seul fait pilote l'histoire d'optimisation ci-dessous.</figcaption>
+    </figure>
+
+    <figure class="figure">
+      <img src="/data-portfolio/case-studies/kenya/plot-02.png" alt="Séries temporelles des paiements SHA par comté de décembre à février">
+      <figcaption><strong>Figure 2.</strong> Paiements SHA par comté sur les 8 périodes d'observation. La variation est réelle et spécifique à chaque comté — la modulation saisonnière par comté est ce qui donne au PDM sa dynamique non triviale ; sinon il dégénérerait en « toujours prendre Nairobi ».</figcaption>
+    </figure>
+
+    <h2 id="mdp">Formulation PDM</h2>
+    <p>
+      Un processus décisionnel de Markov standard à temps discret et actions discrètes :
+    </p>
+    <ul>
+      <li><strong>État</strong> : <code>(current_county, day_of_week_bucket)</code>, où le jour-de-semaine est mod 7. Douze comtés × 7 plages = 84 états discrets.</li>
+      <li><strong>Action</strong> : l'un des 12 comtés — « où allons-nous demain ? »</li>
+      <li><strong>Transition</strong> : déterministe étant donnée l'action (l'emplacement passe au comté choisi ; la plage du jour s'incrémente mod 7). La demande à destination est stochastique — distribuée selon une Poisson de moyenne liée à la saisonnalité réelle des paiements SHA du comté.</li>
+      <li><strong>Récompense</strong> : <code>min(patients_served, daily_capacity) − α × distance(prev, action)</code>. Patients servis plafonnés à 100/jour par la capacité quotidienne de la clinique ; distance pénalisée à <code>α = 0,05</code> par km.</li>
+      <li><strong>Horizon</strong> : 180 jours, sans actualisation en fin d'épisode (γ = 0,95 au sein de l'épisode).</li>
+    </ul>
+    <p>
+      La distance vient de coordonnées 2D synthétiques dans la boîte englobante lat/lon du Kenya car le jeu de données public Kaggle n'inclut pas le GPS — un point de remplacement clair pour la production. Les conclusions structurelles du PDM ne dépendent pas des coordonnées spécifiques.
+    </p>
+
+    <figure class="figure">
+      <img src="/data-portfolio/case-studies/kenya/plot-03.png" alt="12 comtés représentés en 2D, taille de bulle proportionnelle au nombre d'établissements, couleur selon la demande">
+      <figcaption><strong>Figure 3.</strong> Les 12 comtés candidats sur une carte 2D synthétique. La taille de la bulle est proportionnelle au nombre d'établissements, la couleur à la demande moyenne inférée. Nairobi est la grosse bulle jaune vif — le cluster vers lequel la politique optimale gravite systématiquement.</figcaption>
+    </figure>
+
+    <h2 id="approach">Trois politiques</h2>
+
+    <h3>1. Rotation manuelle (référence du secteur)</h3>
+    <p>
+      Visiter le comté <code>t mod 12</code> le jour <code>t</code>. C'est ce que font la plupart des opérations de terrain sous-dotées — rotation uniforme, aucune conscience de la demande. Maximise l'équité géographique par construction ; ignore la demande.
+    </p>
+
+    <h3>2. Programme linéaire avec plafond de visites par comté</h3>
+    <p>
+      Résoudre <code>max c<sup>T</sup>v</code> sous <code>sum(v) = 1</code>, <code>0 ≤ v_i ≤ 0,25</code>, où <code>v_i</code> est la part de visites pour le comté <code>i</code> et <code>c_i</code> sa demande attendue. Traduire le vecteur de parts optimal en un planning stochastique.
+    </p>
+    <p>
+      Sans le plafond, la PL dégénère en « toujours prendre Nairobi » — exactement la même réponse vers laquelle Q-learning finit par converger. Le plafond est le mandat d'équité écrit sous forme de contrainte linéaire.
+    </p>
+
+    <h3>3. Q-learning tabulaire</h3>
+    <p>
+      ε-greedy standard avec α = 0,1, γ = 0,95, ε décroissant de 0,30 à 0,05 sur 400 épisodes. Table <code>Q[loc, day_bucket, action]</code> ; mises à jour depuis le signal de récompense de la simulation. Un terme de pénalité de revisite à l'entraînement pousse vers la diversification, mais la politique d'évaluation gloutonne (qui ne voit pas l'historique des visites récentes) retombe vers le comté à plus forte demande.
+    </p>
+
+    <figure class="figure">
+      <img src="/data-portfolio/case-studies/kenya/plot-04.png" alt="Courbe de récompense d'entraînement Q-learning sur 400 épisodes">
+      <figcaption><strong>Figure 4.</strong> Récompense d'entraînement Q-learning (moyenne glissante sur 20 épisodes) sur 400 épisodes. L'agent identifie rapidement le comté à plus forte demande et cesse d'explorer ; la récompense plafonne autour de l'épisode 100. Convergence plus rapide qu'attendu — un signal clair que la structure de la demande est dominée par un seul comté, sans subtilité.</figcaption>
+    </figure>
+
+    <h2 id="results">Résultats</h2>
+    <p>Déroulements simulés sur 180 jours avec la même graine de demande réalisée pour les trois politiques :</p>
+
+    <table class="results-table">
+      <thead>
+        <tr><th>Politique</th><th>Patients/jour</th><th>Déplacement total (km)</th><th>Comtés desservis</th><th>Gain de couverture vs manuel</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Rotation manuelle</td><td class="num">37.3</td><td class="num">87,304</td><td class="num">12</td><td class="num">—</td></tr>
+        <tr><td>PL (plafond 25 % par comté)</td><td class="num">52.0</td><td class="num">60,121</td><td class="num">4</td><td class="num">+39%</td></tr>
+        <tr class="winner"><td>Q-learning (sans plafond)</td><td class="num">82.8</td><td class="num">0</td><td class="num">1</td><td class="num">+122%</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>La lecture honnête.</strong> Le « +122 % de gain de couverture » du Q-learning n'est un gain de couverture que si l'on entend « couverture » comme « patients servis ». Au sens d'équité que la plupart des programmes de santé utilisent — visites aux bassins du quartile inférieur d'utilisation — la couverture du Q-learning est <em>pire</em> que celle de la rotation manuelle. Le Q-learning ne visite jamais Wajir, Migori ou Mandera. Sa politique est de rester à Nairobi pendant les 180 jours. C'est une propriété de l'objectif centré sur la demande, pas un bug du Q-learning.
+    </div>
+
+    <h2 id="tradeoffs">Compromis</h2>
+    <ul>
+      <li><strong>La PL rend le mandat explicite ; le Q-learning le cache.</strong> Un plafond à 25 % est une seule ligne de code — et quand un chargé de programme demande « pourquoi la clinique n'a-t-elle visité ce comté que deux fois ? », la PL donne une réponse interprétable. La réponse du Q-learning est « la table Q l'a dit ». Pour un programme de santé publique régulé, la PL est le meilleur candidat au déploiement même si elle obtient un score plus faible.</li>
+      <li><strong>La concentration de la demande pilote tout.</strong> Nairobi a 1 723 établissements ; le 2<sup>e</sup> Kiambu en a 584. La réponse structurelle « toujours aller à Nairobi » sort de tout algorithme qui maximise la demande. Ajouter des contraintes d'équité n'est pas optionnel — c'est l'intérêt même de l'optimisation.</li>
+      <li><strong>L'hypothèse GPS synthétique est le plus gros risque de production.</strong> Un GPS réel déplacerait les solutions PL et Q-learning via le terme de coût de déplacement : un comté à forte demande mais à fort coût de déplacement perdrait des visites par rapport à la configuration actuelle. La solution Q-learning qui « concentre et ne se déplace jamais » repose sur l'hypothèse qu'on y est déjà ou qu'on peut téléporter — ni l'un ni l'autre n'est vrai.</li>
+      <li><strong>Q-learning est sur-dimensionné pour ce problème.</strong> L'espace d'états a 84 cellules, l'espace d'actions a 12 actions, et la récompense est largement déterministe (bruit de Poisson autour d'une moyenne connue). Une résolution directe par itération sur la valeur convergerait en quelques secondes et donnerait la même réponse.</li>
+    </ul>
+
+    <h2 id="deployment">Esquisse de déploiement</h2>
+    <p>Pour un vrai programme de cliniques mobiles :</p>
+    <ul>
+      <li><strong>Service</strong> : API de planning hebdomadaire. Entrées : emplacement actuel, dernier journal de visites connu, prévision de demande pour la semaine à venir, planchers minimum et plafonds maximum de visites par comté configurables. Sortie : planning à 7 jours avec justification.</li>
+      <li><strong>Algorithme recommandé</strong> : PL plafonnée, pas Q-learning. La surface de contraintes est l'objet opérationnellement intéressant ; la PL l'expose directement.</li>
+      <li><strong>Interface Streamlit</strong> permettant aux responsables de santé de district d'écraser la recommandation au jour le jour avec un code de motif (panne de véhicule, sécurité, météo), capturé pour le ré-entraînement.</li>
+      <li><strong>Rafraîchissement</strong> : ré-ajustement mensuel du modèle de demande sur les journaux de visites accumulés ; revue trimestrielle des contraintes d'équité avec le bailleur.</li>
+    </ul>
+
+    <h2 id="lessons">Leçons</h2>
+    <ol>
+      <li><strong>Choisissez l'algorithme qui correspond à la structure de contraintes, pas à la métrique phare.</strong> Q-learning maximise les patients servis bruts d'une large marge, mais la PL est la réponse correcte au déploiement dans un cadre contraint et supervisé par un régulateur.</li>
+      <li><strong>La « couverture » est une métrique ambiguë tant qu'on n'écrit pas la contrainte.</strong> Patients servis et équité du quartile inférieur sont deux interprétations raisonnables, et le classement des algorithmes s'inverse entre elles. Le chiffre phare de l'étude (+122 %) est honnête sous une définition et trompeur sous une autre — l'analyse approfondie lève l'ambiguïté.</li>
+      <li><strong>Cheap structural prior > expensive learned policy on small action spaces.</strong> 12 actions × 84 states is not a regime where reinforcement learning is the right tool. Direct value iteration or LP would converge faster, give interpretable shadow prices, and avoid the over-engineering trap.</li>
+    </ol>
+
+    <div class="cta-row">
+      <a href="/data-portfolio/05-resource-allocation-kenya/notebook.ipynb" class="btn btn--primary">Ouvrir le carnet ↗</a>
+      <a href="https://github.com/gabayae/data-portfolio/blob/main/05-resource-allocation-kenya/" class="btn btn--outline">Voir le code source sur GitHub</a>
+      <a href="/data-portfolio/case-studies/" class="btn btn--outline">Toutes les études de cas</a>
+    </div>
+
+  </article>
+</div>
+
+<footer>
+  <p>© 2026 Yaé Gaba · Conçu de bout en bout sur données publiques réelles · sous licence MIT · <a href="/data-portfolio/fr/">Retour au portfolio</a></p>
+</footer>
+
+</body>
+</html>
