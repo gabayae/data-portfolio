@@ -20,12 +20,12 @@ Une erreur d'irradiance à J+1 de seulement 5 % peut suffire à inverser la déc
 - **Localisation :** Nairobi (lat -1,2921, lon 36,8219).
 - **Période :** 2014-01-01 → 2023-12-31, journalière (3 653 observations).
 - **Variables :**
-  - `ALLSKY_SFC_SW_DWN` — irradiance shortwave de surface (kWh/m²/jour) — la **cible de prévision**
-  - `T2M` — température à 2 m (°C)
-  - `RH2M` — humidité relative à 2 m (%)
-  - `WS2M` — vitesse du vent à 2 m (m/s)
-  - `PRECTOTCORR` — précipitations corrigées (mm/jour)
-  - `CLOUD_AMT` — couverture nuageuse (%)
+  - `ALLSKY_SFC_SW_DWN`: irradiance shortwave de surface (kWh/m²/jour) — la **cible de prévision**
+  - `T2M`: température à 2 m (°C)
+  - `RH2M`: humidité relative à 2 m (%)
+  - `WS2M`: vitesse du vent à 2 m (m/s)
+  - `PRECTOTCORR`: précipitations corrigées (mm/jour)
+  - `CLOUD_AMT`: couverture nuageuse (%)
 
 Lancer `python download_data.py` pour récupérer des données fraîches (sans authentification).
 

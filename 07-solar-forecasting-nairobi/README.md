@@ -20,12 +20,12 @@ A 1-day-ahead irradiance error of even 5% can flip whether a battery should be f
 - **Location:** Nairobi (lat -1.2921, lon 36.8219).
 - **Period:** 2014-01-01 → 2023-12-31, daily (3,653 observations).
 - **Variables:**
-  - `ALLSKY_SFC_SW_DWN` — surface shortwave irradiance (kWh/m²/day) — the **forecast target**
-  - `T2M` — temperature at 2 m (°C)
-  - `RH2M` — relative humidity at 2 m (%)
-  - `WS2M` — wind speed at 2 m (m/s)
-  - `PRECTOTCORR` — corrected precipitation (mm/day)
-  - `CLOUD_AMT` — cloud cover (%)
+  - `ALLSKY_SFC_SW_DWN`: surface shortwave irradiance (kWh/m²/day) — the **forecast target**
+  - `T2M`: temperature at 2 m (°C)
+  - `RH2M`: relative humidity at 2 m (%)
+  - `WS2M`: wind speed at 2 m (m/s)
+  - `PRECTOTCORR`: corrected precipitation (mm/day)
+  - `CLOUD_AMT`: cloud cover (%)
 
 Run `python download_data.py` to fetch fresh data (no auth required).
 

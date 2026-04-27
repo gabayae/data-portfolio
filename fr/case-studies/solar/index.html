@@ -280,7 +280,7 @@ footer a { color: #ffd7c5; }
 
     <h2 id="summary">Résumé</h2>
     <p class="lede">
-      Un modèle gradient-boosté qui utilise l'irradiance retardée + les covariables météo du jour (couverture nuageuse, humidité, précipitations, température, vent) prévoit l'irradiance journalière à Nairobi avec <strong>9,4 % de MAPE</strong> sur un horizon de 90 jours — contre 13,8 % pour SARIMA et 21,6 % pour un état d'états UC. Deux constats à retenir : <strong>la climatologie mensuelle atteint 12,3 % de MAPE</strong> (mieux que SARIMA) — l'enveloppe saisonnière à elle seule explique l'essentiel de la prévisibilité. Et <strong>SARIMA et UC livrent toutes deux 99 % de couverture empirique des IP</strong> — pour une décision de dimensionnement de batterie ou d'équilibrage du réseau, c'est l'intervalle calibré qui pilote le dimensionnement, pas la moyenne plus serrée du GBM.
+      Un modèle gradient-boosté qui utilise l'irradiance retardée + les covariables météo du jour (couverture nuageuse, humidité, précipitations, température, vent) prévoit l'irradiance journalière à Nairobi avec <strong>9,4 % de MAPE</strong> sur un horizon de 90 jours — contre 13,8 % pour SARIMA et 21,6 % pour un état d'états UC. Deux constats à retenir : <strong>la climatologie mensuelle atteint 12,3 % de MAPE</strong> (mieux que SARIMA) — l'enveloppe saisonnière à elle seule explique l'essentiel de la prévisibilité. Et <strong>SARIMA et UC livrent toutes deux 99 % de couverture empirique des IP</strong>: pour une décision de dimensionnement de batterie ou d'équilibrage du réseau, c'est l'intervalle calibré qui pilote le dimensionnement, pas la moyenne plus serrée du GBM.
     </p>
 
     <h2 id="stakes">Pourquoi cela compte</h2>
@@ -293,9 +293,9 @@ footer a { color: #ffd7c5; }
       Trois consommateurs opérationnels regardent la même prévision :
     </p>
     <ul>
-      <li><strong>Opérateurs solaires pay-as-you-go</strong> — planification de l'état de charge des batteries par foyer et par nuit. Cherche des prévisions ponctuelles serrées sur 1–7 jours.</li>
-      <li><strong>Développeurs solaires utility-scale</strong> — anticipations de production sur 30+ jours ; les décisions de pertes / surproduction nourrissent le dispatch.</li>
-      <li><strong>Gestionnaires de réseau et trésorerie</strong> — scénarios pessimistes quantifiés pour budget et contrats de partage de risque. Cherche une calibration honnête des intervalles.</li>
+      <li><strong>Opérateurs solaires pay-as-you-go</strong>: planification de l'état de charge des batteries par foyer et par nuit. Cherche des prévisions ponctuelles serrées sur 1–7 jours.</li>
+      <li><strong>Développeurs solaires utility-scale</strong>: anticipations de production sur 30+ jours ; les décisions de pertes / surproduction nourrissent le dispatch.</li>
+      <li><strong>Gestionnaires de réseau et trésorerie</strong>: scénarios pessimistes quantifiés pour budget et contrats de partage de risque. Cherche une calibration honnête des intervalles.</li>
     </ul>
     <p>
       Trois clients, une seule prévision, trois choses différentes qu'ils regardent. L'étude de cas compare un baseline SARIMA, un modèle structurel d'espace d'états et un challenger ML pour voir lequel répond à quel besoin.
@@ -303,15 +303,15 @@ footer a { color: #ffd7c5; }
 
     <h2 id="data">Données</h2>
     <p>
-      <strong>API NASA POWER</strong> — gratuite, programmatique, sans authentification. 10 ans (2014-01-01 → 2023-12-31) de valeurs journalières pour Nairobi (lat -1,2921, lon 36,8219) :
+      <strong>API NASA POWER</strong>: gratuite, programmatique, sans authentification. 10 ans (2014-01-01 → 2023-12-31) de valeurs journalières pour Nairobi (lat -1,2921, lon 36,8219) :
     </p>
     <ul>
-      <li><code>ALLSKY_SFC_SW_DWN</code> — irradiance shortwave de surface (kWh/m²/jour) — la cible de prévision</li>
-      <li><code>T2M</code> — température à 2 m</li>
-      <li><code>RH2M</code> — humidité relative à 2 m</li>
-      <li><code>WS2M</code> — vitesse du vent à 2 m</li>
-      <li><code>PRECTOTCORR</code> — précipitations corrigées</li>
-      <li><code>CLOUD_AMT</code> — couverture nuageuse %</li>
+      <li><code>ALLSKY_SFC_SW_DWN</code>: irradiance shortwave de surface (kWh/m²/jour) — la cible de prévision</li>
+      <li><code>T2M</code>: température à 2 m</li>
+      <li><code>RH2M</code>: humidité relative à 2 m</li>
+      <li><code>WS2M</code>: vitesse du vent à 2 m</li>
+      <li><code>PRECTOTCORR</code>: précipitations corrigées</li>
+      <li><code>CLOUD_AMT</code>: couverture nuageuse %</li>
     </ul>
     <p>
       Les 90 derniers jours sont mis de côté comme fenêtre de test ; tout ce qui précède est en entraînement. Le tier gratuit de NASA POWER est généreux et l'endpoint API tient sur une URL — le même pipeline bascule vers Lagos, Le Cap, Le Caire ou Dakar en changeant deux nombres dans <code>download_data.py</code>.
@@ -361,7 +361,7 @@ footer a { color: #ffd7c5; }
       <li>Calendaire : <code>dow</code>, <code>month</code>, <code>doy_sin</code>, <code>doy_cos</code></li>
       <li>Irradiance retardée : 1, 2, 7, 14, 30 jours</li>
       <li>Moyennes glissantes (shift-1) : 7 jours et 30 jours</li>
-      <li><strong>Variables météo exogènes</strong> : <code>T2M</code>, <code>RH2M</code>, <code>WS2M</code>, <code>PRECTOTCORR</code>, <code>CLOUD_AMT</code> — chacune au lag-1 et en moyenne glissante 7 jours</li>
+      <li><strong>Variables météo exogènes</strong> : <code>T2M</code>, <code>RH2M</code>, <code>WS2M</code>, <code>PRECTOTCORR</code>, <code>CLOUD_AMT</code>: chacune au lag-1 et en moyenne glissante 7 jours</li>
     </ul>
     <p>
       Les covariables nuageuse et d'humidité sont le levier. SARIMA et UC ne travaillent que sur l'irradiance retardée ; le GBM reçoit aussi la couverture nuageuse et les précipitations de la veille. L'écart de MAPE est principalement attribuable à cet avantage informationnel.

@@ -1,4 +1,4 @@
-"""Comprehensive site-state validation for the portfolio.
+"""Site-state validation for the portfolio.
 
 Checks five things that tend to drift across edits:
 

@@ -285,7 +285,7 @@ footer a { color: #ffd7c5; }
 
     <h2 id="question">La question métier</h2>
     <p>
-      Un assureur auto veut des <strong>estimations de pertes attendues par police</strong> — la prime pure — assez précises pour alimenter un moteur de tarification par paliers et assez explicables pour validation actuarielle. Deux usages opérationnels reposent sur le score :
+      Un assureur auto veut des <strong>estimations de pertes attendues par police</strong>: la prime pure — assez précises pour alimenter un moteur de tarification par paliers et assez explicables pour validation actuarielle. Deux usages opérationnels reposent sur le score :
     </p>
     <ul>
       <li><strong>Tarification</strong>. Chaque police a besoin d'un montant qui, en espérance, couvre ses sinistres plus une marge. Les erreurs se traduisent directement par un profit (ou une perte) de souscription.</li>
@@ -343,7 +343,7 @@ footer a { color: #ffd7c5; }
 
     <h3>3. Régression gradient boostée (concurrent)</h3>
     <p>
-      Une paire de modèles <code>GradientBoostingRegressor</code> — un sur la fréquence par unité d'exposition, un sur la log-gravité — multipliés pour donner la prime pure. Aucune contrainte de monotonie (un système de production en ajouterait sur <code>bonus_malus</code>), aucun prior d'interaction. L'objectif est de voir ce que la famille de méthodes capte que les GLM ratent.
+      Une paire de modèles <code>GradientBoostingRegressor</code>: un sur la fréquence par unité d'exposition, un sur la log-gravité — multipliés pour donner la prime pure. Aucune contrainte de monotonie (un système de production en ajouterait sur <code>bonus_malus</code>), aucun prior d'interaction. L'objectif est de voir ce que la famille de méthodes capte que les GLM ratent.
     </p>
 
     <h2 id="results">Résultats</h2>
@@ -351,8 +351,8 @@ footer a { color: #ffd7c5; }
       Validation 80/20. Deux métriques :
     </p>
     <ul>
-      <li><strong>Coefficient de Gini sur la prime pure</strong> — mesure de la qualité de l'ordonnancement des polices par sinistralité réalisée. Plus haut = meilleure segmentation.</li>
-      <li><strong>Lift du décile supérieur</strong> — parmi les 10 % de polices que le modèle juge les plus risquées, quel est le multiple de sinistralité réalisée par rapport à la moyenne de la population ? Plus haut = capture de risque plus concentrée dans le palier le plus élevé.</li>
+      <li><strong>Coefficient de Gini sur la prime pure</strong>: mesure de la qualité de l'ordonnancement des polices par sinistralité réalisée. Plus haut = meilleure segmentation.</li>
+      <li><strong>Lift du décile supérieur</strong>: parmi les 10 % de polices que le modèle juge les plus risquées, quel est le multiple de sinistralité réalisée par rapport à la moyenne de la population ? Plus haut = capture de risque plus concentrée dans le palier le plus élevé.</li>
     </ul>
 
     <table class="results-table">

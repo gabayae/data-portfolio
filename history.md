@@ -127,7 +127,7 @@ Each case study is a long-form deep-dive that draws plots from its executed note
 
 **2. FR case-studies index page** mirroring the EN index, links updated to `./pjm/`, `./kariba/`, `./fremtpl2/`, `./kenya/`.
 
-**3. Bilingual 404 page** — single file with EN+FR inline content, JS detects `/data-portfolio/fr/...` URL prefix and toggles which div shows. Both halves include a "you might be looking for" suggested-links card and a language switcher.
+**3. Bilingual 404 page**: single file with EN+FR inline content, JS detects `/data-portfolio/fr/...` URL prefix and toggles which div shows. Both halves include a "you might be looking for" suggested-links card and a language switcher.
 
 **4. Fifth case study — Solar Nairobi.** New territory: NASA POWER API as a free, programmatic, no-auth weather data source. The notebook covers SARIMA, UnobservedComponents with Fourier annual exog, and GBM with same-day weather covariates. Three baselines added: naive-last, naive-seasonal, **and monthly climatology** — climatology came in at 12.3% MAPE, beating SARIMA at 13.8%. This became the case study's headline finding: at this latitude the seasonal envelope dominates predictability; same-day cloud + humidity is what moves point accuracy.
 
@@ -137,7 +137,7 @@ Each case study is a long-form deep-dive that draws plots from its executed note
 
 **7. Article JSON-LD** added to all 10 case-study pages (5 EN + 5 FR). Each page declares `@type: Article` with headline, description, OG image, canonical URL, `inLanguage`, dates, and Person author/publisher with `sameAs` to LinkedIn / GitHub / Scholar.
 
-**8. JSON-LD on FR home page** — mirrored the EN home's `Person + WebSite + ItemList` graph with French project names. Both home pages share the same Person `@id` so search engines treat them as one identity rather than two.
+**8. JSON-LD on FR home page**: mirrored the EN home's `Person + WebSite + ItemList` graph with French project names. Both home pages share the same Person `@id` so search engines treat them as one identity rather than two.
 
 ---
 
@@ -170,11 +170,11 @@ Each case study is a long-form deep-dive that draws plots from its executed note
 
 ## What's next (parked)
 
-- **Live link validation against deployed Pages** — the local link checker validates the local filesystem; once Pages is enabled, sweep `https://gabayae.github.io/data-portfolio/...` for any drift.
-- **Google Rich Results Test API check** — confirm the 12 JSON-LD blocks all parse cleanly under Google's validator.
+- **Live link validation against deployed Pages**: the local link checker validates the local filesystem; once Pages is enabled, sweep `https://gabayae.github.io/data-portfolio/...` for any drift.
+- **Google Rich Results Test API check**: confirm the 12 JSON-LD blocks all parse cleanly under Google's validator.
 - **Per-project Article schema** for the 8 projects without case studies — currently their READMEs render as folder indices but carry no schema.
 - **Reading time + previous/next navigation** between case studies — UX polish, finite scope.
-- **Optional: French translations of the 13 project READMEs** — currently FR home cards link back to the EN folder READMEs.
+- **Optional: French translations of the 13 project READMEs**: currently FR home cards link back to the EN folder READMEs.
 
 ---
 

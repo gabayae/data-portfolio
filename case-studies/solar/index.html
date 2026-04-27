@@ -280,7 +280,7 @@ footer a { color: #ffd7c5; }
 
     <h2 id="summary">Summary</h2>
     <p class="lede">
-      A gradient-boosted regressor that uses lagged irradiance + same-day weather covariates (cloud cover, humidity, precipitation, temperature, wind) forecasts daily Nairobi irradiance with <strong>9.4% MAPE</strong> across a 90-day horizon — versus SARIMA at 13.8% and a UC state-space at 21.6%. Two findings worth keeping: <strong>monthly climatology hits 12.3% MAPE</strong> (better than SARIMA) — the seasonal envelope alone explains most of the predictability. And <strong>both SARIMA and UC deliver 99% empirical PI coverage</strong> — for a battery-sizing or grid-balancing decision, the calibrated interval is what actually drives sizing, not the GBM's tighter mean.
+      A gradient-boosted regressor that uses lagged irradiance + same-day weather covariates (cloud cover, humidity, precipitation, temperature, wind) forecasts daily Nairobi irradiance with <strong>9.4% MAPE</strong> across a 90-day horizon — versus SARIMA at 13.8% and a UC state-space at 21.6%. Two findings worth keeping: <strong>monthly climatology hits 12.3% MAPE</strong> (better than SARIMA) — the seasonal envelope alone explains most of the predictability. And <strong>both SARIMA and UC deliver 99% empirical PI coverage</strong>: for a battery-sizing or grid-balancing decision, the calibrated interval is what actually drives sizing, not the GBM's tighter mean.
     </p>
 
     <h2 id="stakes">Why this matters</h2>
@@ -293,9 +293,9 @@ footer a { color: #ffd7c5; }
       Three operational consumers sit on the same forecast:
     </p>
     <ul>
-      <li><strong>Pay-as-you-go solar operators</strong> — battery-state-of-charge planning per household per night. Wants tight point forecasts at 1–7 day horizons.</li>
-      <li><strong>Utility-scale solar developers</strong> — generation expectations across 30+ day horizons; loss/over-supply decisions feed dispatch.</li>
-      <li><strong>Grid integrators &amp; treasury</strong> — quantified worst-case scenarios for budgeting and risk-sharing contracts. Wants honest interval calibration.</li>
+      <li><strong>Pay-as-you-go solar operators</strong>: battery-state-of-charge planning per household per night. Wants tight point forecasts at 1–7 day horizons.</li>
+      <li><strong>Utility-scale solar developers</strong>: generation expectations across 30+ day horizons; loss/over-supply decisions feed dispatch.</li>
+      <li><strong>Grid integrators &amp; treasury</strong>: quantified worst-case scenarios for budgeting and risk-sharing contracts. Wants honest interval calibration.</li>
     </ul>
     <p>
       Three customers, same forecast, three different things they look at. The case study compares a SARIMA baseline, a structural state-space model, and an ML challenger to see which fits which need.
@@ -303,15 +303,15 @@ footer a { color: #ffd7c5; }
 
     <h2 id="data">Data</h2>
     <p>
-      <strong>NASA POWER API</strong> — free, programmatic, no auth required. 10 years (2014-01-01 → 2023-12-31) of daily values for Nairobi (lat -1.2921, lon 36.8219):
+      <strong>NASA POWER API</strong>: free, programmatic, no auth required. 10 years (2014-01-01 → 2023-12-31) of daily values for Nairobi (lat -1.2921, lon 36.8219):
     </p>
     <ul>
-      <li><code>ALLSKY_SFC_SW_DWN</code> — surface shortwave irradiance (kWh/m²/day) — the forecast target</li>
-      <li><code>T2M</code> — temperature at 2 m</li>
-      <li><code>RH2M</code> — relative humidity at 2 m</li>
-      <li><code>WS2M</code> — wind speed at 2 m</li>
-      <li><code>PRECTOTCORR</code> — corrected precipitation</li>
-      <li><code>CLOUD_AMT</code> — cloud cover %</li>
+      <li><code>ALLSKY_SFC_SW_DWN</code>: surface shortwave irradiance (kWh/m²/day) — the forecast target</li>
+      <li><code>T2M</code>: temperature at 2 m</li>
+      <li><code>RH2M</code>: relative humidity at 2 m</li>
+      <li><code>WS2M</code>: wind speed at 2 m</li>
+      <li><code>PRECTOTCORR</code>: corrected precipitation</li>
+      <li><code>CLOUD_AMT</code>: cloud cover %</li>
     </ul>
     <p>
       Last 90 days held out as the test window; everything before that is training. NASA POWER's free-tier is generous and the API endpoint is one URL — same pipeline switches to Lagos, Cape Town, Cairo, or Dakar by changing two numbers in <code>download_data.py</code>.
@@ -361,7 +361,7 @@ footer a { color: #ffd7c5; }
       <li>Calendar: <code>dow</code>, <code>month</code>, <code>doy_sin</code>, <code>doy_cos</code></li>
       <li>Lagged irradiance: 1, 2, 7, 14, 30 days</li>
       <li>Rolling means (shift-1): 7-day and 30-day</li>
-      <li><strong>Weather exogenous variables</strong>: <code>T2M</code>, <code>RH2M</code>, <code>WS2M</code>, <code>PRECTOTCORR</code>, <code>CLOUD_AMT</code> — each at lag-1 and 7-day rolling mean</li>
+      <li><strong>Weather exogenous variables</strong>: <code>T2M</code>, <code>RH2M</code>, <code>WS2M</code>, <code>PRECTOTCORR</code>, <code>CLOUD_AMT</code>: each at lag-1 and 7-day rolling mean</li>
     </ul>
     <p>
       The cloud and humidity covariates are the lever. SARIMA and UC work only on lagged irradiance; GBM also gets yesterday's cloud cover and precipitation. The MAPE gap is mostly attributable to that information advantage.
