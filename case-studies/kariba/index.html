@@ -127,6 +127,19 @@ footer a { color: #ffd7c5; }
   .toc { position: static; }
   .case-hero { padding: 2.5rem 1.2rem; }
 }
+
+.case-nav { margin: 3rem 0 0; padding-top: 2rem; border-top: 1px solid var(--color-border); }
+.case-nav__label { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-muted); font-weight: 600; margin-bottom: 1rem; }
+.case-nav__row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.case-nav__row > a { display: block; padding: 1rem 1.2rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); text-decoration: none; transition: border-color 0.2s ease, transform 0.2s ease; }
+.case-nav__row > a:hover { border-color: var(--color-accent); text-decoration: none; transform: translateY(-2px); }
+.case-nav__row > a > span:first-child { display: block; font-size: 0.74rem; color: var(--color-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
+.case-nav__row > a > span:last-child { display: block; font-family: var(--font-serif); font-size: 1.05rem; color: var(--color-primary); font-weight: 600; line-height: 1.4; }
+.case-nav__prev { text-align: left; }
+.case-nav__next { text-align: right; }
+.case-nav__row > a.case-nav__prev > span:first-child::before { content: "← "; }
+.case-nav__row > a.case-nav__next > span:first-child::after { content: " →"; }
+@media (max-width: 640px) { .case-nav__row { grid-template-columns: 1fr; } .case-nav__next { text-align: left; } }
 </style>
 <script type="application/ld+json">
 {
@@ -158,6 +171,32 @@ footer a { color: #ffd7c5; }
     "name": "Yaé Gaba",
     "url": "https://gabayae.github.io/data-portfolio/"
   }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Yaé Gaba · Data Science Portfolio",
+      "item": "https://gabayae.github.io/data-portfolio/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Case studies",
+      "item": "https://gabayae.github.io/data-portfolio/case-studies/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "River flow forecasting — Lake Kariba",
+      "item": "https://gabayae.github.io/data-portfolio/case-studies/kariba/"
+    }
+  ]
 }
 </script>
 </head>
@@ -357,6 +396,13 @@ footer a { color: #ffd7c5; }
       <a href="../../#projects" class="btn btn--outline">All projects</a>
     </div>
 
+    <nav class="case-nav" aria-label="Continue reading">
+      <div class="case-nav__label">Continue reading</div>
+      <div class="case-nav__row">
+        <a class="case-nav__prev" href="../pjm/"><span>Previous</span><span>Hourly load forecasting — PJM East</span></a>
+        <a class="case-nav__next" href="../solar/"><span>Next</span><span>Solar irradiance forecasting — Nairobi</span></a>
+      </div>
+    </nav>
   </article>
 </div>
 

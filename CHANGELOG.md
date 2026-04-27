@@ -11,6 +11,10 @@ Record of substantive changes to this portfolio. Newest entries first.
 - **FR translation** of the Solar case study at `fr/case-studies/solar/`. EN/FR alternate hreflang on both sides; FR case-studies index now links to the local FR translation; sitemap carries the bilingual pair. All 5 case studies are now bilingual EN/FR.
 - **Per-case-study OG card for Solar** (`case-studies/solar/og-card.png`) — brings Solar to parity with the other 4 case studies. Same dark-navy + terracotta gradient, headline metric "GBM 9.4% MAPE", rendered via Playwright Chromium. Solar EN+FR pages now reference it instead of the site-level OG card.
 - **Article JSON-LD** on all 10 case-study pages (5 EN + 5 FR). Each page declares `@type: Article` with headline, description, OG image, canonical URL, `inLanguage`, `datePublished`/`dateModified`, and Person author/publisher with `sameAs` to LinkedIn/GitHub/Scholar. Combined with the home-page `Person + WebSite + ItemList`, search engines now have a complete bilingual graph.
+- **JSON-LD on FR home** — mirrors the EN home's `Person + WebSite + ItemList` graph with French project names. Both home pages share the same Person `@id` so search engines collapse the EN and FR sides to one identity.
+- **Prev/next case-study navigation** at the bottom of every case study (10 pages). Chain order: PJM → Kariba → Solar → freMTPL2 → Kenya. PJM and Kenya only have one direction. Localised labels ("Previous"/"Next" vs "Précédente"/"Suivante").
+- **BreadcrumbList JSON-LD** on every case-study page (10 pages). 3-step crumb: portfolio root → case-studies index → current page, with localised names. Pairs with the existing Article schema for richer Google rich-result rendering.
+- **history.md** at the repo root — origin story for the build (27 commits, 13 projects, 5 case studies, day-by-day timeline, architecture decisions, what still needs the user's hands).
 
 ## v0.1.0 — 2026-04-25
 
