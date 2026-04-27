@@ -7,7 +7,7 @@
 ![Case studies](https://img.shields.io/badge/case%20studies-5-c85c3c)
 ![Bilingual](https://img.shields.io/badge/EN%20%C2%B7%20FR-bilingual-0f2a4a)
 
-**13 end-to-end data-science projects** on real public data, **5 long-form bilingual case studies** (EN/FR), one Streamlit twin, all served as a static site styled with the [PasserellAI](https://passerellai.com/) editorial palette.
+**13 end-to-end data-science projects** on real public data, **5 long-form bilingual case studies** (EN/FR), one Streamlit twin.
 
 Domains: forecasting · GLMs / actuarial pricing · survival analysis · hierarchical reconciliation · stochastic optimization / RL · experimental design.
 
