@@ -34,7 +34,7 @@ Initial public release. 13 end-to-end data-science projects, 4 long-form case st
 ### Added
 
 - **13 self-contained project folders** (`01-…` through `13-…`), each with its own `README.md`, executable `notebook.ipynb`, `download_data.py`, and `requirements.txt`. All notebooks executed end-to-end on real public data sourced from Kaggle, NASA POWER, and USAID PEPFAR SCMS.
-- **Static landing page** `index.html` with PasserellAI editorial palette (warm cream `#fafaf7`, navy `#0f2a4a`, terracotta `#c85c3c`, Iowan Old Style serif headlines). Sticky nav, dark-navy gradient hero, headline stats grid, filterable project grid, process flow, capabilities, contact cards, footer.
+- **Static landing page** `index.html` with an editorial palette (warm cream `#fafaf7`, navy `#0f2a4a`, terracotta `#c85c3c`, Iowan Old Style serif headlines). Sticky nav, dark-navy gradient hero, headline stats grid, filterable project grid, process flow, capabilities, contact cards, footer.
 - **Four long-form case studies** in `case-studies/`:
   - `pjm/`: hourly load forecasting on real PJM East data; SARIMA / state-space / GBM compared (`GBM 6.2% MAPE`).
   - `kariba/`: Lake Kariba river-flow forecasting on real Zambezi reservoir data (`GBM RMSE 7 cm`).

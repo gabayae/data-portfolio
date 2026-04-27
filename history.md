@@ -24,7 +24,7 @@ A complete log of how this portfolio was built. Two intensive sessions, 27 commi
 
 The user (Yaé Gaba, PhD) had a Microsoft AI Data Scientist position to apply for. The original ask was a CV refresh; it grew into a complete portfolio.
 
-The portfolio's editorial design follows the [PasserellAI](https://passerellai.com/) palette — warm cream `#fafaf7`, navy `#0f2a4a`, terracotta accent `#c85c3c`, Iowan Old Style serif headlines over Inter sans body — chosen as a deliberately editorial alternative to the typical "dashboard / dark-mode" portfolio aesthetic.
+The portfolio's design uses an editorial palette — warm cream `#fafaf7`, navy `#0f2a4a`, terracotta accent `#c85c3c`, Iowan Old Style serif headlines over Inter sans body — chosen as a deliberately editorial alternative to the typical "dashboard / dark-mode" portfolio aesthetic.
 
 ---
 
@@ -73,7 +73,7 @@ Each case study is a long-form deep-dive that draws plots from its executed note
 4.  846c4ec  2026-04-25  Add PJM case-study page + wire up case-study link
 5.  25ebfbb  2026-04-25  Wire profile photo path with monogram fallback + restore full README
 6.  c02f75f  2026-04-25  Add Streamlit twin (portfolio_app.py + portfolio_config.py)
-7.  caefd14  2026-04-25  Add EN/FR bilingual toggle (mirror PasserellAI pattern)
+7.  caefd14  2026-04-25  Add EN/FR bilingual toggle
 8.  349d3b1  2026-04-25  Add Lake Kariba case-study page
 9.  8717190  2026-04-25  Add nav header to every project README
 10. c3375bc  2026-04-25  Add case-studies index page + custom 404
@@ -104,7 +104,7 @@ Each case study is a long-form deep-dive that draws plots from its executed note
 
 **1. CV → portfolio scope expansion.** The original CV brief mentioned three sample projects. The user asked for the full pipeline — folder per project, real data, executable notebook — and grew the count from 5 to 13 to mirror an existing inspiration repo (`portfolio-with-calgary-data/`). Real data sourcing: Kaggle for 11 projects, NASA POWER API for solar, USAID PEPFAR SCMS for the supply-chain project.
 
-**2. Editorial design.** The user shared the [PasserellAI](https://passerellai.com/) site as a reference and asked for a similar feel rather than a dashboard aesthetic. The palette (cream + navy + terracotta) and typography (Iowan Old Style serif + Inter sans) were lifted from there. The first version had the colors swapped (terracotta primary, navy accent) and the user said "swap the colors" — the navy-primary / terracotta-accent version stuck.
+**2. Editorial design.** Going for an editorial feel rather than a dashboard aesthetic — palette (cream + navy + terracotta) and typography (Iowan Old Style serif + Inter sans). The first version had the colors swapped (terracotta primary, navy accent); the navy-primary / terracotta-accent version stuck.
 
 **3. Folder structure.** `01-…/` through `13-…/`, each with README.md + notebook.ipynb + download_data.py + requirements.txt + gitignored `data/`. Single shared `pyproject.toml`, `Makefile`, `CONTRIBUTING.md`, `LICENSE` (MIT) at the root.
 

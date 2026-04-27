@@ -23,7 +23,7 @@ st.set_page_config(
     menu_items={"About": f"{cfg.NAME} — Data Science Portfolio. {cfg.SITE}"},
 )
 
-# ── Custom CSS (PasserellAI editorial palette) ────────────────────────────────
+# ── Custom CSS (editorial palette) ────────────────────────────────────────────
 st.markdown(
     f"""
     <style>

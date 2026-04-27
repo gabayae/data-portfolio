@@ -27,7 +27,7 @@ LOCATION = "Cotonou, Benin"
 # from <name>.streamlit.app (a different origin than GitHub Pages).
 STATIC_BASE = "https://gabayae.github.io/data-portfolio/"
 
-# ── Visual tokens (PasserellAI editorial palette) ─────────────────────────────
+# ── Visual tokens (editorial palette) ─────────────────────────────────────────
 COLOR_BG = "#fafaf7"
 COLOR_SURFACE = "#ffffff"
 COLOR_INK = "#171717"
