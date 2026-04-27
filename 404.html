@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>404 — Page not found · Yaé Gaba</title>
+<title>404 — Page not found · Page introuvable · Yaé Gaba</title>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/svg+xml" href="/data-portfolio/favicon.svg">
 <style>
@@ -79,6 +79,20 @@ p.lede {
 .suggested li { padding: 0.3rem 0; }
 .suggested li::before { content: "→"; color: var(--color-accent); margin-right: 0.5rem; }
 
+.lang-switch {
+  display: inline-flex; gap: 0; border: 1px solid var(--color-border);
+  border-radius: 8px; overflow: hidden; font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+.lang-switch button {
+  padding: 0.4rem 0.9rem; background: transparent; border: 0; cursor: pointer;
+  color: var(--color-muted); font-family: inherit; font-weight: 500;
+}
+.lang-switch button.active { background: var(--color-primary); color: #fff; }
+.lang-switch button:not(.active):hover { color: var(--color-accent); }
+
+[hidden] { display: none !important; }
+
 footer {
   border-top: 1px solid var(--color-border);
   padding: 1.4rem; text-align: center;
@@ -91,32 +105,93 @@ footer {
 
 <div class="wrap">
   <div class="code">404</div>
-  <h1>This page didn't make it through validation.</h1>
-  <p class="lede">
-    That URL doesn't resolve to anything on this portfolio. It may have moved, or never existed. Either way, the rest of the site is alive and well.
-  </p>
 
-  <div class="cta">
-    <a href="/data-portfolio/" class="btn btn--primary">Back to portfolio</a>
-    <a href="/data-portfolio/#projects" class="btn btn--outline">All projects</a>
-    <a href="/data-portfolio/case-studies/" class="btn btn--outline">Case studies</a>
+  <div class="lang-switch" role="tablist" aria-label="Language switch">
+    <button id="btnEN" class="active" role="tab" aria-selected="true" data-lang="en">EN</button>
+    <button id="btnFR" role="tab" aria-selected="false" data-lang="fr">FR</button>
   </div>
 
-  <div class="suggested">
-    <h2>You might be looking for</h2>
-    <ul>
-      <li><a href="/data-portfolio/">Portfolio home</a></li>
-      <li><a href="/data-portfolio/#projects">All 13 projects</a></li>
-      <li><a href="/data-portfolio/case-studies/pjm/">Case study — PJM hourly load forecasting</a></li>
-      <li><a href="/data-portfolio/case-studies/kariba/">Case study — Lake Kariba river flow</a></li>
-      <li><a href="/data-portfolio/fr/">Version française</a></li>
-    </ul>
+  <!-- ── English ─────────────────────────────────────────────────────────── -->
+  <div id="content-en" lang="en">
+    <h1>This page didn't make it through validation.</h1>
+    <p class="lede">
+      That URL doesn't resolve to anything on this portfolio. It may have moved, or never existed. Either way, the rest of the site is alive and well.
+    </p>
+
+    <div class="cta">
+      <a href="/data-portfolio/" class="btn btn--primary">Back to portfolio</a>
+      <a href="/data-portfolio/#projects" class="btn btn--outline">All projects</a>
+      <a href="/data-portfolio/case-studies/" class="btn btn--outline">Case studies</a>
+    </div>
+
+    <div class="suggested">
+      <h2>You might be looking for</h2>
+      <ul>
+        <li><a href="/data-portfolio/">Portfolio home</a></li>
+        <li><a href="/data-portfolio/#projects">All 13 projects</a></li>
+        <li><a href="/data-portfolio/case-studies/pjm/">Case study — PJM hourly load forecasting</a></li>
+        <li><a href="/data-portfolio/case-studies/kariba/">Case study — Lake Kariba river flow</a></li>
+        <li><a href="/data-portfolio/fr/">Version française</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── French ──────────────────────────────────────────────────────────── -->
+  <div id="content-fr" lang="fr" hidden>
+    <h1>Cette page n'a pas passé la validation.</h1>
+    <p class="lede">
+      Cette URL ne mène à rien sur ce portfolio. Elle a peut-être bougé, ou n'a jamais existé. Quoi qu'il en soit, le reste du site se porte très bien.
+    </p>
+
+    <div class="cta">
+      <a href="/data-portfolio/fr/" class="btn btn--primary">Retour au portfolio</a>
+      <a href="/data-portfolio/fr/#projects" class="btn btn--outline">Tous les projets</a>
+      <a href="/data-portfolio/fr/case-studies/" class="btn btn--outline">Études de cas</a>
+    </div>
+
+    <div class="suggested">
+      <h2>Vous cherchiez peut-être</h2>
+      <ul>
+        <li><a href="/data-portfolio/fr/">Accueil du portfolio</a></li>
+        <li><a href="/data-portfolio/fr/#projects">Les 13 projets</a></li>
+        <li><a href="/data-portfolio/fr/case-studies/pjm/">Étude de cas — Prévision de charge PJM</a></li>
+        <li><a href="/data-portfolio/fr/case-studies/kariba/">Étude de cas — Débit du lac Kariba</a></li>
+        <li><a href="/data-portfolio/">English version</a></li>
+      </ul>
+    </div>
   </div>
 </div>
 
 <footer>
   <p>© 2026 Yaé Gaba · MIT licensed · <a href="https://github.com/gabayae/data-portfolio">github.com/gabayae/data-portfolio</a></p>
 </footer>
+
+<script>
+  // Pick the language to show first based on the URL the user landed on.
+  // /data-portfolio/fr/anything-broken/ → show FR; everything else → show EN.
+  const path = window.location.pathname.toLowerCase();
+  const startsFR = path.startsWith('/data-portfolio/fr/') || path.startsWith('/fr/');
+  const en = document.getElementById('content-en');
+  const fr = document.getElementById('content-fr');
+  const btnEN = document.getElementById('btnEN');
+  const btnFR = document.getElementById('btnFR');
+  function show(lang) {
+    const isEN = lang === 'en';
+    en.hidden = !isEN;
+    fr.hidden = isEN;
+    btnEN.classList.toggle('active', isEN);
+    btnFR.classList.toggle('active', !isEN);
+    btnEN.setAttribute('aria-selected', isEN);
+    btnFR.setAttribute('aria-selected', !isEN);
+    document.documentElement.lang = lang;
+    document.title = isEN
+      ? '404 — Page not found · Yaé Gaba'
+      : '404 — Page introuvable · Yaé Gaba';
+  }
+  if (startsFR) show('fr');
+  btnEN.addEventListener('click', () => show('en'));
+  btnFR.addEventListener('click', () => show('fr'));
+</script>
 
 </body>
 </html>
