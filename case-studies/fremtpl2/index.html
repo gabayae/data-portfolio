@@ -311,17 +311,17 @@ footer a { color: #ffd7c5; }
       Two empirical facts dominate the modelling decision:
     </p>
     <ol>
-      <li><strong>The claim-count distribution is heavy on zero.</strong> Almost 95% of policies file no claims. Of those that do, most file exactly one — the long tail of two-or-more is genuinely small.</li>
+      <li><strong>The claim-count distribution is heavy on zero.</strong> Almost 95% of policies file no claims. Of those that do, most file exactly one; the long tail of two-or-more is genuinely small.</li>
       <li><strong>Severity is heavy-right-tailed.</strong> Most positive claims are small (~1k EUR), but a long tail extends to the per-policy cap. Modelling severity in linear space without a log-link is a non-starter.</li>
     </ol>
 
     <figure class="figure">
       <img src="plot-01.png" alt="Claim-count distribution and severity histogram" width="1189" height="390">
-      <figcaption><strong>Figure 1.</strong> Left: count of claims per policy on a log-y axis — 95% zero, ~5% with one claim, very few with two or more. Right: severity distribution on positive claims, capped at 30k EUR for visibility — the right tail extends well beyond the plot.</figcaption>
+      <figcaption><strong>Figure 1.</strong> Left: count of claims per policy on a log-y axis — 95% zero, ~5% with one claim, very few with two or more. Right: severity distribution on positive claims, capped at 30k EUR for visibility; the right tail extends well beyond the plot.</figcaption>
     </figure>
 
     <p>
-      The empirical <strong>variance-to-mean ratio of claim count is 1.083</strong>. Mild overdispersion — Poisson is a defensible baseline, but a negative-binomial or Tweedie family captures the extra variance more cleanly.
+      The empirical <strong>variance-to-mean ratio of claim count is 1.083</strong>. Mild overdispersion. Poisson is a defensible baseline, but a negative-binomial or Tweedie family captures the extra variance more cleanly.
     </p>
 
     <h2 id="approach">Modelling approach</h2>
@@ -366,19 +366,19 @@ footer a { color: #ffd7c5; }
 
     <figure class="figure">
       <img src="plot-02.png" alt="Lorenz curves for Tweedie, Poisson+Gamma, and GBM" width="590" height="490">
-      <figcaption><strong>Figure 2.</strong> Lorenz curves on the held-out test set. The diagonal is the random baseline. The further the curve bows below the diagonal, the better the model concentrates loss in the lowest-risk policies (and equivalently, the better it concentrates predicted risk in the highest-loss policies). Tweedie sits below Poisson + Gamma overall, but the GLMs cross at the upper-right — exactly the region the top-decile-lift metric is sensitive to.</figcaption>
+      <figcaption><strong>Figure 2.</strong> Lorenz curves on the held-out test set. The diagonal is the random baseline. The further the curve bows below the diagonal, the better the model concentrates loss in the lowest-risk policies (and equivalently, the better it concentrates predicted risk in the highest-loss policies). Tweedie sits below Poisson + Gamma overall, but the GLMs cross at the upper-right, exactly the region the top-decile-lift metric is sensitive to.</figcaption>
     </figure>
 
     <div class="callout">
-      <strong>Two metrics, two winners.</strong> Tweedie captures more of the rank-ordering signal across the whole policy base (Gini), so it would price better on average. But Poisson + Gamma identifies the extreme upper tail more sharply (top-decile lift 2.66 vs Tweedie's 2.52), so it would route more correctly to the highest pricing tier. Which model "wins" depends on whether the rating engine prices continuously off the score or bins into tiers — and on which tier matters most.
+      <strong>Two metrics, two winners.</strong> Tweedie captures more of the rank-ordering signal across the whole policy base (Gini), so it would price better on average. But Poisson + Gamma identifies the extreme upper tail more sharply (top-decile lift 2.66 vs Tweedie's 2.52), so it would route more correctly to the highest pricing tier. Which model "wins" depends on whether the rating engine prices continuously off the score or bins into tiers, and on which tier matters most.
     </div>
 
     <h2 id="tradeoffs">Trade-offs</h2>
     <ul>
       <li><strong>Tweedie's coefficient story is unified but less granular.</strong> Each coefficient affects pure premium directly; you lose the actuarial habit of decomposing a tier change into "more claims" vs. "bigger claims." If your team thinks in those terms, Poisson + Gamma stays clearer.</li>
       <li><strong>Poisson + Gamma compounds two model errors.</strong> Pure premium = freq × severity, so any bias in either propagates. Tweedie sidesteps this by jointly fitting.</li>
-      <li><strong>The GBM is the weakest of the three on this data.</strong> Without monotonicity constraints it's also the hardest to defend — a production version would add them on <code>bonus_malus</code> and possibly <code>driv_age</code>, and would likely close most of the Gini gap. Held as a research artifact, not a production candidate.</li>
-      <li><strong>All three under-segment the heaviest tail.</strong> A 5% claim-rate dataset rewards models that can find the rare-loss policies; even Tweedie's 0.31 Gini means the model is far from a perfect ordering. This is a feature-set ceiling, not an algorithm ceiling — adding a telematics signal or finer geographic rating would matter more than swapping models.</li>
+      <li><strong>The GBM is the weakest of the three on this data.</strong> Without monotonicity constraints it's also the hardest to defend; a production version would add them on <code>bonus_malus</code> and possibly <code>driv_age</code>, and would likely close most of the Gini gap. Held as a research artifact, not a production candidate.</li>
+      <li><strong>All three under-segment the heaviest tail.</strong> A 5% claim-rate dataset rewards models that can find the rare-loss policies; even Tweedie's 0.31 Gini means the model is far from a perfect ordering. This is a feature-set ceiling, not an algorithm ceiling; adding a telematics signal or finer geographic rating would matter more than swapping models.</li>
     </ul>
 
     <h2 id="deployment">Deployment sketch</h2>
@@ -387,14 +387,14 @@ footer a { color: #ffd7c5; }
       <li><strong>Scoring artifact.</strong> Export the Tweedie coefficients as a CSV, plus the GBM as a pickled model. The rating engine evaluates both and returns the (configurable) winning prediction; an A/B-test slot lets the team compare them on live cohorts.</li>
       <li><strong>Actuarial memo.</strong> Partial-dependence plots for each covariate (especially <code>bonus_malus</code> and <code>driv_age</code>), calibration tables binned by predicted-decile, and Lorenz curves on rolling cohorts.</li>
       <li><strong>Drift monitor.</strong> Monthly Gini on a holdout cohort; alert if Gini falls below 0.25 over a 60-day window. Annual full refit; quarterly review.</li>
-      <li><strong>Fairness audit.</strong> Per-driver-age-decile and per-region calibration tables — flagged for actuarial review whenever the test-cohort calibration error exceeds 5%.</li>
+      <li><strong>Fairness audit.</strong> Per-driver-age-decile and per-region calibration tables, flagged for actuarial review whenever the test-cohort calibration error exceeds 5%.</li>
     </ul>
 
     <h2 id="lessons">Lessons</h2>
     <ol>
       <li><strong>Pick the metric your downstream consumer actually uses, then pick the model.</strong> Tweedie wins overall Gini; Poisson + Gamma wins top-decile lift. If your rating engine bins into tiers, the right answer is not the higher-Gini model.</li>
       <li><strong>Mild overdispersion is not Tweedie-mandatory.</strong> Var/Mean = 1.083 means Poisson isn't badly mis-specified. Tweedie's win is real but modest; the real differentiator is the modelling-philosophy fit (one model vs. two).</li>
-      <li><strong>GLMs still beat unconstrained ML on this kind of data.</strong> Without monotonicity priors and feature regularisation, a GBM is structurally too flexible for the signal-to-noise ratio of motor insurance. The right ML deployment in this domain is monotonic-constrained boosting plus calibration — the unconstrained version is a research point, not a production lift.</li>
+      <li><strong>GLMs still beat unconstrained ML on this kind of data.</strong> Without monotonicity priors and feature regularisation, a GBM is structurally too flexible for the signal-to-noise ratio of motor insurance. The right ML deployment in this domain is monotonic-constrained boosting plus calibration. The unconstrained version is a research point, not a production lift.</li>
     </ol>
 
     <div class="cta-row">

@@ -246,7 +246,7 @@ footer a { color: #ffd7c5; }
     <span class="case-hero__eyebrow">Case study · Energy · Time-series</span>
     <h1 class="case-hero__title">Solar irradiance forecasting — Nairobi</h1>
     <p class="case-hero__sub">
-      90-day daily irradiance forecasting for Nairobi on a free, programmatic, decade-long dataset. GBM with weather covariates wins on point accuracy; monthly climatology is a stronger baseline than most people expect; structural state-space models give the operationally useful uncertainty signal — the same three-way trade-off as PJM, in a different physical regime.
+      90-day daily irradiance forecasting for Nairobi on a free, programmatic, decade-long dataset. GBM with weather covariates wins on point accuracy. Monthly climatology is a stronger baseline than most people expect. Structural state-space models give the operationally useful uncertainty signal. Same three-way trade-off as PJM, in a different physical regime.
     </p>
     <div class="case-hero__meta">
       <span class="case-hero__readtime"><strong>Read</strong> · 7 min · 1,421 words</span>
@@ -280,12 +280,12 @@ footer a { color: #ffd7c5; }
 
     <h2 id="summary">Summary</h2>
     <p class="lede">
-      A gradient-boosted regressor that uses lagged irradiance + same-day weather covariates (cloud cover, humidity, precipitation, temperature, wind) forecasts daily Nairobi irradiance with <strong>9.4% MAPE</strong> across a 90-day horizon — versus SARIMA at 13.8% and a UC state-space at 21.6%. Two findings worth keeping: <strong>monthly climatology hits 12.3% MAPE</strong> (better than SARIMA) — the seasonal envelope alone explains most of the predictability. And <strong>both SARIMA and UC deliver 99% empirical PI coverage</strong>: for a battery-sizing or grid-balancing decision, the calibrated interval is what actually drives sizing, not the GBM's tighter mean.
+      A gradient-boosted regressor that uses lagged irradiance plus same-day weather covariates (cloud cover, humidity, precipitation, temperature, wind) forecasts daily Nairobi irradiance with <strong>9.4% MAPE</strong> across a 90-day horizon. SARIMA gets 13.8%; a UC state-space, 21.6%. Two findings worth keeping. <strong>Monthly climatology hits 12.3% MAPE</strong> (better than SARIMA), so the seasonal envelope alone explains most of the predictability. And <strong>both SARIMA and UC deliver 99% empirical PI coverage</strong>: for a battery-sizing or grid-balancing decision, the calibrated interval is what actually drives sizing, not the GBM's tighter mean.
     </p>
 
     <h2 id="stakes">Why this matters</h2>
     <p>
-      Kenya runs one of the largest pay-as-you-go solar markets in Africa — millions of household systems with sub-day battery capacity. The forecast question repeats every evening: <em>charge the battery hard tonight, or assume tomorrow's sun will be enough?</em> Same question at the utility level for grid integrators balancing solar against thermal and hydro. A 1-day-ahead irradiance error of 5% can flip whether a battery should be filled tonight or held in reserve. At 90-day horizons the question shifts to budgeting and storage-contract negotiation, but the metric vocabulary is the same.
+      Kenya runs one of the largest pay-as-you-go solar markets in Africa, with millions of household systems on sub-day battery capacity. The forecast question repeats every evening: <em>charge the battery hard tonight, or assume tomorrow's sun will be enough?</em> Same question at the utility level for grid integrators balancing solar against thermal and hydro. A 1-day-ahead irradiance error of 5% can flip whether a battery should be filled tonight or held in reserve. At 90-day horizons the question shifts to budgeting and storage-contract negotiation, but the metric vocabulary is the same.
     </p>
 
     <h2 id="question">The business question</h2>
@@ -314,7 +314,7 @@ footer a { color: #ffd7c5; }
       <li><code>CLOUD_AMT</code>: cloud cover %</li>
     </ul>
     <p>
-      Last 90 days held out as the test window; everything before that is training. NASA POWER's free-tier is generous and the API endpoint is one URL — same pipeline switches to Lagos, Cape Town, Cairo, or Dakar by changing two numbers in <code>download_data.py</code>.
+      Last 90 days held out as the test window; everything before that is training. NASA POWER's free tier is generous and the API endpoint is one URL. The same pipeline switches to Lagos, Cape Town, Cairo, or Dakar by changing two numbers in <code>download_data.py</code>.
     </p>
     <div class="chip-row">
       <span class="chip">NASA POWER API</span><span class="chip">No auth</span><span class="chip">Daily resolution</span><span class="chip">10 years</span><span class="chip">6 weather variables</span>
@@ -337,7 +337,7 @@ footer a { color: #ffd7c5; }
 
     <figure class="figure">
       <img src="plot-03.png" alt="Correlation matrix of NASA POWER variables for Nairobi" loading="lazy" width="666" height="490">
-      <figcaption><strong>Figure 3.</strong> Correlation matrix. Irradiance correlates strongly with cloud cover (negative, ~−0.7) and humidity (negative, ~−0.4). Temperature is weakly positive — irradiance drives temperature, not the reverse. The cloud-cover signal is the lever that lets the GBM beat SARIMA: same-day cloud is a ground truth SARIMA can't access from lagged irradiance alone.</figcaption>
+      <figcaption><strong>Figure 3.</strong> Correlation matrix. Irradiance correlates strongly with cloud cover (negative, ~−0.7) and humidity (negative, ~−0.4). Temperature is weakly positive: irradiance drives temperature, not the reverse. The cloud-cover signal is the lever that lets the GBM beat SARIMA: same-day cloud is a ground truth SARIMA can't access from lagged irradiance alone.</figcaption>
     </figure>
 
     <h2 id="approach">Modelling approach</h2>
@@ -345,7 +345,7 @@ footer a { color: #ffd7c5; }
 
     <h3>1. SARIMA</h3>
     <p>
-      <code>SARIMAX(2,0,2)(1,0,1)<sub>7</sub></code> — non-stationary AR/MA + weekly seasonal AR/MA. Note the order: irradiance is stationary in mean (cloud cycles oscillate around a fixed climatology), so no integration term. The weekly seasonal component is mostly absorbing measurement noise — solar isn't really a "weekly cycle" phenomenon at this latitude, but day-of-week sometimes correlates with measurement smoothing.
+      <code>SARIMAX(2,0,2)(1,0,1)<sub>7</sub></code>: non-stationary AR/MA plus weekly seasonal AR/MA. Note the order. Irradiance is stationary in mean (cloud cycles oscillate around a fixed climatology), so no integration term. The weekly seasonal component is mostly absorbing measurement noise; solar isn't really a "weekly cycle" phenomenon at this latitude, but day-of-week sometimes correlates with measurement smoothing.
     </p>
 
     <h3>2. State-space — UnobservedComponents + annual Fourier exog</h3>
@@ -395,13 +395,13 @@ footer a { color: #ffd7c5; }
     </figure>
 
     <div class="callout">
-      <strong>Climatology is a strong baseline — and that's a feature, not a bug.</strong> Monthly climatology's 12.3% MAPE beats SARIMA's 13.8%. It tells you the predictability ceiling for an irradiance series at this latitude is mostly the seasonal envelope: knowing the calendar month gives you most of what's knowable. The GBM's 9.4% gain over climatology comes almost entirely from same-day cloud + humidity covariates — the part that <em>can't</em> be guessed from the calendar alone.
+      <strong>Climatology is a strong baseline. That's a feature, not a bug.</strong> Monthly climatology's 12.3% MAPE beats SARIMA's 13.8%. It tells you the predictability ceiling for an irradiance series at this latitude is mostly the seasonal envelope: knowing the calendar month gives you most of what's knowable. The GBM's 9.4% gain over climatology comes almost entirely from same-day cloud and humidity covariates: the part that <em>can't</em> be guessed from the calendar alone.
     </div>
 
     <h2 id="tradeoffs">Trade-offs</h2>
     <ul>
       <li><strong>The GBM's gain depends on having weather data at prediction time.</strong> If the forecast is run for a date 7+ days out, you're feeding it forecast-of-forecast values for cloud/humidity, which are themselves uncertain. Production deployment needs to either (a) cap the horizon at the weather-forecast confidence horizon, or (b) chain a weather forecast model. Climatology has neither problem and is the right fallback.</li>
-      <li><strong>SARIMA and UC's PI coverage is the operationally useful number.</strong> 99% coverage at 95% nominal means the intervals are slightly wide — but for a battery-sizing decision, "wider but honest" is the right bias. Over-narrow intervals would be worse.</li>
+      <li><strong>SARIMA and UC's PI coverage is the operationally useful number.</strong> 99% coverage at 95% nominal means the intervals are slightly wide; but for a battery-sizing decision, "wider but honest" is the right bias. Over-narrow intervals would be worse.</li>
       <li><strong>UC underperforms on point forecast despite being structurally appropriate.</strong> The Fourier-order-4 might be overfitting to the training window's specific bimodal shape; a simpler order-2 with more noise tolerance might generalise better. Worth iterating in production.</li>
       <li><strong>"Monthly climatology beats SARIMA" is a useful sanity check.</strong> It says the AR/MA structure is barely doing anything for this series. Production deployments should monitor whether SARIMA actually beats climatology on the rolling cohort — if not, ship climatology and save the compute.</li>
     </ul>

@@ -286,7 +286,7 @@ footer a { color: #ffd7c5; }
 
     <h2 id="summary">Summary</h2>
     <p class="lede">
-      A gradient-boosted regressor that uses real-time turbine discharge as an exogenous covariate forecasts Lake Kariba's daily lake-level with <strong>7 cm RMSE</strong> across a 30-day horizon — versus 18 cm for SARIMA, 24 cm for an unobserved-components state-space model, and 50 cm for the naive last-observation baseline. Both SARIMA and the state-space model deliver well-calibrated prediction intervals (95–100% empirical coverage of the nominal 95% level), making them the better choice for risk-aware dispatch decisions even though their point forecasts trail.
+      A gradient-boosted regressor that uses real-time turbine discharge as an exogenous covariate forecasts Lake Kariba's daily lake-level with <strong>7 cm RMSE</strong> across a 30-day horizon. SARIMA gets 18 cm; an unobserved-components state-space model, 24 cm; the naive last-observation baseline, 50 cm. Both SARIMA and the state-space model deliver well-calibrated prediction intervals (95–100% empirical coverage of the nominal 95% level), making them the better choice for risk-aware dispatch decisions even though their point forecasts trail.
     </p>
     <p>
       The same trade-off as PJM, in a higher-stakes setting: ML wins on point accuracy, structural models win on calibrated uncertainty. Ship the ensemble.
@@ -312,7 +312,7 @@ footer a { color: #ffd7c5; }
       <li><strong>Risk &amp; load-shedding negotiation</strong>: quantifying the probability the lake falls below operational thresholds in scenarios where inflows underperform.</li>
     </ul>
     <p>
-      The first wants the most accurate point forecast; the second wants honest uncertainty bands. Same forecast input, different downstream decisions — the same pattern as the PJM load-forecasting study, with much higher stakes per percentage-point of error.
+      The first wants the most accurate point forecast; the second wants honest uncertainty bands. Same forecast input, different downstream decisions: the same pattern as the PJM load-forecasting study, with much higher stakes per percentage-point of error.
     </p>
 
     <h2 id="data">Data</h2>
@@ -342,12 +342,12 @@ footer a { color: #ffd7c5; }
 
     <figure class="figure">
       <img src="plot-02.png" alt="Annual cycle: monthly mean lake level vs turbine discharge" width="889" height="390">
-      <figcaption><strong>Figure 2.</strong> Annual cycle. Mean lake level (blue) peaks May–July (post-rains), troughs Nov–Dec (end of dry season). Turbine discharge (orange) lags the level — operators capitalise on high water through the dry months.</figcaption>
+      <figcaption><strong>Figure 2.</strong> Annual cycle. Mean lake level (blue) peaks May–July (post-rains), troughs Nov–Dec (end of dry season). Turbine discharge (orange) lags the level; operators capitalise on high water through the dry months.</figcaption>
     </figure>
 
     <figure class="figure">
       <img src="plot-03.png" alt="Correlation matrix of reservoir variables" width="563" height="390">
-      <figcaption><strong>Figure 3.</strong> Correlation matrix. Lake level, usable storage, and live storage move as one (r &gt; 0.99) — the storage volumes are mechanical functions of level. Turbine discharge correlates weakly with level on the daily scale; the relationship is mostly seasonal and lagged.</figcaption>
+      <figcaption><strong>Figure 3.</strong> Correlation matrix. Lake level, usable storage, and live storage move as one (r &gt; 0.99): the storage volumes are mechanical functions of level. Turbine discharge correlates weakly with level on the daily scale; the relationship is mostly seasonal and lagged.</figcaption>
     </figure>
 
     <h2 id="approach">Modelling approach</h2>
@@ -357,7 +357,7 @@ footer a { color: #ffd7c5; }
 
     <h3>1. SARIMA baseline</h3>
     <p>
-      <code>SARIMAX(1,1,1)(1,1,1)<sub>7</sub></code>. Captures short-range autocorrelation and weekly cycles. The annual cycle has to be absorbed implicitly by the integration term — a known weakness on a series this strongly seasonal.
+      <code>SARIMAX(1,1,1)(1,1,1)<sub>7</sub></code>. Captures short-range autocorrelation and weekly cycles. The annual cycle has to be absorbed implicitly by the integration term, a known weakness on a series this strongly seasonal.
     </p>
 
     <h3>2. State-space — UnobservedComponents + Fourier exog</h3>
@@ -406,7 +406,7 @@ footer a { color: #ffd7c5; }
 
     <h2 id="tradeoffs">Trade-offs</h2>
     <ul>
-      <li><strong>The GBM's headline number depends on having outflow data in real time.</strong> If discharge metering is delayed or missing — a real risk on a transboundary reservoir — the GBM degrades to the same family of accuracy as SARIMA. The structural models hold up regardless.</li>
+      <li><strong>The GBM's headline number depends on having outflow data in real time.</strong> If discharge metering is delayed or missing (a real risk on a transboundary reservoir), the GBM degrades to the same family of accuracy as SARIMA. The structural models hold up regardless.</li>
       <li><strong>The 2019–2020 drought regime is in the training data.</strong> The model has seen one full drought-recovery cycle, not multiple. A second drought of equal severity wouldn't be unprecedented from a training-distribution perspective, but a more severe one would extrapolate.</li>
       <li><strong>Inflow forecasts are missing on purpose.</strong> Coupling rainfall / runoff forecasts (CHIRPS, NASA POWER precipitation) as additional exogenous covariates would likely tighten all three models. The intent of the case study was to compare modelling families on the same information set, not to engineer a maximum-accuracy production system.</li>
       <li><strong>Interpretability.</strong> SARIMA and UC expose decomposed components (level, slope, seasonal). GBM's feature-importance is informative but not as audit-friendly for a regulated utility setting.</li>
@@ -419,13 +419,13 @@ footer a { color: #ffd7c5; }
       <li><strong>Companion endpoint:</strong> <code>/outflow</code> for total outflow predictions, used by downstream Cahora Bassa coordination.</li>
       <li><strong>Dashboard:</strong> Streamlit panel for ZRA — current level, 30-day forecast band, downside scenario (10th-percentile inflow), generation-impact estimate per scenario.</li>
       <li><strong>Retraining:</strong> weekly cron rebuilds models on the trailing 3 years.</li>
-      <li><strong>Alerting:</strong> PagerDuty if any quantile of the 30-day forecast crosses 475 m (turbine safety threshold) — early warning for load-shedding negotiations.</li>
+      <li><strong>Alerting:</strong> PagerDuty if any quantile of the 30-day forecast crosses 475 m (turbine safety threshold). Early warning for load-shedding negotiations.</li>
     </ul>
 
     <h2 id="lessons">Lessons</h2>
     <ol>
       <li><strong>Exogenous covariates dominate when they exist.</strong> The 60% RMSE reduction (SARIMA → GBM) is almost entirely attributable to having turbine discharge in the feature set. Picking the right inputs beats picking the right algorithm.</li>
-      <li><strong>Slow-moving, high-stakes targets need narrow PIs, not just low MAPE.</strong> A 7 cm point error is tight — but on this kind of asset, "what's the probability we breach the operational threshold in the next 30 days" is the question that actually drives decisions. SARIMA's calibrated interval is often more valuable than GBM's tighter mean.</li>
+      <li><strong>Slow-moving, high-stakes targets need narrow PIs, not just low MAPE.</strong> A 7 cm point error is tight; but on this kind of asset, "what's the probability we breach the operational threshold in the next 30 days" is the question that actually drives decisions. SARIMA's calibrated interval is often more valuable than GBM's tighter mean.</li>
       <li><strong>Real African open data is good enough.</strong> Lake Kariba is a transboundary reservoir between two African countries; the daily data exists and is publicly accessible on Kaggle. The model would extend cleanly to Cahora Bassa and other African dams once equivalent data is published.</li>
     </ol>
 

@@ -318,7 +318,7 @@ footer a { color: #ffd7c5; }
 
     <figure class="figure">
       <img src="plot-02.png" alt="Per-county SHA payment time-series across Dec-Feb" width="1089" height="390">
-      <figcaption><strong>Figure 2.</strong> Per-county SHA payments over the 8 observation periods. Variation is real and county-specific — the seasonal modulation per county is what gives the MDP its non-trivial dynamics; otherwise it would degenerate to "always pick Nairobi."</figcaption>
+      <figcaption><strong>Figure 2.</strong> Per-county SHA payments over the 8 observation periods. Variation is real and county-specific. The seasonal modulation per county is what gives the MDP its non-trivial dynamics; otherwise it would degenerate to "always pick Nairobi."</figcaption>
     </figure>
 
     <h2 id="mdp">MDP formulation</h2>
@@ -327,25 +327,25 @@ footer a { color: #ffd7c5; }
     </p>
     <ul>
       <li><strong>State</strong>: <code>(current_county, day_of_week_bucket)</code>, where day-of-week is mod 7. Twelve counties × 7 buckets = 84 discrete states.</li>
-      <li><strong>Action</strong>: one of the 12 counties — "where do we go tomorrow?"</li>
-      <li><strong>Transition</strong>: deterministic given the action (location moves to the chosen county; day bucket increments mod 7). Demand at the destination is stochastic — Poisson-distributed with mean tied to the county's real SHA payment seasonality.</li>
+      <li><strong>Action</strong>: one of the 12 counties (the question is "where do we go tomorrow?").</li>
+      <li><strong>Transition</strong>: deterministic given the action (location moves to the chosen county; day bucket increments mod 7). Demand at the destination is stochastic, Poisson-distributed with mean tied to the county's real SHA payment seasonality.</li>
       <li><strong>Reward</strong>: <code>min(patients_served, daily_capacity) − α × distance(prev, action)</code>. Patients-served capped at 100/day per the daily clinic capacity; distance penalised at <code>α = 0.05</code> per km.</li>
       <li><strong>Horizon</strong>: 180 days, no discounting at episode end (γ = 0.95 within-episode).</li>
     </ul>
     <p>
-      Distance comes from synthetic 2D coordinates within Kenya's lat/lon bounding box because the public Kaggle dataset doesn't include GPS — a clear "swap-in" point for production. The MDP's structural conclusions don't depend on the specific coordinates.
+      Distance comes from synthetic 2D coordinates within Kenya's lat/lon bounding box because the public Kaggle dataset doesn't include GPS, a clear "swap-in" point for production. The MDP's structural conclusions don't depend on the specific coordinates.
     </p>
 
     <figure class="figure">
       <img src="plot-03.png" alt="12 counties plotted in 2D space, bubble size by facility count, color by demand" width="672" height="590">
-      <figcaption><strong>Figure 3.</strong> The 12 candidate counties on a synthetic 2D map. Bubble size scales with facility count, colour with the inferred mean demand. Nairobi is the bright-yellow large bubble — the cluster the optimal policy keeps gravitating toward.</figcaption>
+      <figcaption><strong>Figure 3.</strong> The 12 candidate counties on a synthetic 2D map. Bubble size scales with facility count, colour with the inferred mean demand. Nairobi is the bright-yellow large bubble, the cluster the optimal policy keeps gravitating toward.</figcaption>
     </figure>
 
     <h2 id="approach">Three policies</h2>
 
     <h3>1. Manual round-robin (industry baseline)</h3>
     <p>
-      Visit county <code>t mod 12</code> on day <code>t</code>. This is what most under-resourced field operations actually do — uniform rotation, no demand awareness. Maximises geographic equity by construction; ignores demand.
+      Visit county <code>t mod 12</code> on day <code>t</code>. This is what most under-resourced field operations actually do: uniform rotation, no demand awareness. Maximises geographic equity by construction; ignores demand.
     </p>
 
     <h3>2. Linear program with per-county visit cap</h3>
@@ -363,7 +363,7 @@ footer a { color: #ffd7c5; }
 
     <figure class="figure">
       <img src="plot-04.png" alt="Q-learning training reward curve over 400 episodes" width="889" height="290">
-      <figcaption><strong>Figure 4.</strong> Q-learning training reward (20-episode rolling mean) over 400 episodes. The agent quickly identifies the highest-demand county and stops exploring; reward plateaus around episode 100. Faster convergence than expected — a clean signal that the demand structure is dominated by a single county, not subtle.</figcaption>
+      <figcaption><strong>Figure 4.</strong> Q-learning training reward (20-episode rolling mean) over 400 episodes. The agent quickly identifies the highest-demand county and stops exploring; reward plateaus around episode 100. Faster convergence than expected, a clean signal that the demand structure is dominated by a single county, not subtle.</figcaption>
     </figure>
 
     <h2 id="results">Results</h2>
@@ -386,9 +386,9 @@ footer a { color: #ffd7c5; }
 
     <h2 id="tradeoffs">Trade-offs</h2>
     <ul>
-      <li><strong>The LP makes the mandate explicit; Q-learning hides it.</strong> A 25% cap is a single line of code — and when a programme officer asks "why did the clinic visit this county only twice?", the LP gives an interpretable answer. Q-learning's answer is "the Q-table said so." For a regulated public-health programme, the LP is the better deployment candidate even though it scores worse.</li>
-      <li><strong>Demand concentration drives everything.</strong> Nairobi has 1,723 facilities; #2 Kiambu has 584. The structural answer "always go to Nairobi" comes out of any demand-maximising algorithm. Adding equity constraints isn't optional — it's the entire point of the optimization.</li>
-      <li><strong>The synthetic GPS assumption is the biggest production risk.</strong> Real GPS would shift the LP and Q-learning solutions through the travel-cost term: a county with high demand but high travel cost would lose visits relative to the current setup. The Q-learning solution that "concentrates and never travels" depends on the assumption that you're already there or can teleport — neither is true.</li>
+      <li><strong>The LP makes the mandate explicit; Q-learning hides it.</strong> A 25% cap is a single line of code, and when a programme officer asks "why did the clinic visit this county only twice?", the LP gives an interpretable answer. Q-learning's answer is "the Q-table said so." For a regulated public-health programme, the LP is the better deployment candidate even though it scores worse.</li>
+      <li><strong>Demand concentration drives everything.</strong> Nairobi has 1,723 facilities; #2 Kiambu has 584. The structural answer "always go to Nairobi" comes out of any demand-maximising algorithm. Equity constraints aren't optional. They're the entire point of the optimization.</li>
+      <li><strong>The synthetic GPS assumption is the biggest production risk.</strong> Real GPS would shift the LP and Q-learning solutions through the travel-cost term: a county with high demand but high travel cost would lose visits relative to the current setup. The Q-learning solution that "concentrates and never travels" depends on the assumption that you're already there or can teleport. Neither is true.</li>
       <li><strong>Q-learning is over-engineered for this problem.</strong> The state space has 84 cells, the action space has 12 actions, and the reward is largely deterministic (Poisson noise around a known mean). A direct value-iteration solve would converge in seconds and give the same answer.</li>
     </ul>
 
@@ -404,7 +404,7 @@ footer a { color: #ffd7c5; }
     <h2 id="lessons">Lessons</h2>
     <ol>
       <li><strong>Pick the algorithm that matches the constraint structure, not the headline metric.</strong> Q-learning maximises raw patients-served by a wide margin, but the LP is the deployment-correct answer in a constrained, regulator-overseen setting.</li>
-      <li><strong>"Coverage" is an ambiguous metric until you write down the constraint.</strong> Patients-served and bottom-quartile equity are both reasonable interpretations and the algorithms ranking flips between them. The case-study's hero number (+122%) is honest under one definition and misleading under another — the deep-dive resolves the ambiguity.</li>
+      <li><strong>"Coverage" is an ambiguous metric until you write down the constraint.</strong> Patients-served and bottom-quartile equity are both reasonable interpretations and the algorithms ranking flips between them. The case-study's hero number (+122%) is honest under one definition and misleading under another; the deep-dive resolves the ambiguity.</li>
       <li><strong>Cheap structural prior > expensive learned policy on small action spaces.</strong> 12 actions × 84 states is not a regime where reinforcement learning is the right tool. Direct value iteration or LP would converge faster, give interpretable shadow prices, and avoid the over-engineering trap.</li>
     </ol>
 
