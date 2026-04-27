@@ -15,6 +15,8 @@ Record of substantive changes to this portfolio. Newest entries first.
 - **Prev/next case-study navigation** at the bottom of every case study (10 pages). Chain order: PJM → Kariba → Solar → freMTPL2 → Kenya. PJM and Kenya only have one direction. Localised labels ("Previous"/"Next" vs "Précédente"/"Suivante").
 - **BreadcrumbList JSON-LD** on every case-study page (10 pages). 3-step crumb: portfolio root → case-studies index → current page, with localised names. Pairs with the existing Article schema for richer Google rich-result rendering.
 - **history.md** at the repo root — origin story for the build (27 commits, 13 projects, 5 case studies, day-by-day timeline, architecture decisions, what still needs the user's hands).
+- **Reading-time badge** at the top of each case study (10 pages) — first item in the hero meta strip, e.g. `Read · 6 min · 1,354 words` (EN) or `Lecture · 8 min · 1,658 mots` (FR). Localised, computed at build time from the article body word count at 230 wpm.
+- **Article schema enriched** with `wordCount` and `timeRequired` (ISO 8601 duration, e.g. `PT6M`) on every case-study page — the same numbers Google now exposes as a "X min read" snippet next to the search result.
 
 ## v0.1.0 — 2026-04-25
 
