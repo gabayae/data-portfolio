@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Case studies · Yaé Gaba — Data Science Portfolio</title>
-<meta name="description" content="Long-form case studies on selected portfolio projects: business context, methodology, results, trade-offs, and deployment sketches.">
+<title>Études de cas · Yaé Gaba — Portfolio en science des données</title>
+<meta name="description" content="Études de cas en long format sur des projets sélectionnés du portfolio : contexte métier, méthodologie, résultats, compromis et esquisses de déploiement.">
 <meta name="author" content="Yaé Gaba">
-<link rel="canonical" href="https://gabayae.github.io/data-portfolio/case-studies/">
+<link rel="canonical" href="https://gabayae.github.io/data-portfolio/fr/case-studies/">
 <link rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/case-studies/">
 <link rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/case-studies/">
-<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="icon" type="image/svg+xml" href="/data-portfolio/favicon.svg">
 
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://gabayae.github.io/data-portfolio/case-studies/">
-<meta property="og:title" content="Case studies — Yaé Gaba Data Science Portfolio">
-<meta property="og:description" content="Long-form deep-dives on selected portfolio projects.">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:url" content="https://gabayae.github.io/data-portfolio/fr/case-studies/">
+<meta property="og:title" content="Études de cas — Portfolio Yaé Gaba en science des données">
+<meta property="og:description" content="Analyses approfondies en long format sur des projets sélectionnés du portfolio.">
 <meta property="og:image" content="https://gabayae.github.io/data-portfolio/og-card.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://gabayae.github.io/data-portfolio/og-card.png">
@@ -104,16 +106,16 @@ footer a { color: #ffd7c5; }
 
 <nav class="nav">
   <div class="nav__inner">
-    <a href="../" class="nav__brand">Yaé Gaba<span class="dot">.</span></a>
-    <a href="../#projects" class="nav__back">← All projects</a>
+    <a href="/data-portfolio/fr/" class="nav__brand">Yaé Gaba<span class="dot">.</span></a>
+    <a href="/data-portfolio/fr/#projects" class="nav__back">← Tous les projets</a>
   </div>
 </nav>
 
 <header class="head">
   <div class="inner">
-    <span class="eyebrow">Long-form deep-dives</span>
-    <h1>Case studies</h1>
-    <p>Selected portfolio projects with full narrative — business context, methodology, results, trade-offs, and deployment sketches. Each case study draws plots from its executed notebook so the page stands alone.</p>
+    <span class="eyebrow">Analyses approfondies</span>
+    <h1>Études de cas</h1>
+    <p>Projets sélectionnés du portfolio avec narration complète — contexte métier, méthodologie, résultats, compromis et esquisses de déploiement. Chaque étude de cas tire ses graphiques de son carnet exécuté pour rester autonome.</p>
   </div>
 </header>
 
@@ -121,88 +123,88 @@ footer a { color: #ffd7c5; }
 
   <article class="cs-card">
     <div class="cs-card__body">
-      <span class="cs-card__eyebrow">Energy · Time-series</span>
-      <h2 class="cs-card__title">Hourly load forecasting — PJM East</h2>
-      <div class="cs-card__metric">GBM 6.2% MAPE · UC PI coverage 99%</div>
-      <p class="cs-card__lede">Day-ahead and short-horizon load forecasts on 16 years of real PJME hourly consumption — comparing SARIMA, state-space (UnobservedComponents + Fourier exog), and gradient-boosted forecasters. The "best" model depends on whether procurement or risk teams are reading.</p>
+      <span class="cs-card__eyebrow">Énergie · Séries temporelles</span>
+      <h2 class="cs-card__title">Prévision de charge horaire — PJM East</h2>
+      <div class="cs-card__metric">GBM MAPE 6,2 % · couverture IP UC 99 %</div>
+      <p class="cs-card__lede">Prévisions de charge à J+1 et court-terme sur 16 ans de consommation horaire PJME réelle — SARIMA, espace d'états (UnobservedComponents + Fourier exogène) et modèles gradient boostés comparés. Le « meilleur » modèle dépend de qui lit, achats ou gestion du risque.</p>
       <div class="cs-card__chips">
-        <span class="cs-card__chip">SARIMA</span><span class="cs-card__chip">UnobservedComponents</span><span class="cs-card__chip">Fourier exog</span><span class="cs-card__chip">GBM</span><span class="cs-card__chip">PJM Hourly Consumption</span>
+        <span class="cs-card__chip">SARIMA</span><span class="cs-card__chip">UnobservedComponents</span><span class="cs-card__chip">Fourier exog</span><span class="cs-card__chip">GBM</span><span class="cs-card__chip">Consommation horaire PJM</span>
       </div>
       <div class="cs-card__cta">
-        <a href="./pjm/">Read case study →</a>
-        <a href="../02-electricity-load-forecasting-pjm/notebook.ipynb" class="secondary">Notebook</a>
+        <a href="./pjm/">Lire l'étude de cas →</a>
+        <a href="/data-portfolio/02-electricity-load-forecasting-pjm/notebook.ipynb" class="secondary">Carnet</a>
       </div>
     </div>
     <div class="cs-card__media">
-      <img src="pjm/plot-03.png" alt="60-day forecast comparison: SARIMA vs UC vs GBM on PJM data">
+      <img src="/data-portfolio/case-studies/pjm/plot-03.png" alt="Comparaison de prévision sur 60 jours : SARIMA vs UC vs GBM sur données PJM">
     </div>
   </article>
 
   <article class="cs-card">
     <div class="cs-card__body">
-      <span class="cs-card__eyebrow">Hydropower · Time-series</span>
-      <h2 class="cs-card__title">River flow forecasting — Lake Kariba</h2>
-      <div class="cs-card__metric">GBM 7 cm RMSE · SARIMA PI coverage 100%</div>
-      <p class="cs-card__lede">Daily lake-level forecasting for the world's largest man-made reservoir, on real Zambezi River Authority data. A 7 cm RMSE on a 7 m operational band turns "are we going to breach turbine safety thresholds in the next 30 days?" from a guess into a calibrated probability.</p>
+      <span class="cs-card__eyebrow">Hydroélectricité · Séries temporelles</span>
+      <h2 class="cs-card__title">Prévision du débit fluvial — lac Kariba</h2>
+      <div class="cs-card__metric">GBM RMSE 7 cm · couverture IP SARIMA 100 %</div>
+      <p class="cs-card__lede">Prévision journalière du niveau du plus grand réservoir artificiel au monde, sur données réelles de la Zambezi River Authority. Un RMSE de 7 cm sur une bande opérationnelle de 7 m transforme « allons-nous franchir les seuils de sécurité turbine dans les 30 prochains jours ? » d'une devinette en probabilité calibrée.</p>
       <div class="cs-card__chips">
-        <span class="cs-card__chip">SARIMA</span><span class="cs-card__chip">State-space</span><span class="cs-card__chip">GBM with exog</span><span class="cs-card__chip">Lake Kariba reservoir</span><span class="cs-card__chip">Zambezi basin</span>
+        <span class="cs-card__chip">SARIMA</span><span class="cs-card__chip">State-space</span><span class="cs-card__chip">GBM avec exog.</span><span class="cs-card__chip">Réservoir lac Kariba</span><span class="cs-card__chip">Bassin du Zambèze</span>
       </div>
       <div class="cs-card__cta">
-        <a href="./kariba/">Read case study →</a>
-        <a href="../06-river-flow-forecasting-kariba/notebook.ipynb" class="secondary">Notebook</a>
+        <a href="./kariba/">Lire l'étude de cas →</a>
+        <a href="/data-portfolio/06-river-flow-forecasting-kariba/notebook.ipynb" class="secondary">Carnet</a>
       </div>
     </div>
     <div class="cs-card__media">
-      <img src="kariba/plot-04.png" alt="30-day forecast comparison: SARIMA vs UC vs GBM on Lake Kariba data">
+      <img src="/data-portfolio/case-studies/kariba/plot-04.png" alt="Comparaison de prévision sur 30 jours : SARIMA vs UC vs GBM sur données du lac Kariba">
     </div>
   </article>
 
   <article class="cs-card">
     <div class="cs-card__body">
-      <span class="cs-card__eyebrow">Insurance · GLM / Pricing</span>
-      <h2 class="cs-card__title">Pure-premium pricing — freMTPL2</h2>
-      <div class="cs-card__metric">Tweedie Gini 0.310 · Poisson+Gamma top-decile lift 2.66</div>
-      <p class="cs-card__lede">Three GLM families and a gradient-boosted challenger compared on the canonical French motor third-party liability dataset (678k policies). Tweedie wins on segmentation power (Gini); Poisson + Gamma wins on top-decile lift. Picking between them is an actuarial decision, not a modelling one.</p>
+      <span class="cs-card__eyebrow">Assurance · GLM / Tarification</span>
+      <h2 class="cs-card__title">Tarification de prime pure — freMTPL2</h2>
+      <div class="cs-card__metric">Tweedie Gini 0,310 · lift décile sup. Poisson+Gamma 2,66</div>
+      <p class="cs-card__lede">Trois familles de GLM et un concurrent gradient boosté comparés sur le jeu canonique freMTPL2 (678 000 polices). Tweedie gagne sur le pouvoir de segmentation (Gini) ; Poisson + Gamma gagne sur le lift du décile supérieur. Choisir entre les deux est une décision actuarielle, pas une décision de modélisation.</p>
       <div class="cs-card__chips">
         <span class="cs-card__chip">Poisson GLM</span><span class="cs-card__chip">Gamma GLM</span><span class="cs-card__chip">Tweedie</span><span class="cs-card__chip">XGBoost</span><span class="cs-card__chip">Gini · Lorenz · lift</span>
       </div>
       <div class="cs-card__cta">
-        <a href="./fremtpl2/">Read case study →</a>
-        <a href="../03-insurance-claims-fremtpl2/notebook.ipynb" class="secondary">Notebook</a>
+        <a href="./fremtpl2/">Lire l'étude de cas →</a>
+        <a href="/data-portfolio/03-insurance-claims-fremtpl2/notebook.ipynb" class="secondary">Carnet</a>
       </div>
     </div>
     <div class="cs-card__media">
-      <img src="fremtpl2/plot-02.png" alt="Lorenz curves comparing Tweedie, Poisson+Gamma, and GBM">
+      <img src="/data-portfolio/case-studies/fremtpl2/plot-02.png" alt="Courbes de Lorenz comparant Tweedie, Poisson+Gamma et GBM">
     </div>
   </article>
 
   <article class="cs-card">
     <div class="cs-card__body">
-      <span class="cs-card__eyebrow">Health Ops · Stochastic Optimization</span>
-      <h2 class="cs-card__title">Mobile-clinic scheduling — Kenya</h2>
-      <div class="cs-card__metric">Q-learning +122% · LP-capped +39% with explicit equity</div>
-      <p class="cs-card__lede">Mobile-clinic dispatch as a Markov decision process on real KMPDC + SHA Kenyan data. Three policies — manual round-robin, capped LP, tabular Q-learning — compared on patients-served, travel cost, and equity. The honest finding: the algorithm matters less than how the constraints are written.</p>
+      <span class="cs-card__eyebrow">Opérations santé · Optimisation stochastique</span>
+      <h2 class="cs-card__title">Planification de cliniques mobiles — Kenya</h2>
+      <div class="cs-card__metric">Q-learning +122 % · PL plafonnée +39 % avec équité explicite</div>
+      <p class="cs-card__lede">Planification de cliniques mobiles comme processus décisionnel de Markov sur données réelles KMPDC + SHA. Trois politiques — rotation manuelle, PL plafonnée, Q-learning tabulaire — comparées sur les patients servis, le coût de déplacement et l'équité. Le constat honnête : l'algorithme compte moins que la façon dont les contraintes sont écrites.</p>
       <div class="cs-card__chips">
-        <span class="cs-card__chip">MDP</span><span class="cs-card__chip">Q-learning</span><span class="cs-card__chip">Linear programming</span><span class="cs-card__chip">scipy.linprog</span><span class="cs-card__chip">Real KMPDC + SHA</span>
+        <span class="cs-card__chip">PDM</span><span class="cs-card__chip">Q-learning</span><span class="cs-card__chip">Programmation linéaire</span><span class="cs-card__chip">scipy.linprog</span><span class="cs-card__chip">KMPDC + SHA réels</span>
       </div>
       <div class="cs-card__cta">
-        <a href="./kenya/">Read case study →</a>
-        <a href="../05-resource-allocation-kenya/notebook.ipynb" class="secondary">Notebook</a>
+        <a href="./kenya/">Lire l'étude de cas →</a>
+        <a href="/data-portfolio/05-resource-allocation-kenya/notebook.ipynb" class="secondary">Carnet</a>
       </div>
     </div>
     <div class="cs-card__media">
-      <img src="kenya/plot-04.png" alt="Q-learning training reward curve over 400 episodes">
+      <img src="/data-portfolio/case-studies/kenya/plot-04.png" alt="Courbe de récompense d'entraînement Q-learning sur 400 épisodes">
     </div>
   </article>
 
   <div class="upcoming">
-    Four deep-dives now span four methodology families — time-series (PJM), time-series with exogenous covariates (Kariba), GLMs / actuarial pricing (freMTPL2), and stochastic optimization (Kenya). The 9 other portfolio projects each have their own folder-level <a href="../#projects">README and executable notebook</a>.
+    Quatre analyses approfondies couvrent désormais quatre familles méthodologiques — séries temporelles (PJM), séries temporelles avec covariables exogènes (Kariba), GLM / tarification actuarielle (freMTPL2) et optimisation stochastique (Kenya). Les 9 autres projets du portfolio ont chacun leur propre <a href="/data-portfolio/fr/#projects">README de dossier et carnet exécutable</a>.
   </div>
 
 </main>
 
 <footer>
-  <p>© 2026 Yaé Gaba · Built end-to-end on real public data · MIT licensed · <a href="../">Back to portfolio</a></p>
+  <p>© 2026 Yaé Gaba · Conçu de bout en bout sur données publiques réelles · sous licence MIT · <a href="/data-portfolio/fr/">Retour au portfolio</a></p>
 </footer>
 
 </body>
