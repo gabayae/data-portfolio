@@ -38,22 +38,8 @@ jobs:
           sys.exit(1 if failed else 0)
           PY
 
-      - name: Validate index.html parses
-        run: |
-          python - <<'PY'
-          from html.parser import HTMLParser
-          import sys
-          class P(HTMLParser): pass
-          ok = True
-          try:
-              p = P()
-              with open('index.html', encoding='utf-8') as f:
-                  p.feed(f.read())
-              print('ok   index.html')
-          except Exception as e:
-              print('FAIL index.html:', e); ok = False
-          sys.exit(0 if ok else 1)
-          PY
+      - name: Validate site (links, JSON-LD, hreflang, sitemap, manifest)
+        run: python validate_site.py
 
       - name: Lint download scripts with ruff
         run: |
