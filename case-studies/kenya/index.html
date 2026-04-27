@@ -276,12 +276,12 @@ footer a { color: #ffd7c5; }
     </div>
 
     <figure class="figure">
-      <img src="plot-01.png" alt="Top 20 Kenyan counties by facility count and SHA payment volume">
+      <img src="plot-01.png" alt="Top 20 Kenyan counties by facility count and SHA payment volume" width="1290" height="390">
       <figcaption><strong>Figure 1.</strong> Real distribution: top-20 Kenyan counties by KMPDC-licensed facility count (left) and SHA payment volume (right). Nairobi dominates both — 1,723 facilities, ~2.2 billion KSH in payments — by an order of magnitude over second place. This single fact drives the optimization story below.</figcaption>
     </figure>
 
     <figure class="figure">
-      <img src="plot-02.png" alt="Per-county SHA payment time-series across Dec-Feb">
+      <img src="plot-02.png" alt="Per-county SHA payment time-series across Dec-Feb" width="1089" height="390">
       <figcaption><strong>Figure 2.</strong> Per-county SHA payments over the 8 observation periods. Variation is real and county-specific — the seasonal modulation per county is what gives the MDP its non-trivial dynamics; otherwise it would degenerate to "always pick Nairobi."</figcaption>
     </figure>
 
@@ -301,7 +301,7 @@ footer a { color: #ffd7c5; }
     </p>
 
     <figure class="figure">
-      <img src="plot-03.png" alt="12 counties plotted in 2D space, bubble size by facility count, color by demand">
+      <img src="plot-03.png" alt="12 counties plotted in 2D space, bubble size by facility count, color by demand" width="672" height="590">
       <figcaption><strong>Figure 3.</strong> The 12 candidate counties on a synthetic 2D map. Bubble size scales with facility count, colour with the inferred mean demand. Nairobi is the bright-yellow large bubble — the cluster the optimal policy keeps gravitating toward.</figcaption>
     </figure>
 
@@ -326,7 +326,7 @@ footer a { color: #ffd7c5; }
     </p>
 
     <figure class="figure">
-      <img src="plot-04.png" alt="Q-learning training reward curve over 400 episodes">
+      <img src="plot-04.png" alt="Q-learning training reward curve over 400 episodes" width="889" height="290">
       <figcaption><strong>Figure 4.</strong> Q-learning training reward (20-episode rolling mean) over 400 episodes. The agent quickly identifies the highest-demand county and stops exploring; reward plateaus around episode 100. Faster convergence than expected — a clean signal that the demand structure is dominated by a single county, not subtle.</figcaption>
     </figure>
 

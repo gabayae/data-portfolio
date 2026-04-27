@@ -17,6 +17,8 @@ Record of substantive changes to this portfolio. Newest entries first.
 - **history.md** at the repo root — origin story for the build (27 commits, 13 projects, 5 case studies, day-by-day timeline, architecture decisions, what still needs the user's hands).
 - **Reading-time badge** at the top of each case study (10 pages) — first item in the hero meta strip, e.g. `Read · 6 min · 1,354 words` (EN) or `Lecture · 8 min · 1,658 mots` (FR). Localised, computed at build time from the article body word count at 230 wpm.
 - **Article schema enriched** with `wordCount` and `timeRequired` (ISO 8601 duration, e.g. `PT6M`) on every case-study page — the same numbers Google now exposes as a "X min read" snippet next to the search result.
+- **Explicit `width`/`height` on every plot image** across all 10 case studies (34 img tags total). Eliminates Cumulative Layout Shift (CLS) — the browser reserves the right rectangle before the PNG arrives, so the page no longer reflows when plots load. Real Lighthouse / Core Web Vitals win.
+- **`<lastmod>` on every sitemap URL** (27 entries — was 2/27 before). Lets crawlers detect changes and re-fetch promptly: home pages and all 10 case studies + indices set to today's date; the 13 project-folder URLs keep their original publish dates.
 
 ## v0.1.0 — 2026-04-25
 

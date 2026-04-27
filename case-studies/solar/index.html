@@ -290,17 +290,17 @@ footer a { color: #ffd7c5; }
     </p>
 
     <figure class="figure">
-      <img src="plot-01.png" alt="Daily irradiance, cloud cover, and precipitation 2014-2023" loading="lazy">
+      <img src="plot-01.png" alt="Daily irradiance, cloud cover, and precipitation 2014-2023" loading="lazy" width="1189" height="789">
       <figcaption><strong>Figure 1.</strong> Top: daily surface irradiance for Nairobi. The bimodal annual pattern is visible — two annual peaks, two annual lows, modulated by inter-annual variability. Middle: daily cloud cover, with the same bimodal cycle inverted. Bottom: precipitation, peaking around the rainy seasons; the events explain the worst irradiance days.</figcaption>
     </figure>
 
     <figure class="figure">
-      <img src="plot-02.png" alt="Annual cycle: monthly mean irradiance vs cloud cover and precipitation" loading="lazy">
+      <img src="plot-02.png" alt="Annual cycle: monthly mean irradiance vs cloud cover and precipitation" loading="lazy" width="890" height="390">
       <figcaption><strong>Figure 2.</strong> Annual cycle, monthly means. Irradiance (gold) and cloud cover (blue) are mirror-image bimodal: lowest irradiance and highest cloud cover hit twice a year (April-May and Oct-Nov, the rainy seasons). Precipitation (dark blue) reinforces the same pattern. This is the structure all three models have to learn.</figcaption>
     </figure>
 
     <figure class="figure">
-      <img src="plot-03.png" alt="Correlation matrix of NASA POWER variables for Nairobi" loading="lazy">
+      <img src="plot-03.png" alt="Correlation matrix of NASA POWER variables for Nairobi" loading="lazy" width="666" height="490">
       <figcaption><strong>Figure 3.</strong> Correlation matrix. Irradiance correlates strongly with cloud cover (negative, ~−0.7) and humidity (negative, ~−0.4). Temperature is weakly positive — irradiance drives temperature, not the reverse. The cloud-cover signal is the lever that lets the GBM beat SARIMA: same-day cloud is a ground truth SARIMA can't access from lagged irradiance alone.</figcaption>
     </figure>
 
@@ -354,7 +354,7 @@ footer a { color: #ffd7c5; }
     </table>
 
     <figure class="figure">
-      <img src="plot-04.png" alt="90-day forecast comparison for SARIMA, UC, and GBM against actual irradiance" loading="lazy">
+      <img src="plot-04.png" alt="90-day forecast comparison for SARIMA, UC, and GBM against actual irradiance" loading="lazy" width="1189" height="390">
       <figcaption><strong>Figure 4.</strong> 90-day held-out forecast. The black line is realised irradiance. GBM (blue dashed) tracks the realised series tighter than SARIMA or UC; the UC's 95% PI (shaded) is wide enough that nearly every realised observation stays inside.</figcaption>
     </figure>
 
