@@ -16,19 +16,214 @@
     <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/"/>
     <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/"/>
   </url>
-  <url><loc>https://gabayae.github.io/data-portfolio/01-demand-forecasting-rwanda/</loc><lastmod>2026-04-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://gabayae.github.io/data-portfolio/02-electricity-load-forecasting-pjm/</loc><lastmod>2026-04-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://gabayae.github.io/data-portfolio/03-insurance-claims-fremtpl2/</loc><lastmod>2026-04-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://gabayae.github.io/data-portfolio/04-retail-demand-m5/</loc><lastmod>2026-04-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://gabayae.github.io/data-portfolio/05-resource-allocation-kenya/</loc><lastmod>2026-04-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://gabayae.github.io/data-portfolio/06-river-flow-forecasting-kariba/</loc><lastmod>2026-04-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://gabayae.github.io/data-portfolio/07-solar-forecasting-nairobi/</loc><lastmod>2026-04-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://gabayae.github.io/data-portfolio/08-customer-survival-mtn-tenure/</loc><lastmod>2026-04-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://gabayae.github.io/data-portfolio/09-flight-demand-southern-africa/</loc><lastmod>2026-04-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://gabayae.github.io/data-portfolio/10-property-valuation-lagos/</loc><lastmod>2026-04-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://gabayae.github.io/data-portfolio/11-geospatial-farm-households/</loc><lastmod>2026-04-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://gabayae.github.io/data-portfolio/12-churn-prediction-mtn/</loc><lastmod>2026-04-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://gabayae.github.io/data-portfolio/13-ab-test-marketing/</loc><lastmod>2026-04-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/01-demand-forecasting-rwanda/</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/01-demand-forecasting-rwanda/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/01-demand-forecasting-rwanda/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/fr/01-demand-forecasting-rwanda/</loc>
+    <lastmod>2026-04-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/01-demand-forecasting-rwanda/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/01-demand-forecasting-rwanda/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/02-electricity-load-forecasting-pjm/</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/02-electricity-load-forecasting-pjm/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/02-electricity-load-forecasting-pjm/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/fr/02-electricity-load-forecasting-pjm/</loc>
+    <lastmod>2026-04-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/02-electricity-load-forecasting-pjm/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/02-electricity-load-forecasting-pjm/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/03-insurance-claims-fremtpl2/</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/03-insurance-claims-fremtpl2/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/03-insurance-claims-fremtpl2/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/fr/03-insurance-claims-fremtpl2/</loc>
+    <lastmod>2026-04-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/03-insurance-claims-fremtpl2/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/03-insurance-claims-fremtpl2/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/04-retail-demand-m5/</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/04-retail-demand-m5/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/04-retail-demand-m5/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/fr/04-retail-demand-m5/</loc>
+    <lastmod>2026-04-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/04-retail-demand-m5/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/04-retail-demand-m5/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/05-resource-allocation-kenya/</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/05-resource-allocation-kenya/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/05-resource-allocation-kenya/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/fr/05-resource-allocation-kenya/</loc>
+    <lastmod>2026-04-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/05-resource-allocation-kenya/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/05-resource-allocation-kenya/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/06-river-flow-forecasting-kariba/</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/06-river-flow-forecasting-kariba/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/06-river-flow-forecasting-kariba/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/fr/06-river-flow-forecasting-kariba/</loc>
+    <lastmod>2026-04-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/06-river-flow-forecasting-kariba/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/06-river-flow-forecasting-kariba/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/07-solar-forecasting-nairobi/</loc>
+    <lastmod>2026-04-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/07-solar-forecasting-nairobi/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/07-solar-forecasting-nairobi/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/fr/07-solar-forecasting-nairobi/</loc>
+    <lastmod>2026-04-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/07-solar-forecasting-nairobi/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/07-solar-forecasting-nairobi/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/08-customer-survival-mtn-tenure/</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/08-customer-survival-mtn-tenure/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/08-customer-survival-mtn-tenure/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/fr/08-customer-survival-mtn-tenure/</loc>
+    <lastmod>2026-04-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/08-customer-survival-mtn-tenure/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/08-customer-survival-mtn-tenure/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/09-flight-demand-southern-africa/</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/09-flight-demand-southern-africa/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/09-flight-demand-southern-africa/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/fr/09-flight-demand-southern-africa/</loc>
+    <lastmod>2026-04-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/09-flight-demand-southern-africa/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/09-flight-demand-southern-africa/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/10-property-valuation-lagos/</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/10-property-valuation-lagos/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/10-property-valuation-lagos/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/fr/10-property-valuation-lagos/</loc>
+    <lastmod>2026-04-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/10-property-valuation-lagos/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/10-property-valuation-lagos/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/11-geospatial-farm-households/</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/11-geospatial-farm-households/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/11-geospatial-farm-households/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/fr/11-geospatial-farm-households/</loc>
+    <lastmod>2026-04-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/11-geospatial-farm-households/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/11-geospatial-farm-households/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/12-churn-prediction-mtn/</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/12-churn-prediction-mtn/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/12-churn-prediction-mtn/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/fr/12-churn-prediction-mtn/</loc>
+    <lastmod>2026-04-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/12-churn-prediction-mtn/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/12-churn-prediction-mtn/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/13-ab-test-marketing/</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/13-ab-test-marketing/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/13-ab-test-marketing/"/>
+  </url>
+  <url>
+    <loc>https://gabayae.github.io/data-portfolio/fr/13-ab-test-marketing/</loc>
+    <lastmod>2026-04-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/13-ab-test-marketing/"/>
+    <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="fr" href="https://gabayae.github.io/data-portfolio/fr/13-ab-test-marketing/"/>
+  </url>
   <url>
     <loc>https://gabayae.github.io/data-portfolio/case-studies/</loc>
     <lastmod>2026-04-27</lastmod>
