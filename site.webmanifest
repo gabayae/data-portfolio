@@ -1,0 +1,39 @@
+{
+  "name": "Yaé Gaba — Data Science Portfolio",
+  "short_name": "Yaé Gaba",
+  "description": "13 end-to-end data-science and machine-learning projects on real public data, with 5 long-form case studies.",
+  "start_url": "/data-portfolio/",
+  "scope": "/data-portfolio/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fafaf7",
+  "theme_color": "#0f2a4a",
+  "icons": [
+    {
+      "src": "/data-portfolio/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/data-portfolio/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/data-portfolio/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/data-portfolio/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "lang": "en",
+  "categories": ["education", "productivity", "developer"]
+}

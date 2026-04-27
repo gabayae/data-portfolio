@@ -19,6 +19,7 @@ Record of substantive changes to this portfolio. Newest entries first.
 - **Article schema enriched** with `wordCount` and `timeRequired` (ISO 8601 duration, e.g. `PT6M`) on every case-study page — the same numbers Google now exposes as a "X min read" snippet next to the search result.
 - **Explicit `width`/`height` on every plot image** across all 10 case studies (34 img tags total). Eliminates Cumulative Layout Shift (CLS) — the browser reserves the right rectangle before the PNG arrives, so the page no longer reflows when plots load. Real Lighthouse / Core Web Vitals win.
 - **`<lastmod>` on every sitemap URL** (27 entries — was 2/27 before). Lets crawlers detect changes and re-fetch promptly: home pages and all 10 case studies + indices set to today's date; the 13 project-folder URLs keep their original publish dates.
+- **Favicon variants + web app manifest**. Renders the existing SVG favicon at 16, 32, 180 (Apple touch icon), 192 (Android), and 512 (PWA splash) px via Playwright Chromium for clean text rendering. New `site.webmanifest` declares the portfolio as a standalone PWA with theme/background colors matching the editorial palette. All 15 HTML pages now reference the full set via site-absolute paths so the right size loads from any URL depth.
 
 ## v0.1.0 — 2026-04-25
 
