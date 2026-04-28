@@ -6,6 +6,8 @@ Record of substantive changes to this portfolio. Newest entries first.
 
 ### Added
 
+- **All 13 notebooks documented** — every markdown section header expanded into a paragraph explaining the *what* and *why* of the method; every code cell carries inline comments on non-obvious choices (parameter values, transformations, statistical subtleties, leakage avoidance, baseline rationale). 14 commits, one per notebook, all source-only edits — executed outputs preserved as-is. Repo-wide comment density: 6% → 29% (76/1213 → 537/1824 lines).
+
 - **Fifth long-form case study** at `case-studies/solar/` — Nairobi solar irradiance forecasting on 10 years of NASA POWER daily data. SARIMA, UnobservedComponents (state-space + Fourier annual), GBM with same-day weather covariates, and three baselines (naive, seasonal-naive, monthly climatology). Headline finding: **monthly climatology (12.3% MAPE) beats SARIMA (13.8%)** — at this latitude the seasonal envelope is most of the signal, and same-day weather is what moves point accuracy. GBM wins point-error at 9.4% MAPE; SARIMA/UC win on calibrated 95% prediction intervals (99% empirical coverage).
 - Case-studies index now lists 5 deep-dives; sitemap and JSON-LD on the EN home updated to point project 07 at `case-studies/solar/` instead of the bare folder.
 - **FR translation** of the Solar case study at `fr/case-studies/solar/`. EN/FR alternate hreflang on both sides; FR case-studies index now links to the local FR translation; sitemap carries the bilingual pair. All 5 case studies are now bilingual EN/FR.
