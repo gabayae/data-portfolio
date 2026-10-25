@@ -26,7 +26,7 @@ Each project follows the same pipeline:
 | 02 | Hourly Load Forecasting — PJM **([case study](./case-studies/pjm/))** | Energy | [PJM Hourly Consumption](https://www.kaggle.com/datasets/robikscube/hourly-energy-consumption) | GBM MAPE 6.2% (UC PI 99%) |
 | 03 | Insurance Claims Frequency & Severity | Insurance | [freMTPL2 freq + sev](https://www.kaggle.com/datasets/floser/french-motor-claims-datasets-fremtpl2freq) | Tweedie Gini 0.310 |
 | 04 | Hierarchical Retail Demand Forecasting | Retail | [M5 sample](https://www.kaggle.com/datasets/tarique7/m5-small-sample-dataset-whole-series) | MinT-OLS reconciliation |
-| 05 | Stochastic Optimization for Resource Allocation | Health / Ops | [Kenya KMPDC + SHA](https://www.kaggle.com/datasets/xen0r0m/sha-kenya-licensed-health-facilities-and-funds) | Q-learning +122% vs manual |
+| 05 | Stochastic Optimization for Resource Allocation | Health / Ops | [Kenya KMPDC + SHA](https://www.kaggle.com/datasets/xen0r0m/sha-kenya-licensed-health-facilities-and-funds) | Capped LP +39% vs manual (w/ equity) |
 | 06 | River Flow Forecasting — Lake Kariba | Hydropower | [Kariba Reservoir](https://www.kaggle.com/datasets/marbin/lake-kariba-reservoir-data) | GBM RMSE 7 cm |
 | 07 | Solar Energy Forecasting — Nairobi | Energy | [NASA POWER API](https://power.larc.nasa.gov/) | GBM MAPE 9.4% |
 | 08 | Customer Survival Analysis — MTN Nigeria | Telecom | [MTN Nigeria Churn](https://www.kaggle.com/datasets/oluwademiladeadeniyi/mtn-nigeria-customer-churn) | Cox PH + Weibull AFT |

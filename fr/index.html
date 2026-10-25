@@ -550,20 +550,20 @@ h3 { font-size: 1.35rem; }
     </div>
     <div class="stats-grid">
       <div class="stat-card">
-        <span class="stat-card__value">6.2%</span>
-        <div class="stat-card__label">MAPE — charge horaire PJM (GBM, vs SARIMA 14,5 %)</div>
+        <span class="stat-card__value">14,5 %</span>
+        <div class="stat-card__label">MAPE — charge horaire PJM (SARIMA, choix opérationnel)</div>
       </div>
       <div class="stat-card">
         <span class="stat-card__value">7 cm</span>
-        <div class="stat-card__label">RMSE — niveau du lac Kariba (30 jours)</div>
+        <div class="stat-card__label">RMSE — Lac Kariba (GBM à un pas d'avance, niveau journalier)</div>
       </div>
       <div class="stat-card">
-        <span class="stat-card__value">0.71</span>
-        <div class="stat-card__label">AUC — attrition MTN Nigeria (XGBoost)</div>
+        <span class="stat-card__value">0,310</span>
+        <div class="stat-card__label">Gini — prime pure freMTPL2 (GLM Tweedie)</div>
       </div>
       <div class="stat-card">
-        <span class="stat-card__value">+122%</span>
-        <div class="stat-card__label">Gain de couverture — cliniques mobiles au Kenya (Q-learning vs manuel)</div>
+        <span class="stat-card__value">+39 %</span>
+        <div class="stat-card__label">Couverture — cliniques mobiles au Kenya (PL plafonnée + équité, vs manuel)</div>
       </div>
     </div>
   </div>
@@ -682,9 +682,9 @@ h3 { font-size: 1.35rem; }
       <article class="project-card" data-categories="optimization">
         <div class="project-card__header">
           <span class="project-card__number">05</span>
-          <div class="project-card__metric">Q-learning +122% vs manual</div>
+          <div class="project-card__metric">PL plafonnée +39 % vs manuel (avec équité)</div>
           <h3 class="project-card__title">Planification de cliniques mobiles — Kenya</h3>
-          <p class="project-card__tagline">MDP + Q-learning vs PL plafonnée sur données KMPDC + SHA réelles.</p>
+          <p class="project-card__tagline">MDP + Q-learning vs PL plafonnée sur données KMPDC + SHA réelles ; PL + équité est le candidat déployable.</p>
         </div>
         <div class="project-card__body">
           <div class="project-card__categories"><span class="category-pill category-pill--optimization">Optimisation</span></div>

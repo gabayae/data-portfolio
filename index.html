@@ -553,20 +553,20 @@ h3 { font-size: 1.35rem; }
     </div>
     <div class="stats-grid">
       <div class="stat-card">
-        <span class="stat-card__value">6.2%</span>
-        <div class="stat-card__label">MAPE — PJM hourly load (GBM, vs SARIMA 14.5%)</div>
+        <span class="stat-card__value">14.5%</span>
+        <div class="stat-card__label">MAPE — PJM hourly load (SARIMA, operational pick)</div>
       </div>
       <div class="stat-card">
         <span class="stat-card__value">7 cm</span>
-        <div class="stat-card__label">RMSE — Lake Kariba lake-level (30 days)</div>
+        <div class="stat-card__label">RMSE — Lake Kariba (GBM 1-step-ahead on daily level)</div>
       </div>
       <div class="stat-card">
-        <span class="stat-card__value">0.71</span>
-        <div class="stat-card__label">AUC — MTN Nigeria churn (XGBoost)</div>
+        <span class="stat-card__value">0.310</span>
+        <div class="stat-card__label">Gini — freMTPL2 pure premium (Tweedie GLM)</div>
       </div>
       <div class="stat-card">
-        <span class="stat-card__value">+122%</span>
-        <div class="stat-card__label">Coverage lift — Kenya mobile clinics (Q-learning vs manual)</div>
+        <span class="stat-card__value">+39%</span>
+        <div class="stat-card__label">Coverage — Kenya mobile clinics (capped LP w/ equity, vs manual)</div>
       </div>
     </div>
   </div>
@@ -685,9 +685,9 @@ h3 { font-size: 1.35rem; }
       <article class="project-card" data-categories="optimization">
         <div class="project-card__header">
           <span class="project-card__number">05</span>
-          <div class="project-card__metric">Q-learning +122% vs manual</div>
+          <div class="project-card__metric">Capped LP +39% vs manual (w/ equity)</div>
           <h3 class="project-card__title">Mobile-Clinic Scheduling — Kenya</h3>
-          <p class="project-card__tagline">MDP + Q-learning vs capped LP baseline on real KMPDC + SHA data.</p>
+          <p class="project-card__tagline">MDP + Q-learning vs capped LP baseline on real KMPDC + SHA data; LP+equity is the deployable candidate.</p>
         </div>
         <div class="project-card__body">
           <div class="project-card__categories"><span class="category-pill category-pill--optimization">Optimization</span></div>

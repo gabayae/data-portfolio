@@ -49,10 +49,10 @@ CATEGORY_COLORS = {
 
 # ── Headline stats ────────────────────────────────────────────────────────────
 STATS = [
-    ("6.2%",  "MAPE — PJM hourly load (GBM, vs SARIMA 14.5%)"),
-    ("7 cm",  "RMSE — Lake Kariba lake-level (30 days)"),
-    ("0.71",  "AUC — MTN Nigeria churn (XGBoost)"),
-    ("+122%", "Coverage lift — Kenya mobile clinics (Q-learning vs manual)"),
+    ("14.5%", "MAPE — PJM hourly load (SARIMA, operational pick)"),
+    ("7 cm",  "RMSE — Lake Kariba (GBM 1-step-ahead on daily level)"),
+    ("0.310", "Gini — freMTPL2 pure premium (Tweedie GLM)"),
+    ("+39%",  "Coverage — Kenya mobile clinics (capped LP w/ equity, vs manual)"),
 ]
 
 # ── Project records ───────────────────────────────────────────────────────────
@@ -109,8 +109,8 @@ PROJECTS: list[Project] = [
     ),
     Project(5,
         "Mobile-Clinic Scheduling — Kenya",
-        "MDP + Q-learning vs capped LP baseline on real KMPDC + SHA data.",
-        "Q-learning +122% vs manual",
+        "MDP + Q-learning vs capped LP baseline on real KMPDC + SHA data; LP+equity is the deployable candidate.",
+        "Capped LP +39% vs manual (w/ equity)",
         ["optimization"],
         ["MDP", "Q-learning", "Linear programming", "scipy.linprog"],
         "Kenya KMPDC + SHA · 7,876 facilities",

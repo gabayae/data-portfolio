@@ -21,21 +21,24 @@ Peut-on planifier des cliniques mobiles à travers les comtés sous-desservis po
 
 | Composant | Choix |
 |---|---|
-| Processus de décision | Processus décisionnel de Markov (état = stock, file, météo ; action = prochaine formation ; récompense = patients servis − coût de déplacement) |
-| Solveur | Q-learning tabulaire |
-| Baseline statique | Programmation linéaire (PL) max-couverture pour la localisation des formations |
+| Processus de décision | Processus décisionnel de Markov (état = `(location, day_bucket)` ; action = prochaine formation ; récompense = patients servis − coût de déplacement − pénalité de visite récente) |
+| Solveur | Q-learning tabulaire (|S|·|A| = 84·12) |
+| Baseline statique | Programmation linéaire (PL) max-couverture, avec un plafond d'équité sur les visites par comté |
+| Baseline manuelle | Planning en round-robin |
 
 ## Validation
 
-- Simulations rolling contre planning historique (manuel) et baseline PL
-- Métriques : patients servis attendus, distance parcourue, couverture du quartile inférieur des bassins de captage
+- Simulations contre le planning manuel et la baseline PL plafonnée
+- Métriques : patients servis, distance parcourue (km), couverture des comtés à faible demande
+- Les politiques ne sont pas à budget équivalent — le round-robin manuel engage 87 km/jour de déplacement obligatoire ; Q-learning peut choisir de ne pas se déplacer. Voir l'étude de cas pour la comparaison honnête.
 
-## Déploiement
+## Esquisse de déploiement
 
-- Interface Streamlit pour les responsables sanitaires de district — recommandations hebdomadaires de planning avec override manuel
-- Ré-entraînement mensuel de la Q-table à mesure que les données de visites s'accumulent
+- Interface Streamlit pour les responsables sanitaires de district — la sortie de la PL plafonnée est le candidat déployable ; la politique greedy du Q-learning s'est effondrée sur un unique comté dans ce run et ne doit pas être déployée en l'état.
+- Ré-entraînement mensuel à mesure que les données de visites s'accumulent.
 
 ## Résultat métier
 
-- 20 % d'extension de couverture dans les régions sous-desservies vs le planning manuel
-- Compromis couverture vs coût de déplacement explicité aux décideurs
+- Le vrai titre : **+39 % de couverture** de la PL plafonnée vs le planning manuel, obtenu avec une contrainte d'équité qui force les visites aux comtés à faible demande.
+- Le **+122 %** du Q-learning vs manuel vient d'une politique greedy dégénérée (`total_travel_km = 0`, `low_demand_visits = 0`) ; voir l'encadré de l'étude de cas. Le reward-shaping fait l'essentiel du travail à l'entraînement et ne tient pas à l'évaluation.
+- Leçon de fond : *la formulation des contraintes compte plus que l'algorithme.* Sur ce problème une PL plafonnée avec équité est plus défendable qu'une politique RL difficile à stabiliser.
