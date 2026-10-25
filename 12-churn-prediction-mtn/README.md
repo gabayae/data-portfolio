@@ -34,17 +34,26 @@ Run `python download_data.py`.
 
 ## Validation
 
-- 80/20 stratified split
-- Metrics: ROC-AUC, PR-AUC, F1, balanced accuracy
-- Calibration plot for the best model
+- 80/20 stratified split (test-set base rate = 29%).
+- Metrics: ROC-AUC, PR-AUC, F1, balanced accuracy, **Precision@k and Lift@k** for the retention-queue framing.
+- Calibration plot with **Wilson 95% CIs per bin** so the ~19-obs-per-bin uncertainty is visible rather than smoothed over.
 
-## Deployment
+**Headline numbers (test):**
 
-- API `POST /churn-score` returning probability + decile band + top SHAP-style feature contributions
-- Retention queue prioritized by predicted churn probability × revenue
+| Model | ROC-AUC | PR-AUC | P@50 | Lift@50 | P@100 | Lift@100 |
+|---|---|---|---|---|---|---|
+| XGBoost | 0.71 | 0.51 | **0.52** | **1.78×** | 0.40 | 1.37× |
+| Random Forest | 0.59 | 0.36 | 0.34 | 1.16× | 0.38 | 1.30× |
+| LogReg | 0.48 | 0.27 | 0.20 | 0.68× | 0.30 | 1.03× |
+
+Only XGBoost's top-50 queue carries meaningful lift (1.78× over random). LogReg's top-50 is actually *worse* than random — a telltale that linear scoring is picking up anti-signal on this (near-random) data. See the dataset note above for the honest reading.
+
+## Deployment sketch
+
+- Retention queue ranked by XGBoost score; audit Lift@k monthly against the holdout to catch score drift.
+- Not deployable on the current dataset — the dataset note at the top applies. On a real churn benchmark (IBM Watson Telco) the same code produces interpretable features and defensible top-k lift.
 
 ## Business outcome
 
-- Retention spend allocated where ROI is highest (high churn probability × high revenue customers)
-- Drivers (e.g., satisfaction rating, plan type) feed product/pricing roadmap
-- Same pipeline applies to any subscription business
+- Retention spend allocated where predicted lift is highest; top-k is the metric that matches the campaign-targeting use case.
+- Companion to project 08 (survival analysis on the same data) — two analytical lenses, both constrained by the same data provenance issue.

@@ -34,17 +34,27 @@ Lancer `python download_data.py`.
 
 ## Validation
 
-- Découpage stratifié 80/20
-- Métriques : ROC-AUC, PR-AUC, F1, exactitude équilibrée
-- Tracé de calibration pour le meilleur modèle
+- Découpage stratifié 80/20 (taux de base test = 29 %).
+- Métriques : ROC-AUC, PR-AUC, F1, exactitude équilibrée, **Precision@k et Lift@k** pour le cadrage file-de-rétention.
+- Tracé de calibration avec **IC Wilson 95 % par bin** pour rendre visible l'incertitude des ~19 obs/bin plutôt que la lisser.
 
-## Déploiement
+**Chiffres en tête (test) :**
 
-- API `POST /churn-score` retournant probabilité + bande de décile + top contributions de features style SHAP
-- File de rétention priorisée par probabilité de churn × revenu
+| Modèle | ROC-AUC | PR-AUC | P@50 | Lift@50 | P@100 | Lift@100 |
+|---|---|---|---|---|---|---|
+| XGBoost | 0,71 | 0,51 | **0,52** | **1,78×** | 0,40 | 1,37× |
+| Random Forest | 0,59 | 0,36 | 0,34 | 1,16× | 0,38 | 1,30× |
+| LogReg | 0,48 | 0,27 | 0,20 | 0,68× | 0,30 | 1,03× |
+
+Seule la file top-50 de XGBoost porte un lift significatif (1,78× vs aléatoire). La top-50 de la LogReg est *pire* qu'aléatoire — signe que le scoring linéaire capte de l'anti-signal sur ces données (quasi-aléatoires). Voir la note dataset en haut pour la lecture honnête.
+
+## Esquisse de déploiement
+
+- File de rétention classée par score XGBoost ; auditer Lift@k mensuellement sur le holdout pour détecter la dérive.
+- Pas déployable sur le dataset actuel — la note dataset en haut s'applique. Sur un vrai benchmark churn (IBM Watson Telco) le même code produit des features interprétables et un lift top-k défendable.
 
 ## Résultat métier
 
-- Dépenses de rétention allouées là où le ROI est le plus élevé (clients à forte probabilité de churn × fort revenu)
-- Les drivers (par ex. note de satisfaction, type de forfait) alimentent la roadmap produit/tarification
+- Dépenses de rétention allouées là où le lift prédit est le plus élevé ; le top-k est la métrique qui correspond au cas d'usage de ciblage de campagne.
+- Jumeau du projet 08 (analyse de survie sur les mêmes données) — deux lentilles analytiques, toutes deux contraintes par le même problème de provenance de données.
 - Le même pipeline s'applique à toute activité par abonnement
