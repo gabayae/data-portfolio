@@ -22,23 +22,23 @@ Peut-on produire des prévisions horaires de charge à J+1 suffisamment précise
 
 | Famille | Modèle |
 |---|---|
-| Espace d'états (candidat gagnant) | `UnobservedComponents` avec niveau variant dans le temps + termes de Fourier hebdomadaires/journaliers + régresseurs exogènes |
-| Baselines classiques | SARIMA, ExponentialSmoothing |
-| Challenger ML | LightGBM / GBM avec features lag, rolling et calendaires |
+| Baseline classique | SARIMA sur la charge agrégée journalière |
+| Espace d'états | `UnobservedComponents` avec niveau variant dans le temps + termes de Fourier hebdomadaires/journaliers + régresseurs exogènes |
+| Challenger ML | GBM (`GradientBoostingRegressor`) avec features lag, rolling et calendaires |
 
 ## Validation
 
-- Validation croisée à fenêtre extensible sur horizons 24 h, 48 h et 7 jours
-- Métriques : MAPE, RMSE, couverture des intervalles de prévision
-- L'espace d'états gagne sur les courts horizons ; reste compétitif à 7 jours
+- Backtest à holdout de 60 jours en fin de série
+- Métriques : MAPE, RMSE, couverture des intervalles de prévision à 95 %
+- MAPE SARIMA 14,5 %, MAPE UC 19,3 %, MAPE GBM 6,2 % — mais le chiffre GBM est une évaluation à un pas d'avance avec la charge réelle de la veille révélée. Pas directement comparable aux prévisions multi-pas SARIMA / UC. Voir l'étude de cas pour la discussion complète.
+- Couverture empirique des IP 95 % du modèle UC : 60/60 (IC Clopper-Pearson à 95 % [0,94 ; 1,00] — l'échantillon est trop petit pour distinguer 95 % de 99 %).
 
-## Déploiement
+## Esquisse de déploiement
 
-- Ensemble gagnant servi derrière un endpoint FastAPI
-- Ré-entraînement nocturne ; résultats journalisés dans Postgres
-- Tableau de bord Grafana pour les opérations (prévision vs réel, heatmap des résidus, couverture IP)
+- Candidat gagnant (SARIMA journalier à ce périmètre) pourrait être servi derrière un ré-entraînement planifié + artefact picklé.
+- Pas un système de production — le carnet s'arrête à la prévision hors-ligne sur données PJME réelles.
 
 ## Résultat métier
 
-- ~18 % de réduction de MAPE par rapport au baseline SARIMA → achats à J+1 plus serrés et moins de pénalités de déséquilibre
-- Intervalles de prévision calibrés appuyant des décisions d'équilibrage du réseau conscientes du risque
+- Prévision de charge à J+1 sur données PJME réelles ; SARIMA est le choix opérationnel (baseline multi-pas honnête) devant la variante espace d'états UC sur ce run.
+- L'écart d'erreur ponctuelle entre SARIMA (14,5 %) et GBM (6,2 %, à un pas d'avance) est largement un artefact du protocole de comparaison — une vraie évaluation du GBM en mode récursif est la prochaine étape naturelle avant toute revendication côté achats.

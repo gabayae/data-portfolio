@@ -22,23 +22,23 @@ Can we produce day-ahead hourly load forecasts accurate enough to support energy
 
 | Family | Model |
 |---|---|
-| State-space (winning candidate) | `UnobservedComponents` with time-varying level + harmonic weekly/daily Fourier terms + exogenous regressors |
-| Classical baselines | SARIMA, ExponentialSmoothing |
-| ML challenger | LightGBM / GBM with engineered lag, rolling, and calendar features |
+| Classical baseline | SARIMA on daily aggregated load |
+| State-space | `UnobservedComponents` with time-varying level + harmonic weekly/daily Fourier terms + exogenous regressors |
+| ML challenger | GBM (`GradientBoostingRegressor`) with engineered lag, rolling, and calendar features |
 
 ## Validation
 
-- Expanding-window cross-validation on 24 h, 48 h, and 7-day horizons
-- Metrics: MAPE, RMSE, prediction-interval coverage
-- State-space wins on short horizons; competitive at 7 days
+- 60-day held-out backtest at the end of the series
+- Metrics: MAPE, RMSE, 95% prediction-interval coverage
+- SARIMA MAPE 14.5%, UC MAPE 19.3%, GBM MAPE 6.2% — but the GBM number is a 1-step-ahead evaluation with revealed previous-day load. Not directly comparable to the SARIMA / UC multi-step forecasts. See the case study for the full discussion.
+- UC 95% PI empirical coverage: 60/60 (Clopper-Pearson 95% CI [0.94, 1.00] — the sample is too small to distinguish 95% from 99%).
 
-## Deployment
+## Deployment sketch
 
-- Winning ensemble served behind a FastAPI endpoint
-- Nightly retraining; results logged to Postgres
-- Grafana dashboard for ops (forecast vs. actual, residual heatmap, PI coverage)
+- Winning candidate (daily SARIMA at this scope) could be served behind a scheduled retrain + pickled artifact.
+- Not a production system — the notebook stops at offline forecasting on real PJME data.
 
 ## Business outcome
 
-- ~18% MAPE reduction over the SARIMA baseline → tighter day-ahead procurement and fewer imbalance penalties
-- Calibrated prediction intervals support risk-aware grid-balancing decisions
+- Day-ahead load forecasting on real PJME data; SARIMA is the operational pick (multi-step honest baseline) over the UC state-space variant on this run.
+- Headline point-error gap between SARIMA (14.5%) and GBM (6.2%, 1-step-ahead) is largely a comparison-protocol artifact — a true recursive-mode GBM evaluation is the natural next step before any procurement claim.
