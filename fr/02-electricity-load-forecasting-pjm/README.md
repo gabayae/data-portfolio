@@ -28,17 +28,25 @@ Peut-on produire des prévisions horaires de charge à J+1 suffisamment précise
 
 ## Validation
 
-- Backtest à holdout de 60 jours en fin de série
-- Métriques : MAPE, RMSE, couverture des intervalles de prévision à 95 %
-- MAPE SARIMA 14,5 %, MAPE UC 19,3 %, MAPE GBM 6,2 % — mais le chiffre GBM est une évaluation à un pas d'avance avec la charge réelle de la veille révélée. Pas directement comparable aux prévisions multi-pas SARIMA / UC. Voir l'étude de cas pour la discussion complète.
-- Couverture empirique des IP 95 % du modèle UC : 60/60 (IC Clopper-Pearson à 95 % [0,94 ; 1,00] — l'échantillon est trop petit pour distinguer 95 % de 99 %).
+- Backtest à holdout de 60 jours en fin de série.
+- Métriques : MAPE, RMSE, couverture des IP 95 % avec IC Clopper-Pearson.
+
+**Prévisions multi-pas 60 jours (comparaison à armes égales) :**
+
+| Modèle | MAPE | RMSE (MW) | Couverture IP 95 % |
+|---|---|---|---|
+| **GBM récursif 60 pas** | **9,0 %** | 4 414 | — |
+| SARIMA (multi-pas) | 14,5 % | 6 676 | 54/60 (IC CP [0,79 ; 0,96]) |
+| UC espace d'états (multi-pas) | 19,3 % | 8 295 | 60/60 (IC CP [0,94 ; 1,00]) |
+
+**Le GBM bat SARIMA de 38 % de MAPE en comparaison équitable mode récursif.** La variante UC a *perdu* face à SARIMA sur ce run (−33 % de gain). Le reporting antérieur confondait le GBM récursif avec une variante à un pas d'avance qui suppose la charge de la veille révélée — la variante à un pas d'avance (MAPE 6,2 %) reste rapportée dans le carnet comme contexte, étiquetée comme telle.
 
 ## Esquisse de déploiement
 
-- Candidat gagnant (SARIMA journalier à ce périmètre) pourrait être servi derrière un ré-entraînement planifié + artefact picklé.
-- Pas un système de production — le carnet s'arrête à la prévision hors-ligne sur données PJME réelles.
+- Le GBM récursif est le choix opérationnel sur ce run ; SARIMA offre le seul IP 95 % bien calibré (54/60 dans la bande).
+- Ré-entraînement planifié + artefact picklé ; pas un système de production — le carnet s'arrête à la prévision hors-ligne sur données PJME réelles.
 
 ## Résultat métier
 
-- Prévision de charge à J+1 sur données PJME réelles ; SARIMA est le choix opérationnel (baseline multi-pas honnête) devant la variante espace d'états UC sur ce run.
-- L'écart d'erreur ponctuelle entre SARIMA (14,5 %) et GBM (6,2 %, à un pas d'avance) est largement un artefact du protocole de comparaison — une vraie évaluation du GBM en mode récursif est la prochaine étape naturelle avant toute revendication côté achats.
+- Prévision de charge à J+1 sur données PJME réelles ; le GBM avec évaluation récursive multi-pas est le leader honnête en erreur ponctuelle.
+- La couverture IP de SARIMA (54/60 à nominal 95 %, compatible avec toute vraie couverture ≥ 79 %) reste le choix opérationnel pour les décisions achats/hedging où la calibration d'intervalle compte plus que l'erreur ponctuelle.

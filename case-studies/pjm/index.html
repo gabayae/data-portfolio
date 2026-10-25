@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Case study — Hourly Load Forecasting (PJM) · Yaé Gaba</title>
-<meta name="description" content="Day-ahead hourly load forecasting on real PJM East data: SARIMA vs. state-space (UnobservedComponents + Fourier) vs. gradient-boosted forecaster. GBM wins MAPE 6.2%; UC PI coverage 99%.">
+<meta name="description" content="Day-ahead hourly load forecasting on real PJM East data: SARIMA vs. state-space (UnobservedComponents + Fourier) vs. gradient-boosted forecaster. GBM recursive 60-step MAPE 9.0% vs SARIMA 14.5% (fair comparison); SARIMA PI coverage 54/60 — well-calibrated.">
 <meta name="author" content="Yaé Gaba">
 <link rel="canonical" href="https://gabayae.github.io/data-portfolio/case-studies/pjm/">
 <link rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/case-studies/pjm/">
@@ -18,7 +18,7 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://gabayae.github.io/data-portfolio/case-studies/pjm/">
 <meta property="og:title" content="Case study — PJM Hourly Load Forecasting">
-<meta property="og:description" content="GBM 6.2% MAPE on 145k hours of real PJM East load data. SARIMA, state-space, and ML benchmarks compared on a 60-day held-out window.">
+<meta property="og:description" content="GBM recursive 60-step 9.0% MAPE (fair comparison) on real PJM East load data. SARIMA, state-space, and ML benchmarks compared on a 60-day held-out window.">
 <meta property="og:image" content="https://gabayae.github.io/data-portfolio/case-studies/pjm/og-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -193,7 +193,7 @@ footer a { color: #ffd7c5; }
   "@context": "https://schema.org",
   "@type": "Article",
   "headline": "Case study — Hourly Load Forecasting (PJM)",
-  "description": "Day-ahead hourly load forecasting on real PJM East data: SARIMA vs. state-space (UnobservedComponents + Fourier) vs. gradient-boosted forecaster. GBM wins MAPE 6.2%; UC PI coverage 99%.",
+  "description": "Day-ahead hourly load forecasting on real PJM East data: SARIMA vs. state-space (UnobservedComponents + Fourier) vs. gradient-boosted forecaster. GBM recursive 60-step MAPE 9.0% vs SARIMA 14.5% (fair comparison); SARIMA PI coverage 54/60 — well-calibrated.",
   "image": "https://gabayae.github.io/data-portfolio/case-studies/pjm/og-card.png",
   "url": "https://gabayae.github.io/data-portfolio/case-studies/pjm/",
   "mainEntityOfPage": {
@@ -268,9 +268,9 @@ footer a { color: #ffd7c5; }
     <div class="case-hero__meta">
       <span class="case-hero__readtime"><strong>Read</strong> · 5 min · 1,025 words</span>
       <span><strong>Best model</strong> · GBM with engineered features</span>
-      <span><strong>MAPE</strong> · 6.2% (vs SARIMA 14.5%, UC 19.3%)</span>
+      <span><strong>MAPE</strong> · GBM recursive 9.0% (vs SARIMA 14.5%, UC 19.3%)</span>
       <span><strong>Data</strong> · 145,392 hourly observations · 2002–2018</span>
-      <span><strong>UC 95% PI coverage</strong> · 99%</span>
+      <span><strong>SARIMA 95% PI coverage</strong> · 54/60 (CP CI [0.79, 0.96])</span>
     </div>
   </div>
 </section>
@@ -296,7 +296,7 @@ footer a { color: #ffd7c5; }
 
     <h2 id="summary">Summary</h2>
     <p class="lede">
-      A gradient-boosted regressor with engineered lag, rolling, and harmonic-calendar features beats classical SARIMA on day-ahead PJM East load by more than half: <strong>6.2% MAPE vs. 14.5%</strong>. A structural state-space model (UnobservedComponents with annual Fourier exog) trails on point-forecast accuracy but delivers near-perfect prediction-interval calibration (99% empirical coverage at the nominal 95% level), which matters for risk-aware procurement.
+      Under a fair apples-to-apples comparison — all three models producing a 60-day multi-step forecast — a gradient-boosted regressor with engineered lag, rolling, and harmonic-calendar features beats classical SARIMA on day-ahead PJM East load: <strong>GBM recursive 60-step MAPE 9.0% vs SARIMA 14.5%</strong> (a 38% point-error reduction). SARIMA's 95% PI coverage is 54/60 — the Clopper-Pearson 95% CI around that rate is [0.79, 0.96], consistent with the nominal 95% level and the only well-calibrated interval of the three. A GBM evaluated 1-step-ahead with revealed previous-day load reaches 6.2% MAPE, but that is an online 1-step benchmark, not a 60-day forecast — reported in the table for context, not as the headline.
     </p>
     <p>
       The right model depends on what the trading desk is optimising for. If the only goal is the lowest expected error, GBM wins; if the desk is sizing hedges and needs honest uncertainty bands, state-space wins.
@@ -373,9 +373,10 @@ footer a { color: #ffd7c5; }
         <tr><th>Model</th><th>MAPE</th><th>RMSE (MW)</th><th>95% PI coverage</th></tr>
       </thead>
       <tbody>
-        <tr class="winner"><td>GBM (engineered features)</td><td class="num">6.24%</td><td class="num">2,653</td><td class="num">—</td></tr>
-        <tr><td>SARIMA(2,1,2)(1,1,1)<sub>7</sub></td><td class="num">14.45%</td><td class="num">6,676</td><td class="num">90.0%</td></tr>
-        <tr><td>UC + Fourier annual exog</td><td class="num">19.28%</td><td class="num">8,295</td><td class="num">100.0%</td></tr>
+        <tr class="winner"><td>GBM recursive 60-step (fair)</td><td class="num">8.96%</td><td class="num">4,414</td><td class="num">—</td></tr>
+        <tr><td>SARIMA(2,1,2)(1,1,1)<sub>7</sub></td><td class="num">14.45%</td><td class="num">6,676</td><td class="num">54/60 (CP [0.79,0.96])</td></tr>
+        <tr><td>UC + Fourier annual exog</td><td class="num">19.28%</td><td class="num">8,295</td><td class="num">60/60 (CP [0.94,1.00])</td></tr>
+        <tr><td>GBM 1-step-ahead (revealed lags, context)</td><td class="num">6.24%</td><td class="num">2,653</td><td class="num">—</td></tr>
       </tbody>
     </table>
 
