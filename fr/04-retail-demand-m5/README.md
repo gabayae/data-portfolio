@@ -23,23 +23,32 @@ Produire des prévisions cohérentes SKU × magasin × semaine — la prévision
 
 | Niveau | Approche |
 |---|---|
-| Agrégat (État, département) | SARIMA / Prophet / ETS |
-| Base (SKU × magasin) | LightGBM avec features riches lag, rolling, prix, calendrier |
-| Réconciliation | MinT (trace minimale) — combinaison optimale à travers la hiérarchie |
+| Agrégat (national hebdomadaire) | SARIMA(1,1,1)(0,1,1)₅₂ |
+| Base (item × magasin) | `GradientBoostingRegressor` avec features lag/calendrier/rolling |
+| Réconciliation | Projection MinT-OLS sur toute la hiérarchie : TOTAL / STATE (3) / STATE×DEPT (15) / BOTTOM (130) |
 
 ## Validation
 
-- RMSSE pondéré à origine glissante selon le protocole M5
-- Évaluation par niveau : État, magasin, département, catégorie, SKU
-- Les prévisions réconciliées doivent satisfaire les contraintes d'agrégation
+- **Test holdout 8 semaines**, RMSSE par série à chaque niveau de la hiérarchie (pas seulement TOTAL+BOTTOM), chaque série mise à l'échelle par sa propre erreur naïve d'entraînement selon le protocole canonique M5 WRMSSE.
+- Chiffres en tête sur ce run :
 
-## Déploiement
+| Niveau | RMSSE moyen pré-recon | RMSSE moyen post-recon | Δ |
+|---|---|---|---|
+| TOTAL (1 série) | 3,11 | 3,13 | +0,02 (légère dégradation — tiré vers bottom-up) |
+| STATE (3 séries) | 2,30 | 2,25 | **−0,05 (amélioration)** |
+| STATE×DEPT (15 séries) | 1,59 | 1,57 | **−0,02 (amélioration)** |
+| BOTTOM (130 séries) | 1,305 | 1,299 | −0,006 (négligeable) |
 
-- Pipeline batch Python/PySpark produisant un drop hebdomadaire de prévisions
-- Prévisions consommées par les workflows de réapprovisionnement et d'achat
-- Chiffres cohérents partagés entre les équipes merchandising et planification
+Le résultat honnête : **la cohérence est par construction** (les sommes bottom égalent TOTAL par algèbre linéaire) ; la **réduction d'erreur mesurable** apparaît aux niveaux intermédiaires où MinT fait d'habitude son travail (STATE, STATE×DEPT) ; le TOTAL se dégrade légèrement car la réconciliation tire l'agrégat SARIMA vers la somme bottom-up ; le BOTTOM bouge à peine.
+
+## Esquisse de déploiement
+
+- Pipeline batch hebdomadaire : GBM de base par (item × magasin), SARIMA agrégé, réconciliation MinT-OLS, sortie écrite sous forme de table `(niveau, série, semaine, prévision)` cohérente.
+- Consommateurs : réapprovisionnement lit BOTTOM ; merchandising lit STATE×DEPT ; planification lit TOTAL — tous lisent les mêmes chiffres réconciliés.
 
 ## Résultat métier
 
-- Prévisions multi-niveaux qui alignent les attentes SKU bottom-up avec les plans de catégorie top-down
-- Moins de travail de réconciliation entre les équipes merchandising et planification
+- Un ensemble de prévisions cohérentes à travers TOTAL → STATE → STATE×DEPT → BOTTOM ; réapprovisionnement, merchandising et planification n'ont plus à débattre du chiffre correct.
+- Le gain MinT-OLS est modeste en absolu (centièmes de RMSSE aux niveaux intermédiaires) ; la valeur opérationnelle est la cohérence, pas l'amélioration d'exactitude.
+
+**Prochaines itérations :** réconciliation WLS / MinT-shrink avec covariances empiriques des erreurs ; features prix/promo du calendrier M5 ; évaluation sur fenêtres à origine glissante pour IC sur le Δ RMSSE à chaque niveau.

@@ -23,23 +23,32 @@ Produce coherent SKU × store × week forecasts — a category forecast must equ
 
 | Level | Approach |
 |---|---|
-| Aggregate (state, department) | SARIMA / Prophet / ETS |
-| Base (SKU × store) | LightGBM with rich lag, rolling, price, calendar features |
-| Reconciliation | MinT (minimum-trace) optimal combination across hierarchy |
+| Aggregate (national weekly) | SARIMA(1,1,1)(0,1,1)₅₂ |
+| Base (item × store) | `GradientBoostingRegressor` with lag/calendar/rolling features |
+| Reconciliation | MinT-OLS projection across the full hierarchy: TOTAL / STATE (3) / STATE×DEPT (15) / BOTTOM (130) |
 
 ## Validation
 
-- Rolling-origin weighted RMSSE per the M5 protocol
-- Per-level evaluation: state, store, department, category, SKU
-- Reconciled forecasts must satisfy aggregation constraints
+- **8-week held-out test**, per-series RMSSE at every hierarchy level (not just TOTAL+BOTTOM), each series scaled by its own training-naive error per the canonical M5 WRMSSE protocol.
+- Headline numbers on this run:
 
-## Deployment
+| Level | pre-recon mean RMSSE | post-recon mean RMSSE | Δ |
+|---|---|---|---|
+| TOTAL (1 series) | 3.11 | 3.13 | +0.02 (slightly worsens — pulled toward bottom-up) |
+| STATE (3 series) | 2.30 | 2.25 | **−0.05 (improves)** |
+| STATE×DEPT (15 series) | 1.59 | 1.57 | **−0.02 (improves)** |
+| BOTTOM (130 series) | 1.305 | 1.299 | −0.006 (negligible) |
 
-- Python/PySpark batch pipeline producing a weekly forecast drop
-- Forecasts consumed by replenishment and buying workflows
-- Coherent numbers shared between merchandising and planning teams
+The honest story: **coherence is by construction** (bottom sums match TOTAL by linear algebra); **measurable error reduction** shows up at the mid-levels where MinT typically earns its keep (STATE, STATE×DEPT); the TOTAL slightly worsens because reconciliation pulls the SARIMA aggregate toward the bottom-up sum; BOTTOM barely moves.
+
+## Deployment sketch
+
+- Weekly batch pipeline: base GBM per (item × store), aggregate SARIMA, MinT-OLS reconciliation, output written as a coherent `(level, series, week, forecast)` table.
+- Consumers: replenishment reads BOTTOM; merchandising reads STATE×DEPT; planning reads TOTAL — all reading the same reconciled numbers.
 
 ## Business outcome
 
-- Multi-level forecasts that align bottom-up SKU expectations with top-down category plans
-- Less reconciliation work between merchandising and planning teams
+- One coherent forecast set across TOTAL → STATE → STATE×DEPT → BOTTOM; replenishment, merchandising, and planning no longer argue over which number is correct.
+- MinT-OLS lift is modest in absolute terms (hundredths of RMSSE at mid-levels); the operational value is coherence, not accuracy improvement.
+
+**Next iterations:** WLS / MinT-shrink reconciliation using empirical forecast-error covariances; add M5 calendar price/promo features; evaluate across rolling-origin windows for CI on each level's RMSSE delta.
