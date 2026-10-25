@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Case study — Lake Kariba River Flow Forecasting · Yaé Gaba</title>
-<meta name="description" content="Daily lake-level forecasting for Lake Kariba (Zambezi basin) — 30-day horizon, GBM with turbine-discharge as exogenous covariate hits 7 cm RMSE; SARIMA prediction-interval coverage 100%.">
+<meta name="description" content="Daily lake-level forecasting for Lake Kariba (Zambezi basin) — 30-day horizon, SARIMA 18 cm RMSE with calibrated 95% PI (30/30 coverage). GBM with discharge exog hits 7 cm but only 1-step-ahead with revealed truth; recursive 30-step degrades to naive-last.">
 <meta name="author" content="Yaé Gaba">
 <link rel="canonical" href="https://gabayae.github.io/data-portfolio/case-studies/kariba/">
 <link rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/case-studies/kariba/">
@@ -18,7 +18,7 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://gabayae.github.io/data-portfolio/case-studies/kariba/">
 <meta property="og:title" content="Case study — Lake Kariba River Flow Forecasting">
-<meta property="og:description" content="GBM with exogenous covariates hits 7 cm RMSE on 30-day Lake Kariba lake-level forecasting. SARIMA delivers 100% PI coverage. Real Zambezi reservoir data.">
+<meta property="og:description" content="SARIMA wins the honest 30-day Lake Kariba lake-level forecast at 18 cm RMSE with calibrated 95% PI. GBM 7 cm is 1-step-ahead with revealed truth, not 30-day forecast. Real Zambezi reservoir data.">
 <meta property="og:image" content="https://gabayae.github.io/data-portfolio/case-studies/kariba/og-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -182,7 +182,7 @@ footer a { color: #ffd7c5; }
   "@context": "https://schema.org",
   "@type": "Article",
   "headline": "Case study — Lake Kariba River Flow Forecasting",
-  "description": "Daily lake-level forecasting for Lake Kariba (Zambezi basin) — 30-day horizon, GBM with turbine-discharge as exogenous covariate hits 7 cm RMSE; SARIMA prediction-interval coverage 100%.",
+  "description": "Daily lake-level forecasting for Lake Kariba (Zambezi basin) — 30-day horizon, SARIMA 18 cm RMSE with calibrated 95% PI (30/30 coverage). GBM with discharge exog hits 7 cm but only 1-step-ahead with revealed truth; recursive 30-step degrades to naive-last.",
   "image": "https://gabayae.github.io/data-portfolio/case-studies/kariba/og-card.png",
   "url": "https://gabayae.github.io/data-portfolio/case-studies/kariba/",
   "mainEntityOfPage": {
@@ -252,13 +252,13 @@ footer a { color: #ffd7c5; }
     <span class="case-hero__eyebrow">Case study · Hydropower · Time-series</span>
     <h1 class="case-hero__title">River flow forecasting — Lake Kariba</h1>
     <p class="case-hero__sub">
-      Daily lake-level and outflow forecasting for the world's largest man-made reservoir, on real Zambezi River Authority data — 30-day horizon, gradient-boosted regressor with turbine discharge as exogenous covariate hits a remarkable 7 cm RMSE on a level that drifts within a 7 m operational band.
+      Daily lake-level forecasting for the world's largest man-made reservoir, on real Zambezi River Authority data — 30-day horizon. SARIMA with calibrated 95% PI emerges as the operational winner at 18 cm RMSE; the previously-headlined 7 cm GBM number was a 1-step-ahead-with-revealed-truth result that does not survive a fair recursive multi-step evaluation.
     </p>
     <div class="case-hero__meta">
       <span class="case-hero__readtime"><strong>Read</strong> · 6 min · 1,354 words</span>
-      <span><strong>Best model</strong> · GBM with exogenous covariates</span>
-      <span><strong>RMSE</strong> · 0.07 m (vs SARIMA 0.18 m, naive 0.50 m)</span>
-      <span><strong>SARIMA 95% PI coverage</strong> · 100%</span>
+      <span><strong>Best 30-day model</strong> · SARIMA (calibrated PI)</span>
+      <span><strong>RMSE</strong> · SARIMA 0.18 m, naive-last 0.50 m, GBM recursive 0.51 m</span>
+      <span><strong>SARIMA 95% PI coverage</strong> · 30/30 (CP CI [0.88, 1.00])</span>
       <span><strong>Data</strong> · 1,155 daily obs · 2020–2023</span>
     </div>
   </div>
@@ -376,7 +376,7 @@ footer a { color: #ffd7c5; }
       <li><strong>Exogenous covariates</strong>: <code>turbine_discharge</code> and <code>total_outflow</code>, lag-1 and 7-day rolling means</li>
     </ul>
     <p>
-      This is the lever that drops RMSE from ~18 cm (SARIMA, lake-level alone) to 7 cm (GBM, with discharge as exog). The structural relationship "tomorrow's lake level = today's level + (inflow − outflow)" is something the GBM can learn directly when given outflow data; SARIMA, working only on the lake-level history, has to infer it.
+      <strong>Honest reading of the exog story.</strong> At 1-step-ahead with revealed previous-day discharge, the GBM reaches 7 cm RMSE — but this is not a 30-day planning forecast: `turbine_discharge` and `total_outflow` are operator <em>decisions</em>, not known covariates 30 days out. Running the GBM in true recursive 30-step mode (target-only features, own predictions fed back) degrades to 51 cm RMSE — essentially tied with naive-last. The structural relationship "tomorrow's lake level = today's level + (inflow − outflow)" is only learnable when outflow is actually knowable. For 30-day planning, SARIMA's 18 cm RMSE is the real operational number.
     </p>
 
     <h2 id="results">Results</h2>
@@ -387,11 +387,12 @@ footer a { color: #ffd7c5; }
         <tr><th>Model</th><th>MAPE</th><th>RMSE (m)</th><th>95% PI coverage</th></tr>
       </thead>
       <tbody>
-        <tr class="winner"><td>GBM (with exog: discharge, outflow)</td><td class="num">0.013%</td><td class="num">0.07</td><td class="num">—</td></tr>
-        <tr><td>SARIMA(1,1,1)(1,1,1)<sub>7</sub></td><td class="num">0.027%</td><td class="num">0.18</td><td class="num">100%</td></tr>
-        <tr><td>UC + Fourier annual exog</td><td class="num">0.046%</td><td class="num">0.24</td><td class="num">90%</td></tr>
+        <tr class="winner"><td>SARIMA(1,1,1)(1,1,1)<sub>7</sub> (multi-step)</td><td class="num">0.027%</td><td class="num">0.18</td><td class="num">30/30 (CP [0.88, 1.00])</td></tr>
+        <tr><td>UC + Fourier annual exog (multi-step)</td><td class="num">0.079%</td><td class="num">0.42</td><td class="num">30/30 (CP [0.88, 1.00])</td></tr>
+        <tr><td>GBM recursive 30-step (fair)</td><td class="num">0.085%</td><td class="num">0.51</td><td class="num">—</td></tr>
         <tr><td>Naive-last</td><td class="num">0.085%</td><td class="num">0.50</td><td class="num">—</td></tr>
         <tr><td>Naive-seasonal (365-day lag)</td><td class="num">0.39%</td><td class="num">1.90</td><td class="num">—</td></tr>
+        <tr><td>GBM 1-step-ahead w/ exog (context, not deployable at 30d)</td><td class="num">0.013%</td><td class="num">0.07</td><td class="num">—</td></tr>
       </tbody>
     </table>
 
@@ -401,7 +402,7 @@ footer a { color: #ffd7c5; }
     </figure>
 
     <div class="callout">
-      <strong>The headline number in context.</strong> 7 cm RMSE on a level that varies within a ~7 m operational band is a relative error of ~1%. On a reservoir whose 1 m drop costs hundreds of GWh of generation per year, that's the difference between scheduling six weeks of generation confidently versus going hand-to-mouth on inflow telemetry.
+      <strong>The honest headline on 30-day planning: SARIMA at 18 cm RMSE.</strong> On a level that varies within a ~7 m operational band, 18 cm is a relative error of ~2.5%, and SARIMA is the only candidate with a calibrated 95% PI (30/30 inside the band, CP CI [0.88, 1.00]). The GBM with revealed-truth exog hits 7 cm 1-step-ahead — a different, more constrained use case (next-day refresh service, not horizon planning) — and should not be marketed as a 30-day forecast.
     </div>
 
     <h2 id="tradeoffs">Trade-offs</h2>
@@ -424,8 +425,8 @@ footer a { color: #ffd7c5; }
 
     <h2 id="lessons">Lessons</h2>
     <ol>
-      <li><strong>Exogenous covariates dominate when they exist.</strong> The 60% RMSE reduction (SARIMA → GBM) is almost entirely attributable to having turbine discharge in the feature set. Picking the right inputs beats picking the right algorithm.</li>
-      <li><strong>Slow-moving, high-stakes targets need narrow PIs, not just low MAPE.</strong> A 7 cm point error is tight; but on this kind of asset, "what's the probability we breach the operational threshold in the next 30 days" is the question that actually drives decisions. SARIMA's calibrated interval is often more valuable than GBM's tighter mean.</li>
+      <li><strong>Exogenous covariates dominate when they are actually knowable at prediction time.</strong> Turbine discharge is an operator <em>decision</em>, not a 30-day forecastable exogenous variable. A real 30-day planning service should use rainfall/inflow forecasts (CHIRPS, NASA POWER) as true exog instead.</li>
+      <li><strong>Slow-moving, high-stakes targets need calibrated PIs, not just low MAPE.</strong> On this asset, "what's the probability we breach the operational threshold in the next 30 days" is the question that actually drives decisions. SARIMA's 30/30 coverage with CP CI [0.88, 1.00] and 56 cm mean half-width is the operationally useful summary.</li>
       <li><strong>Real African open data is good enough.</strong> Lake Kariba is a transboundary reservoir between two African countries; the daily data exists and is publicly accessible on Kaggle. The model would extend cleanly to Cahora Bassa and other African dams once equivalent data is published.</li>
     </ol>
 

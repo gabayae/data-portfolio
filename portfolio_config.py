@@ -50,7 +50,7 @@ CATEGORY_COLORS = {
 # ── Headline stats ────────────────────────────────────────────────────────────
 STATS = [
     ("14.5%", "MAPE — PJM hourly load (SARIMA, operational pick)"),
-    ("7 cm",  "RMSE — Lake Kariba (GBM 1-step-ahead on daily level)"),
+    ("18 cm", "RMSE — Lake Kariba 30-day (SARIMA, calibrated 95% PI)"),
     ("0.310", "Gini — freMTPL2 pure premium (Tweedie GLM)"),
     ("+39%",  "Coverage — Kenya mobile clinics (capped LP w/ equity, vs manual)"),
 ]
@@ -119,10 +119,10 @@ PROJECTS: list[Project] = [
     ),
     Project(6,
         "River Flow Forecasting — Lake Kariba",
-        "Daily lake level on real Zambezi reservoir data; turbine discharge as exog.",
-        "GBM RMSE 7 cm · SARIMA PI 100%",
+        "Daily lake level on real Zambezi reservoir data; SARIMA wins 30-day planning (18 cm, calibrated PI).",
+        "SARIMA 18 cm · 30/30 PI (CP [0.88,1.00])",
         ["time-series"],
-        ["SARIMA", "State-space", "GBM exog"],
+        ["SARIMA", "State-space", "GBM recursive"],
         "Lake Kariba reservoir · 1,155 daily obs",
         "06-river-flow-forecasting-kariba",
         case_study="case-studies/kariba/",

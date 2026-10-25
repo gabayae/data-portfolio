@@ -557,8 +557,8 @@ h3 { font-size: 1.35rem; }
         <div class="stat-card__label">MAPE — PJM hourly load (SARIMA, operational pick)</div>
       </div>
       <div class="stat-card">
-        <span class="stat-card__value">7 cm</span>
-        <div class="stat-card__label">RMSE — Lake Kariba (GBM 1-step-ahead on daily level)</div>
+        <span class="stat-card__value">18 cm</span>
+        <div class="stat-card__label">RMSE — Lake Kariba 30-day (SARIMA, calibrated 95% PI)</div>
       </div>
       <div class="stat-card">
         <span class="stat-card__value">0.310</span>
@@ -707,9 +707,9 @@ h3 { font-size: 1.35rem; }
       <article class="project-card" data-categories="time-series">
         <div class="project-card__header">
           <span class="project-card__number">06</span>
-          <div class="project-card__metric">GBM RMSE 7 cm · SARIMA PI 100%</div>
+          <div class="project-card__metric">SARIMA 18 cm · 30/30 PI (CP [0.88,1.00])</div>
           <h3 class="project-card__title">River Flow Forecasting — Lake Kariba</h3>
-          <p class="project-card__tagline">Daily lake level on real Zambezi reservoir data; turbine discharge as exog.</p>
+          <p class="project-card__tagline">Daily lake level on real Zambezi reservoir data; SARIMA wins 30-day planning (18 cm, calibrated PI).</p>
         </div>
         <div class="project-card__body">
           <div class="project-card__categories"><span class="category-pill category-pill--time-series">Time Series</span></div>

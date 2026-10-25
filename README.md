@@ -27,7 +27,7 @@ Each project follows the same pipeline:
 | 03 | Insurance Claims Frequency & Severity | Insurance | [freMTPL2 freq + sev](https://www.kaggle.com/datasets/floser/french-motor-claims-datasets-fremtpl2freq) | Tweedie Gini 0.310 |
 | 04 | Hierarchical Retail Demand Forecasting | Retail | [M5 sample](https://www.kaggle.com/datasets/tarique7/m5-small-sample-dataset-whole-series) | MinT-OLS reconciliation |
 | 05 | Stochastic Optimization for Resource Allocation | Health / Ops | [Kenya KMPDC + SHA](https://www.kaggle.com/datasets/xen0r0m/sha-kenya-licensed-health-facilities-and-funds) | Capped LP +39% vs manual (w/ equity) |
-| 06 | River Flow Forecasting — Lake Kariba | Hydropower | [Kariba Reservoir](https://www.kaggle.com/datasets/marbin/lake-kariba-reservoir-data) | GBM RMSE 7 cm |
+| 06 | River Flow Forecasting — Lake Kariba | Hydropower | [Kariba Reservoir](https://www.kaggle.com/datasets/marbin/lake-kariba-reservoir-data) | SARIMA 18 cm · 30/30 PI (fair 30-day) |
 | 07 | Solar Energy Forecasting — Nairobi | Energy | [NASA POWER API](https://power.larc.nasa.gov/) | GBM MAPE 9.4% |
 | 08 | Customer Survival Analysis — MTN Nigeria | Telecom | [MTN Nigeria Churn](https://www.kaggle.com/datasets/oluwademiladeadeniyi/mtn-nigeria-customer-churn) | Cox PH + Weibull AFT |
 | 09 | Flight Demand & Price — Southern Africa | Aviation | [SA Flight Prices](https://www.kaggle.com/datasets/mazano/southern-africa-flight-prices) | SARIMA MAPE 2.0% |

@@ -31,23 +31,36 @@ Lancer `python download_data.py` pour télécharger (nécessite Kaggle CLI confi
 
 | Famille | Modèle |
 |---|---|
-| Séries temporelles classiques | SARIMA sur niveau journalier |
-| Espace d'états | UnobservedComponents (tendance locale-linéaire + saisonnalité annuelle harmonique) |
-| ML pour la prévision | Régresseur gradient-boosté avec features lag/rolling/exogènes (débit turbiné comme covariable) |
+| Séries temporelles classiques | SARIMA(1,1,1)(1,1,1)₇ sur niveau journalier |
+| Espace d'états | `UnobservedComponents` (tendance locale-linéaire + exog. Fourier annuelles) |
+| Challenger ML (équitable) | `GradientBoostingRegressor`, features cible-seules, **récursif 30 pas** |
+| Challenger ML (contexte) | GBM avec `turbine_discharge` + `total_outflow` laggés + niveau de la veille révélé, un pas d'avance |
 
 ## Validation
 
-- Backtest à origine glissante, horizon 30 jours
-- Métriques : MAPE, RMSE, couverture des intervalles de prévision
-- Baselines : naïf (dernière observation), naïf-saisonnier
+- Fenêtre de 30 jours mise de côté, deux variantes GBM comparées côte à côte.
+- Métriques : MAPE, RMSE en mètres, couverture IP 95 % avec IC Clopper-Pearson.
 
-## Déploiement
+**Chiffres en tête :**
 
-- FastAPI `/forecast` retournant niveau-de-lac moyen + IP 95 % pour les 30 prochains jours
-- Tableau de bord Streamlit pour la Zambezi River Authority — rafraîchissement journalier, scénarios pessimistes, panneau d'impact production
-- Ré-entraînement hebdomadaire ; alertes si le RMSE glissant dépasse le seuil opérationnel
+| Modèle | MAPE | RMSE (m) | Couverture IP 95 % |
+|---|---|---|---|
+| **SARIMA (multi-pas)** | **0,027 %** | **0,184** | 30/30 (CP [0,88 ; 1,00]) |
+| UC espace d'états (multi-pas) | 0,079 % | 0,418 | 30/30 (CP [0,88 ; 1,00]) |
+| GBM récursif 30 pas (équitable) | 0,085 % | 0,508 | — |
+| Naïf-dernier | 0,085 % | 0,501 | — |
+| GBM à un pas d'avance avec exog (contexte) | 0,013 % | 0,069 | — |
+
+**SARIMA gagne la comparaison honnête** à **18 cm de RMSE** en prévision multi-pas 30 jours ; c'est le seul intervalle bien calibré du lot (demi-largeur moyenne IP 95 % de SARIMA ≈ 56 cm, 30/30 avec IC CP [0,88 ; 1,00]). La variante GBM mode récursif se dégrade à 51 cm — essentiellement à égalité avec le naïf-dernier — parce que les covariables de *décision opérateur* (`turbine_discharge`, `total_outflow`) ne peuvent pas être conditionnées à l'horizon 30 jours. Le « RMSE 7 cm du GBM » précédemment en titre était une évaluation à un pas d'avance avec le débit du jour précédent révélé ; conservé dans le tableau comme contexte, pas comme chiffre déployable.
+
+## Esquisse de déploiement
+
+- SARIMA est le choix opérationnel pour une prévision de planification à 30 jours sur ce dataset : IP 95 % calibré + plus bas RMSE multi-pas de la comparaison.
+- Un service temps-réel à un pas d'avance (rafraîchissement J+1 avec débit de la veille connu) pourrait utiliser la variante GBM-avec-exog pour une précision ponctuelle sensiblement plus serrée ; les cas d'usage sont différents.
 
 ## Résultat métier
 
-- Visibilité à 30 jours sur le niveau du lac avec intervalles calibrés — éclaire le dispatch des turbines et les accords de stockage entre pays
-- Quantifie à l'avance le risque opérationnel des scénarios à faibles apports
+- Visibilité à 30 jours sur le niveau du lac avec IP 95 % calibré de SARIMA — appuie la planification de dispatch de turbines par la Zambezi River Authority lorsque le débit est une variable de *décision*.
+- La variante GBM-avec-exog est un outil opérationnel à 1 jour, pas de planification à 30 jours. Le carnet distingue maintenant les deux régimes.
+
+**Prochaines itérations :** prévisions de pluie CHIRPS / NASA POWER comme *apports pluviométriques exogènes* (connus au moment de la prévision, contrairement au débit futur) ; espace d'états à régimes commutés pour sécheresse vs crue ; GBM quantile pour bandes de risque probabilistes autour des seuils de turbinage.

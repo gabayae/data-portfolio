@@ -31,23 +31,36 @@ Run `python download_data.py` to fetch (requires Kaggle CLI configured).
 
 | Family | Model |
 |---|---|
-| Classical time-series | SARIMA on daily level |
-| State-space | UnobservedComponents (local-linear-trend + harmonic annual seasonality) |
-| ML for forecasting | Gradient-boosted regressor with lag/rolling/exogenous features (turbine discharge as covariate) |
+| Classical time-series | SARIMA(1,1,1)(1,1,1)₇ on daily level |
+| State-space | `UnobservedComponents` (local-linear-trend + Fourier annual exog) |
+| ML challenger (fair) | `GradientBoostingRegressor`, target-only features, **recursive 30-step** |
+| ML challenger (context) | GBM with lagged `turbine_discharge` + `total_outflow` + revealed previous-day level, 1-step-ahead |
 
 ## Validation
 
-- Rolling-origin backtest, 30-day horizon
-- Metrics: MAPE, RMSE, prediction-interval coverage
-- Baselines: naive (last observation), naive-seasonal
+- 30-day held-out window, two GBM variants compared side-by-side.
+- Metrics: MAPE, RMSE in metres, 95% PI coverage with Clopper-Pearson CI.
 
-## Deployment
+**Headline numbers:**
 
-- FastAPI `/forecast` returning lake-level mean + 95% PI for the next 30 days
-- Streamlit dashboard for the Zambezi River Authority — daily refresh, downside scenarios, generation-impact panel
-- Weekly retraining; alerting if rolling RMSE exceeds operational threshold
+| Model | MAPE | RMSE (m) | 95% PI coverage |
+|---|---|---|---|
+| **SARIMA (multi-step)** | **0.027%** | **0.184** | 30/30 (CP [0.88, 1.00]) |
+| UC state-space (multi-step) | 0.079% | 0.418 | 30/30 (CP [0.88, 1.00]) |
+| GBM recursive 30-step (fair) | 0.085% | 0.508 | — |
+| Naive-last | 0.085% | 0.501 | — |
+| GBM 1-step-ahead w/ exog (context) | 0.013% | 0.069 | — |
+
+**SARIMA wins the honest comparison** at **18 cm RMSE** on 30-day multi-step forecasting; it is the only well-calibrated interval in the set (SARIMA 95% PI mean half-width ≈ 56 cm, 30/30 coverage with CP CI [0.88, 1.00]). The GBM recursive-mode variant degrades to 51 cm RMSE — essentially tied with naive-last — because operator-decision covariates (`turbine_discharge`, `total_outflow`) cannot be conditioned on at 30-day horizon. The previously headlined "7 cm RMSE GBM" was a 1-step-ahead evaluation with revealed previous-day discharge; retained in the table as context, not as the deployable number.
+
+## Deployment sketch
+
+- SARIMA is the operational pick for a 30-day planning forecast on this dataset: calibrated 95% PI + lowest multi-step RMSE in the comparison.
+- A real-time 1-step-ahead service (next-day refresh with yesterday's discharge known) could use the GBM-with-exog variant for substantially tighter point accuracy; the use cases differ.
 
 ## Business outcome
 
-- 30-day forward visibility on lake-level with calibrated intervals — informs turbine dispatch and inter-country storage agreements
-- Quantifies the operational risk of low-inflow scenarios in advance
+- 30-day lake-level visibility with SARIMA's calibrated 95% PI — supports Zambezi River Authority turbine-dispatch planning when discharge is a *decision* variable.
+- The GBM-with-exog variant is a 1-day operational tool, not a 30-day planning tool. The notebook now distinguishes the two regimes.
+
+**Next iterations:** CHIRPS / NASA POWER rainfall forecasts as *exogenous rainfall-driven inflow* (which IS known at prediction time, unlike future discharge); regime-switching state-space for drought vs flood; quantile-GBM for probabilistic risk bands around turbine-threshold crossings.

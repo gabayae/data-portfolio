@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Étude de cas — Prévision du débit fluvial du lac Kariba · Yaé Gaba</title>
-<meta name="description" content="Prévision journalière du niveau du lac Kariba (bassin du Zambèze) — horizon 30 jours, GBM avec débit turbiné comme covariable exogène atteint 7 cm de RMSE ; couverture des IP de SARIMA à 100 %.">
+<meta name="description" content="Prévision journalière du niveau du lac Kariba (bassin du Zambèze) — horizon 30 jours, SARIMA 18 cm de RMSE avec IP 95 % calibré (couverture 30/30). Le GBM avec débit en exogène atteint 7 cm mais seulement à un pas d'avance avec vérité révélée ; en récursif 30 pas il se dégrade au niveau du naïf-dernier.">
 <meta name="author" content="Yaé Gaba">
 <link rel="canonical" href="https://gabayae.github.io/data-portfolio/fr/case-studies/kariba/">
 <link rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/case-studies/kariba/">
@@ -20,7 +20,7 @@
 <meta property="og:locale:alternate" content="en_US">
 <meta property="og:url" content="https://gabayae.github.io/data-portfolio/fr/case-studies/kariba/">
 <meta property="og:title" content="Étude de cas — Prévision du débit du lac Kariba">
-<meta property="og:description" content="GBM avec covariables exogènes atteint 7 cm de RMSE sur la prévision à 30 jours du niveau du lac Kariba. SARIMA délivre une couverture des IP de 100 %. Données réelles du barrage du Zambèze.">
+<meta property="og:description" content="SARIMA gagne la prévision honnête à 30 jours du niveau du lac Kariba à 18 cm de RMSE avec IP 95 % calibré. Le 7 cm du GBM est à un pas d'avance avec vérité révélée, pas une prévision 30 jours. Données réelles du barrage du Zambèze.">
 <meta property="og:image" content="https://gabayae.github.io/data-portfolio/case-studies/kariba/og-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -184,7 +184,7 @@ footer a { color: #ffd7c5; }
   "@context": "https://schema.org",
   "@type": "Article",
   "headline": "Étude de cas — Prévision du débit fluvial du lac Kariba",
-  "description": "Prévision journalière du niveau du lac Kariba (bassin du Zambèze) — horizon 30 jours, GBM avec débit turbiné comme covariable exogène atteint 7 cm de RMSE ; couverture des IP de SARIMA à 100 %.",
+  "description": "Prévision journalière du niveau du lac Kariba (bassin du Zambèze) — horizon 30 jours, SARIMA 18 cm de RMSE avec IP 95 % calibré (couverture 30/30). Le GBM avec débit en exogène atteint 7 cm mais seulement à un pas d'avance avec vérité révélée ; en récursif 30 pas il se dégrade au niveau du naïf-dernier.",
   "image": "https://gabayae.github.io/data-portfolio/case-studies/kariba/og-card.png",
   "url": "https://gabayae.github.io/data-portfolio/fr/case-studies/kariba/",
   "mainEntityOfPage": {
@@ -254,13 +254,14 @@ footer a { color: #ffd7c5; }
     <span class="case-hero__eyebrow">Étude de cas · Hydroélectricité · Séries temporelles</span>
     <h1 class="case-hero__title">Prévision du débit fluvial — lac Kariba</h1>
     <p class="case-hero__sub">
-      Prévision journalière du niveau et des débits sortants pour le plus grand réservoir artificiel au monde, sur données réelles de la Zambezi River Authority — horizon 30 jours, régresseur gradient boosté avec le débit turbiné en covariable exogène atteint un remarquable 7 cm de RMSE sur un niveau qui dérive dans une bande opérationnelle de 7 m.
+      Prévision journalière du niveau du plus grand réservoir artificiel au monde, sur données réelles de la Zambezi River Authority — horizon 30 jours. SARIMA avec IP 95 % calibré s'impose comme le gagnant opérationnel à 18 cm de RMSE ; le 7 cm du GBM précédemment en titre était un résultat à un pas d'avance avec vérité révélée qui ne survit pas à une évaluation multi-pas récursive équitable.
     </p>
     <div class="case-hero__meta">
       <span class="case-hero__readtime"><strong>Lecture</strong> · 8 min · 1658 mots</span>
       <span><strong>Meilleur modèle</strong> · GBM avec covariables exogènes</span>
-      <span><strong>RMSE</strong> · 0,07 m (vs SARIMA 0,18 m, naïf 0,50 m)</span>
-      <span><strong>Couverture IP 95 % de SARIMA</strong> · 100 %</span>
+      <span><strong>Meilleur modèle 30 j</strong> · SARIMA (IP calibré)</span>
+      <span><strong>RMSE</strong> · SARIMA 0,18 m, naïf-dernier 0,50 m, GBM récursif 0,51 m</span>
+      <span><strong>Couverture IP 95 % de SARIMA</strong> · 30/30 (IC CP [0,88 ; 1,00])</span>
       <span><strong>Données</strong> · 1 155 obs. journalières · 2020–2023</span>
     </div>
   </div>
@@ -389,11 +390,12 @@ footer a { color: #ffd7c5; }
         <tr><th>Modèle</th><th>MAPE</th><th>RMSE (m)</th><th>Couverture IP 95 %</th></tr>
       </thead>
       <tbody>
-        <tr class="winner"><td>GBM (avec exog. : débit turbiné, débit sortant)</td><td class="num">0.013%</td><td class="num">0.07</td><td class="num">—</td></tr>
-        <tr><td>SARIMA(1,1,1)(1,1,1)<sub>7</sub></td><td class="num">0.027%</td><td class="num">0.18</td><td class="num">100%</td></tr>
-        <tr><td>UC + Fourier annual exog</td><td class="num">0.046%</td><td class="num">0.24</td><td class="num">90%</td></tr>
-        <tr><td>Naïf — dernière obs.</td><td class="num">0.085%</td><td class="num">0.50</td><td class="num">—</td></tr>
-        <tr><td>Naïf — saisonnier (décalage 365 jours)</td><td class="num">0.39%</td><td class="num">1.90</td><td class="num">—</td></tr>
+        <tr class="winner"><td>SARIMA(1,1,1)(1,1,1)<sub>7</sub> (multi-pas)</td><td class="num">0,027%</td><td class="num">0,18</td><td class="num">30/30 (CP [0,88 ; 1,00])</td></tr>
+        <tr><td>UC + exog. Fourier annuelles (multi-pas)</td><td class="num">0,079%</td><td class="num">0,42</td><td class="num">30/30 (CP [0,88 ; 1,00])</td></tr>
+        <tr><td>GBM récursif 30 pas (équitable)</td><td class="num">0,085%</td><td class="num">0,51</td><td class="num">—</td></tr>
+        <tr><td>Naïf — dernière obs.</td><td class="num">0,085%</td><td class="num">0,50</td><td class="num">—</td></tr>
+        <tr><td>Naïf — saisonnier (décalage 365 j)</td><td class="num">0,39%</td><td class="num">1,90</td><td class="num">—</td></tr>
+        <tr><td>GBM à un pas d'avance avec exog (contexte, non déployable 30 j)</td><td class="num">0,013%</td><td class="num">0,07</td><td class="num">—</td></tr>
       </tbody>
     </table>
 
@@ -403,7 +405,7 @@ footer a { color: #ffd7c5; }
     </figure>
 
     <div class="callout">
-      <strong>Le chiffre phare dans son contexte.</strong> 7 cm de RMSE sur un niveau qui varie dans une bande opérationnelle de ~7 m est une erreur relative de ~1 %. Sur un réservoir dont la baisse de 1 m coûte des centaines de GWh de production par an, c'est la différence entre planifier six semaines de production avec confiance et vivre au jour le jour sur la télémétrie des apports.
+      <strong>Le titre honnête pour une planification 30 jours : SARIMA à 18 cm de RMSE.</strong> Sur un niveau qui varie dans une bande opérationnelle de ~7 m, 18 cm est une erreur relative de ~2,5 %, et SARIMA est le seul candidat avec un IP 95 % calibré (30/30 à l'intérieur de la bande, IC CP [0,88 ; 1,00]). Le GBM avec vérité révélée atteint 7 cm à un pas d'avance — un cas d'usage différent, plus contraint (service de rafraîchissement J+1, pas de planification à horizon) — et ne doit pas être présenté comme une prévision 30 jours.
     </div>
 
     <h2 id="tradeoffs">Compromis</h2>
@@ -427,7 +429,7 @@ footer a { color: #ffd7c5; }
     <h2 id="lessons">Leçons</h2>
     <ol>
       <li><strong>Les covariables exogènes dominent lorsqu'elles existent.</strong> La réduction de 60 % du RMSE (SARIMA → GBM) est presque entièrement attribuable à l'inclusion du débit turbiné dans les variables. Choisir les bonnes entrées bat choisir le bon algorithme.</li>
-      <li><strong>Les cibles lentes à fort enjeu ont besoin d'IP étroits, pas seulement d'un MAPE bas.</strong> Une erreur ponctuelle de 7 cm est serrée — mais sur ce type d'actif, « quelle est la probabilité de franchir le seuil opérationnel dans les 30 prochains jours » est la question qui pilote les décisions. L'intervalle calibré de SARIMA est souvent plus utile que la moyenne plus serrée du GBM.</li>
+      <li><strong>Les cibles lentes à fort enjeu ont besoin d'IP calibrés, pas seulement d'un MAPE bas.</strong> Sur ce type d'actif, « quelle est la probabilité de franchir le seuil opérationnel dans les 30 prochains jours » est la question qui pilote les décisions. La couverture 30/30 de SARIMA avec IC CP [0,88 ; 1,00] et demi-largeur moyenne de 56 cm est le résumé opérationnellement utile.</li>
       <li><strong>Les données ouvertes africaines réelles sont suffisantes.</strong> Le lac Kariba est un réservoir transfrontalier entre deux pays africains ; les données journalières existent et sont publiquement accessibles sur Kaggle. Le modèle s'étendrait proprement à Cahora Bassa et à d'autres barrages africains une fois des données équivalentes publiées.</li>
     </ol>
 
