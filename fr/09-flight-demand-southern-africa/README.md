@@ -3,20 +3,17 @@
 
 ---
 
-# Prévision de demande et de prix aériens — Afrique australe
+# Demande et prix aériens — Afrique australe
 
-## Question métier
+## Périmètre
 
-Peut-on prévoir prix et demande sur les routes aériennes d'Afrique australe à 7–30 jours pour que :
-- Les compagnies aériennes (FlySafair, LIFT, SAA) ajustent dynamiquement leurs prix
-- Les agences de voyage conseillent leurs clients sur les fenêtres optimales de réservation
-- Les offices de tourisme anticipent la pression saisonnière de demande sur les routes Le Cap, Durban, Johannesburg
+Analyse exploratoire d'une collecte Kaggle sur 31 jours des listings de vols d'Afrique australe. Prévision de volume sur la route principale (JNB–CPT) sur une fenêtre de holdout de 6 jours ; prédiction de prix conditionnelle à `(route, compagnie, dow, hour, day_index)` sur l'ensemble de la collecte.
 
-C'est l'analogue africain du projet de fréquentation des transports de Calgary — même boîte à outils de séries temporelles et de modélisation de la demande, appliquée à la demande inter-villes du transport aérien.
+**Ce que ce projet n'est pas.** Pas une prévision à 7–30 jours — le jeu de données couvre seulement 2025-03-14 à 2025-04-13, donc le holdout SARIMA est de 6 jours sur une série quasi-constante (moyenne ≈ 90 vols/jour, CV ≈ 8 %). Pas un modèle de courbe tarifaire — la collecte Kaggle ne porte que des dates de départ, pas de dates de réservation, donc il n'existe pas de variable délai-avant-départ ; la feature `day_index` est un index 0–30 dans la fenêtre, pas un délai.
 
 ## Données
 
-- **Source :** [Southern Africa Flight Prices (Kaggle)](https://www.kaggle.com/datasets/mazano/southern-africa-flight-prices) — 15 393 vols, horodatages départ/arrivée, compagnie, route, prix.
+- **Source :** [Southern Africa Flight Prices (Kaggle)](https://www.kaggle.com/datasets/mazano/southern-africa-flight-prices) — 15 393 listings de vols sur 31 jours, horodatages de départ, compagnie, route, prix.
 
 Lancer `python download_data.py` (Kaggle CLI requis).
 
@@ -24,29 +21,27 @@ Lancer `python download_data.py` (Kaggle CLI requis).
 
 - Distribution des prix par compagnie et route
 - Effets jour-de-la-semaine et heure-de-la-journée
-- Patterns de tarification selon le délai avant départ
 - Top des routes par volume (CPT–JNB, JNB–DUR, etc.)
 
 ## Modélisation
 
 | Famille | Modèle |
 |---|---|
-| Séries temporelles classiques | SARIMA sur volume journalier de vols par route |
-| ML pour la prévision | Prédicteur de prix gradient-boosté (route, compagnie, jour-de-la-semaine, délai) |
-| Demande + prix conjoints | LightGBM avec features d'élasticité-prix |
+| Séries temporelles classiques | SARIMA sur volume journalier (route principale) |
+| Challenger ML | `GradientBoostingRegressor` sur `(route, compagnie, dow, hour, day_index)` pour la prédiction de prix |
+| Baseline | naive-moyenne / naive-dernière / naive-saisonnière (volume) ; `groupby(route, compagnie, dow, hour).mean()` (prix) |
 
 ## Validation
 
-- 20 % des vols mis de côté pour la prédiction de prix (MAE, RMSE, MAPE)
-- Découpage temporel pour la prévision de volume journalier
+- Volume : MAPE SARIMA à holdout de 6 jours, avec IC bootstrap sur les 6 erreurs de test (l'échantillon est trop petit pour une inférence autonome significative).
+- Prix : découpage aléatoire 80/20 ; MAE du GBM comparée à une baseline lookup par moyenne de cellule pour voir si le GBM apprend quelque chose au-delà de `groupby.mean()`.
 
-## Déploiement
+## Esquisse de déploiement
 
-- API `GET /forecast?route=CPT-JNB&horizon=30` retournant volume attendu journalier + IP 95 %
-- Endpoint de tarification dynamique pour les compagnies
+- Pas un système de production — le périmètre est trop étroit (fenêtre de 31 jours) pour un service de planification.
+- Des collectes plus longues (6+ mois) avec métadonnées de date de réservation débloqueraient la dynamique tarifaire que la collecte actuelle ne peut pas porter.
 
 ## Résultat métier
 
-- Les prévisions de volume journalier alimentent la planification équipage/avion
-- L'insight d'élasticité-prix éclaire les décisions de revenue management
-- Le même pipeline s'étend trivialement aux réseaux de routes d'Afrique de l'Ouest et de l'Est
+- Esquisse méthodologique de volume journalier + prix conditionnel sur une collecte courte.
+- Résultat honnête : le GBM reproduit les moyennes de cellules ± bruit sur cette collecte ; pas d'évidence d'apprentissage d'une courbe tarifaire au-delà du lookup. Le 2 % MAPE SARIMA sur 6 points de test est directionnel, pas une preuve de skill.
