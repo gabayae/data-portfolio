@@ -16,37 +16,34 @@ Cas d'usage :
 
 ## Données
 
-- **Source :** [Agricultural Survey of African Farm Households (Kaggle)](https://www.kaggle.com/datasets/crawford/agricultural-survey-of-african-farm-households) — 9 597 ménages agricoles enquêtés à travers plusieurs pays africains avec 1 754 attributs dont lat/lon, district, composition du ménage, taille de l'exploitation, exposition climatique et chiffre d'affaires agricole.
+- **Source :** [Agricultural Survey of African Farm Households (Kaggle)](https://www.kaggle.com/datasets/crawford/agricultural-survey-of-african-farm-households) — l'enquête complète comporte 9 597 ménages agricoles sur plusieurs pays africains avec 1 754 attributs.
+- **Sous-ensemble modélisé :** **931 lignes** après `dropna` sur `(lat, lon, farmsalev)`. Dans ce sous-ensemble, la colonne `district` se réduit à une seule valeur (« Unknown »), de sorte que l'OHE district du pipeline actuel ne porte aucun signal. Les features climatiques long terme sont majoritairement imputées à une médiane unique et contribuent peu.
 
 Lancer `python download_data.py`.
 
 ## Cibles d'EDA
 
-- Distribution géographique des ménages enquêtés
-- Distribution au niveau district de `farmsalev` (chiffre d'affaires annuel agricole)
+- Distribution géographique des 931 ménages modélisés
+- Distribution de `farmsalev` (chiffre d'affaires annuel) sur le sous-ensemble modélisé
 - Distribution des superficies et patterns de tenure
-- Features d'exposition climatique (variations long terme de température/pluviométrie)
 
 ## Modélisation
 
 | Famille | Modèle |
 |---|---|
-| Baseline linéaire | OLS sur log-chiffre-d'affaires avec district + features de taille |
-| GBM spatial | GradientBoostingRegressor avec lat/lon + features d'exploitation |
-| GBM géographique | LightGBM/GBM avec district en one-hot + features spatiales |
+| Baseline linéaire | OLS sur log-chiffre-d'affaires avec lat/lon + features de taille |
+| GBM spatial | `GradientBoostingRegressor` avec lat/lon + features d'exploitation |
 
 ## Validation
 
-- Découpage aléatoire 80/20 ; vérification de bon sens sur district mis de côté
+- **Limitation connue (carnet actuel) :** un découpage aléatoire 80/20 est utilisé, mais les observations d'un même village partagent des `(lat, lon)` identiques et se retrouvent dispersées entre train et test — le GBM mémorise des tables de correspondance lat/lon. Le R²=0,66 reporté sous ce découpage surévalue la généralisation ; la comparaison honnête exige un `GroupKFold` sur lat/lon quantifiées ou un identifiant de grappe. Correctif en attente.
 - Métriques : R² sur log-chiffre-d'affaires, MAPE sur chiffre brut
 
-## Déploiement
+## Esquisse de déploiement
 
-- API `POST /farm-output-prediction` retournant chiffre attendu + intervalle pour des attributs d'exploitation + coordonnées
-- Tableau de bord spatial pour le triage des dossiers de prêt en microfinance
+- Un service de triage microfinance nécessiterait une résolution par grappe plutôt que par ménage, et devrait être ré-entraîné à chaque nouvelle vague d'enquête.
+- Pas un système de production — le carnet s'arrête à la modélisation hors-ligne.
 
 ## Résultat métier
 
-- Décisions de souscription et de ciblage terrain appuyées par des données, pas par l'intuition
-- Une heatmap spatiale fait remonter les districts sous-desservis pour les fournisseurs d'intrants
-- S'adapte à toute donnée d'enquête agricole avec colonnes géo + résultat
+- Esquisse méthodologique de régression géospatiale sur données d'enquête ; les mises en garde ci-dessus (taille d'échantillon, fuite spatiale) doivent être respectées avant tout usage en souscription.

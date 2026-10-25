@@ -16,37 +16,34 @@ Use cases:
 
 ## Data
 
-- **Source:** [Agricultural Survey of African Farm Households (Kaggle)](https://www.kaggle.com/datasets/crawford/agricultural-survey-of-african-farm-households) — 9,597 farm households surveyed across multiple African countries with 1,754 attributes including lat/lon, district, household composition, farm size, climate exposure, and farm sales value.
+- **Source:** [Agricultural Survey of African Farm Households (Kaggle)](https://www.kaggle.com/datasets/crawford/agricultural-survey-of-african-farm-households) — the full survey has 9,597 farm households across multiple African countries with 1,754 attributes.
+- **Modeled subset:** **931 rows** after `dropna` on `(lat, lon, farmsalev)`. After the subset, the `district` column collapses to a single value ("Unknown"), so the district OHE in the current pipeline carries no signal. The long-term climate-shift features are mostly imputed to a single median in the subset and contribute little.
 
 Run `python download_data.py`.
 
 ## EDA targets
 
-- Geographic spread of surveyed households
-- District-level distribution of `farmsalev` (annual farm sales)
+- Geographic spread of the 931 modeled households
+- Distribution of `farmsalev` (annual farm sales) on the modeled subset
 - Land-area distribution and tenure patterns
-- Climate-exposure features (long-term temperature/rainfall shifts)
 
 ## Modeling
 
 | Family | Model |
 |---|---|
-| Linear baseline | OLS on log-sales with district + farm-size features |
-| Spatial GBM | GradientBoostingRegressor with lat/lon + farm features |
-| Geographic GBM | LightGBM/GBM with district one-hot + spatial features |
+| Linear baseline | OLS on log-sales with lat/lon + farm-size features |
+| Spatial GBM | `GradientBoostingRegressor` with lat/lon + farm features |
 
 ## Validation
 
-- 80/20 random split; hold-out district sanity check
+- **Known limitation (current notebook):** a random 80/20 split is used, but same-village observations share identical `(lat, lon)` and get spread across train and test — the GBM memorizes lat/lon lookup tables. The R²=0.66 reported under this split overstates generalization; the honest comparison requires `GroupKFold` on quantized lat/lon or a cluster identifier. Fix pending.
 - Metrics: R² on log-sales, MAPE on raw sales
 
-## Deployment
+## Deployment sketch
 
-- API `POST /farm-output-prediction` returning expected sales + interval given farm attributes + coordinates
-- Spatial dashboard for microfinance loan-officer triage
+- A microfinance-triage service would need per-cluster rather than per-household resolution, and should be re-trained whenever a new survey batch lands.
+- Not a production system — the notebook stops at offline modeling.
 
 ## Business outcome
 
-- Underwriting and field-targeting decisions backed by data, not vibes
-- Spatial heatmap surfaces under-served districts for input suppliers
-- Scales to any survey-based agricultural data with geo + outcome columns
+- Methodology stub for geospatial regression on survey data; the sample-size and spatial-leakage caveats above must be respected before any underwriting use.
