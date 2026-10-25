@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Étude de cas — Prévision d'irradiance solaire à Nairobi (NASA POWER) · Yaé Gaba</title>
-<meta name="description" content="Prévision journalière de l'irradiance solaire à Nairobi sur 10 ans de données NASA POWER. GBM avec covariables météo atteint 9,4 % de MAPE ; SARIMA délivre 99 % de couverture des IP. Pourquoi la climatologie mensuelle est un baseline plus solide qu'attendu.">
+<meta name="description" content="Prévision journalière de l'irradiance solaire à Nairobi sur 10 ans de données NASA POWER. GBM avec covariables météo atteint 9,4 % de MAPE ; la couverture empirique SARIMA 89/90 est compatible avec toute vraie couverture &ge; 94 %. Pourquoi la climatologie mensuelle est un baseline plus solide qu'attendu.">
 <meta name="author" content="Yaé Gaba">
 <link rel="canonical" href="https://gabayae.github.io/data-portfolio/fr/case-studies/solar/">
 <link rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/case-studies/solar/">
@@ -251,8 +251,8 @@ footer a { color: #ffd7c5; }
     <div class="case-hero__meta">
       <span class="case-hero__readtime"><strong>Lecture</strong> · 8 min · 1763 mots</span>
       <span><strong>Meilleur modèle</strong> · GBM avec covariables météo</span>
-      <span><strong>MAPE</strong> · 9,4 % (vs SARIMA 13,8 %, climatologie 12,3 %)</span>
-      <span><strong>Couverture IP SARIMA / UC</strong> · 99 % / 99 %</span>
+      <span><strong>MAPE</strong> · 9,4 % (vs SARIMA 13,8 %, climatologie 12,6 %)</span>
+      <span><strong>Couverture IP SARIMA / UC</strong> · 89/90 chacun (compatible avec toute vraie couverture ≥ 94 %)</span>
       <span><strong>Données</strong> · 3 652 obs. journalières · 2014–2023 · NASA POWER</span>
     </div>
   </div>
@@ -381,10 +381,10 @@ footer a { color: #ffd7c5; }
       </thead>
       <tbody>
         <tr class="winner"><td>GBM (exog. météo)</td><td class="num">9,42 %</td><td class="num">0,68</td><td class="num">—</td></tr>
-        <tr><td>Climatologie mensuelle</td><td class="num">12,32 %</td><td class="num">0,79</td><td class="num">—</td></tr>
-        <tr><td>SARIMA(2,0,2)(1,0,1)<sub>7</sub></td><td class="num">13,78 %</td><td class="num">0,88</td><td class="num">99 %</td></tr>
+        <tr><td>Climatologie mensuelle (train seul)</td><td class="num">12,56 %</td><td class="num">0,81</td><td class="num">—</td></tr>
+        <tr><td>SARIMA(2,0,2)(1,0,1)<sub>7</sub></td><td class="num">13,78 %</td><td class="num">0,88</td><td class="num">89/90</td></tr>
         <tr><td>Naïf-saisonnier (lag 365 j)</td><td class="num">16,49 %</td><td class="num">1,13</td><td class="num">—</td></tr>
-        <tr><td>UC + exog. Fourier annuelles</td><td class="num">21,63 %</td><td class="num">1,34</td><td class="num">99 %</td></tr>
+        <tr><td>UC + exog. Fourier annuelles</td><td class="num">19,58 %</td><td class="num">1,23</td><td class="num">89/90</td></tr>
         <tr><td>Naïf-dernier</td><td class="num">25,38 %</td><td class="num">1,56</td><td class="num">—</td></tr>
       </tbody>
     </table>
@@ -395,13 +395,13 @@ footer a { color: #ffd7c5; }
     </figure>
 
     <div class="callout">
-      <strong>La climatologie est un baseline solide — et c'est une fonctionnalité, pas un bug.</strong> Les 12,3 % de MAPE de la climatologie mensuelle battent les 13,8 % de SARIMA. Cela vous dit que le plafond de prévisibilité d'une série d'irradiance à cette latitude est essentiellement l'enveloppe saisonnière : connaître le mois calendaire vous donne l'essentiel de ce qui est connaissable. Le gain de 9,4 % du GBM par rapport à la climatologie vient presque entièrement des covariables nuageuse + humidité du jour — la part qui <em>ne peut pas</em> être devinée à partir du seul calendrier.
+      <strong>La climatologie est un baseline solide — et c'est une fonctionnalité, pas un bug.</strong> La climatologie mensuelle — calculée uniquement sur la fenêtre d'entraînement, sans fuite du test — atteint 12,6 % de MAPE et bat les 13,8 % de SARIMA. Cela vous dit que le plafond de prévisibilité d'une série d'irradiance à cette latitude est essentiellement l'enveloppe saisonnière : connaître le mois calendaire vous donne l'essentiel de ce qui est connaissable. Le gain de 9,4 % du GBM par rapport à la climatologie vient presque entièrement des covariables nuageuse + humidité du jour — la part qui <em>ne peut pas</em> être devinée à partir du seul calendrier.
     </div>
 
     <h2 id="tradeoffs">Compromis</h2>
     <ul>
       <li><strong>Le gain du GBM dépend de la disponibilité de données météo au moment de la prévision.</strong> Si la prévision est calculée pour une date à 7+ jours, vous lui passez des prévisions-de-prévisions pour la nébulosité / l'humidité, qui sont elles-mêmes incertaines. Le déploiement en production doit soit (a) plafonner l'horizon à l'horizon de confiance des prévisions météo, soit (b) chaîner un modèle de prévision météo. La climatologie n'a aucun de ces problèmes et reste le bon repli.</li>
-      <li><strong>La couverture des IP de SARIMA et d'UC est le chiffre opérationnellement utile.</strong> Une couverture de 99 % à un nominal de 95 % signifie que les intervalles sont légèrement larges — mais pour une décision de dimensionnement de batterie, « plus large mais honnête » est le bon biais. Des intervalles trop étroits seraient pires.</li>
+      <li><strong>La couverture des IP de SARIMA et d'UC se lit directionnellement, pas formellement.</strong> 89/90 de couverture empirique à un nominal de 95 % — l'IC Clopper-Pearson autour de 89/90 est environ [0,94 ; 1,00], donc l'échantillon est compatible avec toute vraie couverture ≥ 94 %. Pour une décision de dimensionnement de batterie, « plus large mais honnête » est le bon biais ; une fenêtre de test plus longue serait nécessaire pour calibrer formellement les intervalles.</li>
       <li><strong>UC sous-performe sur la prévision ponctuelle bien qu'il soit structurellement approprié.</strong> L'ordre Fourier 4 sur-ajuste peut-être à la forme bimodale spécifique de la fenêtre d'entraînement ; un ordre 2 plus simple, plus tolérant au bruit, généraliserait peut-être mieux. À itérer en production.</li>
       <li><strong>« La climatologie mensuelle bat SARIMA » est un test de cohérence utile.</strong> Il dit que la structure AR/MA n'apporte presque rien sur cette série. Les déploiements en production devraient surveiller si SARIMA bat effectivement la climatologie sur la cohorte glissante — sinon, livrez la climatologie et économisez le compute.</li>
     </ul>

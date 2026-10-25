@@ -47,18 +47,18 @@ Run `python download_data.py` to fetch fresh data (no auth required).
 ## Validation
 
 - 90-day held-out test
-- Metrics: MAPE, RMSE, prediction-interval coverage
-- Baselines: naive-last, naive-seasonal (365-day lag), monthly climatology
+- Metrics: MAPE, RMSE, 95% PI empirical coverage
+- Baselines: naive-last, naive-seasonal (365-day lag), monthly climatology (computed on **train only** — not the full series)
+- Headline MAPEs on this run: **GBM 9.4% · monthly climatology 12.6% · SARIMA 13.8% · UC 19.6%**. The honest finding is that at Nairobi's latitude the seasonal envelope carries most of the predictability (climatology beats SARIMA); GBM wins on point error only because it sees same-day cloud and humidity covariates.
+- 95% PI empirical coverage: SARIMA 89/90, UC 89/90 — Clopper-Pearson 95% CI around 89/90 is roughly [0.94, 1.00], so these samples are consistent with any true coverage ≥ 94%. The intervals are directional, not formally calibrated at this sample size.
 
-## Deployment
+## Deployment sketch
 
-- FastAPI `/forecast?horizon=30d` returning daily mean irradiance + 95% PI for the next month
-- Streamlit dashboard for solar developers — irradiance forecast band, battery-state-of-charge planner, generation-impact estimator
-- Daily refresh from NASA POWER; weekly model retraining
-- Same pipeline trivially extends to Lagos, Cape Town, Cairo, Dakar — just change the lat/lon
+- Scheduled retrain + pickled SARIMA/UC artifact; same pipeline extends to any African city by changing the lat/lon in `download_data.py`.
+- Weather-conditioned GBM point forecasts need a chained weather forecast at horizons beyond 1 day (same-day cloud is the lever).
 
 ## Business outcome
 
-- 30-day forward visibility on solar irradiance with calibrated intervals — reduces uncertainty in dispatch and storage decisions
-- Quantifies expected vs. worst-case generation for budgeting and grid contracts
-- Fully reproducible from a free, programmatic data source — easy to audit
+- 30-day forward visibility on solar irradiance with directional 95% PIs — supports dispatch and battery-sizing decisions for utility and pay-as-you-go solar.
+- At this latitude, climatology is a strong baseline; the ML lift comes from same-day weather, not from the time-series structure.
+- Fully reproducible from a free, programmatic data source — easy to audit.

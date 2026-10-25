@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Case study — Solar Forecasting Nairobi (NASA POWER) · Yaé Gaba</title>
-<meta name="description" content="Daily solar irradiance forecasting for Nairobi on 10 years of NASA POWER data. GBM with weather covariates hits 9.4% MAPE; SARIMA delivers 99% PI coverage. Why monthly climatology is a stronger baseline than expected.">
+<meta name="description" content="Daily solar irradiance forecasting for Nairobi on 10 years of NASA POWER data. GBM with weather covariates hits 9.4% MAPE; SARIMA's 89/90 empirical PI coverage is consistent with any true coverage &ge; 94%. Why monthly climatology is a stronger baseline than expected.">
 <meta name="author" content="Yaé Gaba">
 <link rel="canonical" href="https://gabayae.github.io/data-portfolio/case-studies/solar/">
 <link rel="alternate" hreflang="en" href="https://gabayae.github.io/data-portfolio/case-studies/solar/">
@@ -176,7 +176,7 @@ footer a { color: #ffd7c5; }
   "@context": "https://schema.org",
   "@type": "Article",
   "headline": "Case study — Solar Forecasting Nairobi (NASA POWER)",
-  "description": "Daily solar irradiance forecasting for Nairobi on 10 years of NASA POWER data. GBM with weather covariates hits 9.4% MAPE; SARIMA delivers 99% PI coverage. Why monthly climatology is a stronger baseline than expected.",
+  "description": "Daily solar irradiance forecasting for Nairobi on 10 years of NASA POWER data. GBM with weather covariates hits 9.4% MAPE; SARIMA's 89/90 empirical PI coverage is consistent with any true coverage ≥ 94%. Why monthly climatology is a stronger baseline than expected.",
   "image": "https://gabayae.github.io/data-portfolio/case-studies/solar/og-card.png",
   "url": "https://gabayae.github.io/data-portfolio/case-studies/solar/",
   "mainEntityOfPage": {
@@ -251,8 +251,8 @@ footer a { color: #ffd7c5; }
     <div class="case-hero__meta">
       <span class="case-hero__readtime"><strong>Read</strong> · 7 min · 1,421 words</span>
       <span><strong>Best model</strong> · GBM with weather covariates</span>
-      <span><strong>MAPE</strong> · 9.4% (vs SARIMA 13.8%, climatology 12.3%)</span>
-      <span><strong>SARIMA / UC PI coverage</strong> · 99% / 99%</span>
+      <span><strong>MAPE</strong> · 9.4% (vs SARIMA 13.8%, climatology 12.6%)</span>
+      <span><strong>SARIMA / UC PI coverage</strong> · 89/90 each (consistent with any true coverage &ge; 94%)</span>
       <span><strong>Data</strong> · 3,652 daily obs · 2014–2023 · NASA POWER</span>
     </div>
   </div>
@@ -381,10 +381,10 @@ footer a { color: #ffd7c5; }
       </thead>
       <tbody>
         <tr class="winner"><td>GBM (weather exog)</td><td class="num">9.42%</td><td class="num">0.68</td><td class="num">—</td></tr>
-        <tr><td>Monthly climatology</td><td class="num">12.32%</td><td class="num">0.79</td><td class="num">—</td></tr>
-        <tr><td>SARIMA(2,0,2)(1,0,1)<sub>7</sub></td><td class="num">13.78%</td><td class="num">0.88</td><td class="num">99%</td></tr>
+        <tr><td>Monthly climatology (train only)</td><td class="num">12.56%</td><td class="num">0.81</td><td class="num">—</td></tr>
+        <tr><td>SARIMA(2,0,2)(1,0,1)<sub>7</sub></td><td class="num">13.78%</td><td class="num">0.88</td><td class="num">89/90</td></tr>
         <tr><td>Naive-seasonal (365-day lag)</td><td class="num">16.49%</td><td class="num">1.13</td><td class="num">—</td></tr>
-        <tr><td>UC + Fourier annual exog</td><td class="num">21.63%</td><td class="num">1.34</td><td class="num">99%</td></tr>
+        <tr><td>UC + Fourier annual exog</td><td class="num">19.58%</td><td class="num">1.23</td><td class="num">89/90</td></tr>
         <tr><td>Naive-last</td><td class="num">25.38%</td><td class="num">1.56</td><td class="num">—</td></tr>
       </tbody>
     </table>
@@ -395,13 +395,13 @@ footer a { color: #ffd7c5; }
     </figure>
 
     <div class="callout">
-      <strong>Climatology is a strong baseline. That's a feature, not a bug.</strong> Monthly climatology's 12.3% MAPE beats SARIMA's 13.8%. It tells you the predictability ceiling for an irradiance series at this latitude is mostly the seasonal envelope: knowing the calendar month gives you most of what's knowable. The GBM's 9.4% gain over climatology comes almost entirely from same-day cloud and humidity covariates: the part that <em>can't</em> be guessed from the calendar alone.
+      <strong>Climatology is a strong baseline. That's a feature, not a bug.</strong> Monthly climatology — computed on the training window only, no test-set leakage — hits 12.6% MAPE and beats SARIMA's 13.8%. It tells you the predictability ceiling for an irradiance series at this latitude is mostly the seasonal envelope: knowing the calendar month gives you most of what's knowable. The GBM's 9.4% gain over climatology comes almost entirely from same-day cloud and humidity covariates: the part that <em>can't</em> be guessed from the calendar alone.
     </div>
 
     <h2 id="tradeoffs">Trade-offs</h2>
     <ul>
       <li><strong>The GBM's gain depends on having weather data at prediction time.</strong> If the forecast is run for a date 7+ days out, you're feeding it forecast-of-forecast values for cloud/humidity, which are themselves uncertain. Production deployment needs to either (a) cap the horizon at the weather-forecast confidence horizon, or (b) chain a weather forecast model. Climatology has neither problem and is the right fallback.</li>
-      <li><strong>SARIMA and UC's PI coverage is the operationally useful number.</strong> 99% coverage at 95% nominal means the intervals are slightly wide; but for a battery-sizing decision, "wider but honest" is the right bias. Over-narrow intervals would be worse.</li>
+      <li><strong>SARIMA and UC's PI coverage reads directionally, not formally.</strong> 89/90 empirical coverage at 95% nominal — the Clopper-Pearson 95% CI around 89/90 is roughly [0.94, 1.00], so the sample is consistent with any true coverage ≥ 94%. For a battery-sizing decision, "wider but honest" is the right bias; a longer test window would be needed to formally calibrate the intervals.</li>
       <li><strong>UC underperforms on point forecast despite being structurally appropriate.</strong> The Fourier-order-4 might be overfitting to the training window's specific bimodal shape; a simpler order-2 with more noise tolerance might generalise better. Worth iterating in production.</li>
       <li><strong>"Monthly climatology beats SARIMA" is a useful sanity check.</strong> It says the AR/MA structure is barely doing anything for this series. Production deployments should monitor whether SARIMA actually beats climatology on the rolling cohort — if not, ship climatology and save the compute.</li>
     </ul>

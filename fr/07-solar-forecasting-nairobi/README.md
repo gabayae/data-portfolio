@@ -47,18 +47,18 @@ Lancer `python download_data.py` pour récupérer des données fraîches (sans a
 ## Validation
 
 - Test mis de côté sur 90 jours
-- Métriques : MAPE, RMSE, couverture des intervalles de prévision
-- Baselines : naïf-dernier, naïf-saisonnier (lag 365 jours), climatologie mensuelle
+- Métriques : MAPE, RMSE, couverture empirique des IP 95 %
+- Baselines : naïf-dernier, naïf-saisonnier (lag 365 jours), climatologie mensuelle (calculée **sur le train seul** — pas sur la série complète)
+- MAPE en tête sur ce run : **GBM 9,4 % · climatologie mensuelle 12,6 % · SARIMA 13,8 % · UC 19,6 %**. Le résultat honnête : à la latitude de Nairobi l'enveloppe saisonnière porte l'essentiel de la prédictibilité (la climatologie bat SARIMA) ; le GBM gagne en erreur ponctuelle uniquement parce qu'il voit les covariables nuage/humidité du jour.
+- Couverture empirique des IP 95 % : SARIMA 89/90, UC 89/90 — l'IC Clopper-Pearson autour de 89/90 est environ [0,94 ; 1,00], donc ces échantillons sont compatibles avec toute vraie couverture ≥ 94 %. Les intervalles sont directionnels, pas formellement calibrés à cette taille d'échantillon.
 
-## Déploiement
+## Esquisse de déploiement
 
-- FastAPI `/forecast?horizon=30d` retournant l'irradiance moyenne journalière + IP 95 % pour le mois suivant
-- Tableau de bord Streamlit pour les développeurs solaires — bande de prévision d'irradiance, planificateur d'état de charge de batterie, estimateur d'impact production
-- Rafraîchissement journalier depuis NASA POWER ; ré-entraînement hebdomadaire
-- Le même pipeline s'étend trivialement à Lagos, Le Cap, Le Caire, Dakar — il suffit de changer lat/lon
+- Ré-entraînement planifié + artefact SARIMA/UC picklé ; le même pipeline s'étend à toute ville africaine en changeant la lat/lon dans `download_data.py`.
+- Les prévisions ponctuelles GBM conditionnées météo nécessitent une prévision météo chaînée au-delà d'un horizon de 1 jour (le nuage du jour est le levier).
 
 ## Résultat métier
 
-- Visibilité à 30 jours sur l'irradiance solaire avec intervalles calibrés — réduit l'incertitude des décisions de dispatch et de stockage
-- Quantifie production attendue vs scénario pessimiste pour budget et contrats réseau
-- Entièrement reproductible depuis une source de données gratuite et programmatique — facile à auditer
+- Visibilité à 30 jours sur l'irradiance solaire avec IP 95 % directionnels — appuie les décisions de dispatch et de dimensionnement batterie pour le solaire grande échelle et le pay-as-you-go.
+- À cette latitude, la climatologie est une baseline forte ; le gain du ML vient de la météo du jour, pas de la structure temporelle.
+- Entièrement reproductible depuis une source de données gratuite et programmatique — facile à auditer.
