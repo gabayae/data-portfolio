@@ -814,16 +814,16 @@ h3 { font-size: 1.35rem; }
       <article class="project-card" data-categories="spatial">
         <div class="project-card__header">
           <span class="project-card__number">11</span>
-          <div class="project-card__metric">GBM R² 0.66 (vs OLS 0.31)</div>
+          <div class="project-card__metric">R² honnête 0,22 (OLS, CV spatiale)</div>
           <h3 class="project-card__title">Prévision géospatiale de la production agricole</h3>
-          <p class="project-card__tagline">Prévision des ventes agricoles à partir de lat/lon + caractéristiques de l'exploitation + climat dans plusieurs pays africains.</p>
+          <p class="project-card__tagline">Lat/lon + features d'exploitation sur 931 ménages ; fuite inter-village démontée via GroupKFold spatial.</p>
         </div>
         <div class="project-card__body">
           <div class="project-card__categories"><span class="category-pill category-pill--spatial">Spatial</span><span class="category-pill category-pill--regression">Régression</span></div>
-          <div class="project-card__tech"><span class="tech-pill">Spatial features</span><span class="tech-pill">OLS</span><span class="tech-pill">GBM</span><span class="tech-pill">Multi-country</span></div>
+          <div class="project-card__tech"><span class="tech-pill">Spatial features</span><span class="tech-pill">OLS</span><span class="tech-pill">KNN</span><span class="tech-pill">GBM</span><span class="tech-pill">GroupKFold</span></div>
           <div class="project-card__dataset">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-            <span>African Farm Households · 9,597 surveyed</span>
+            <span>African Farm Households · 931 modélisés</span>
           </div>
         </div>
         <div class="project-card__actions">

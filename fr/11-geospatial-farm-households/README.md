@@ -32,12 +32,14 @@ Lancer `python download_data.py`.
 | Famille | Modèle |
 |---|---|
 | Baseline linéaire | OLS sur log-chiffre-d'affaires avec lat/lon + features de taille |
-| GBM spatial | `GradientBoostingRegressor` avec lat/lon + features d'exploitation |
+| Baseline géo non-paramétrique | `KNeighborsRegressor(n_neighbors=10)` |
+| Challenger non-linéaire | `GradientBoostingRegressor` avec lat/lon + features d'exploitation |
 
 ## Validation
 
-- **Limitation connue (carnet actuel) :** un découpage aléatoire 80/20 est utilisé, mais les observations d'un même village partagent des `(lat, lon)` identiques et se retrouvent dispersées entre train et test — le GBM mémorise des tables de correspondance lat/lon. Le R²=0,66 reporté sous ce découpage surévalue la généralisation ; la comparaison honnête exige un `GroupKFold` sur lat/lon quantifiées ou un identifiant de grappe. Correctif en attente.
-- Métriques : R² sur log-chiffre-d'affaires, MAPE sur chiffre brut
+- **Découpage aléatoire 80/20 (fuite) :** OLS R² 0,31 · KNN R² 0,57 · GBM R² 0,66. Les observations d'un même village partagent des `(lat, lon)` identiques ; le découpage aléatoire laisse le GBM mémoriser des tables de correspondance au niveau village. Conservé dans le carnet uniquement pour rendre la fuite visible.
+- **`GroupKFold` spatial sur cellules 1° lat/lon, 5 folds (honnête) :** OLS R² **0,22 ± 0,38** · KNN R² **0,14 ± 0,44** · GBM R² **0,12 ± 0,34**. 35 cellules spatiales, médiane 27 obs/cellule. Le R² du GBM s'effondre de 0,66 à 0,12 — les +0,54 du découpage aléatoire étaient de la mémorisation, pas de la généralisation. Toutes les variances inter-fold sont très larges ; le signal honnête sur cellules spatiales inédites est faible.
+- Métriques : R² sur log-chiffre-d'affaires (principale), MAE sur log, MAPE sur chiffre brut.
 
 ## Esquisse de déploiement
 

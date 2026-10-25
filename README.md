@@ -32,7 +32,7 @@ Each project follows the same pipeline:
 | 08 | Customer Survival Analysis — MTN Nigeria | Telecom | [MTN Nigeria Churn](https://www.kaggle.com/datasets/oluwademiladeadeniyi/mtn-nigeria-customer-churn) | Cox PH + Weibull AFT |
 | 09 | Flight Demand & Price — Southern Africa | Aviation | [SA Flight Prices](https://www.kaggle.com/datasets/mazano/southern-africa-flight-prices) | SARIMA MAPE 2.0% |
 | 10 | Property Valuation — Lagos | Real estate | [Lagos Housing](https://www.kaggle.com/datasets/thedevastator/investigating-housing-prices-in-lagos-nigeria) | GBM R² 0.57 |
-| 11 | Geospatial Farm-Output Forecasting | Agriculture | [African Farm Households](https://www.kaggle.com/datasets/crawford/agricultural-survey-of-african-farm-households) | GBM R² 0.66 |
+| 11 | Geospatial Farm-Output Forecasting | Agriculture | [African Farm Households](https://www.kaggle.com/datasets/crawford/agricultural-survey-of-african-farm-households) | Honest R² 0.22 (OLS, spatial CV) |
 | 12 | Churn Classification — MTN Nigeria | Telecom | [MTN Nigeria Churn](https://www.kaggle.com/datasets/oluwademiladeadeniyi/mtn-nigeria-customer-churn) | XGBoost AUC 0.71 |
 | 13 | A/B Test Framework | Marketing | [Marketing Campaign A/B](https://www.kaggle.com/datasets/chebotinaa/fast-food-marketing-campaign-ab-test) | ANOVA F=21.95, p < 1e-9 |
 
