@@ -27,25 +27,26 @@ Run `python download_data.py`.
 
 | Test | Use |
 |---|---|
-| Welch's two-sample t-test | Pairwise promotion comparisons |
+| Welch's two-sample t-test with Bonferroni | Pairwise promotion comparisons |
 | One-way ANOVA | Joint test across all three promotions |
-| Stratified analysis (by MarketSize) | Avoid Simpson's paradox |
-| OLS with covariate adjustment | Controls for `AgeOfStore`, `MarketSize` |
-| Bayesian A/B (Beta-Binomial-style on means) | Posterior P(promotion 1 > promotion 3) |
+| OLS with covariate adjustment + cluster-robust SEs on `LocationID` | Honest inference under store-level clustering |
+| Formal interaction test `C(Promotion) × C(MarketSize)` | Simpson's-paradox guard with p-value |
+| Flat-prior Normal-Normal posterior on each arm's mean | `P(a > b)` as a direct probability (acknowledging the flat improper prior, not a true informative Bayesian analysis) |
 
 ## Validation
 
-- Multiple-comparison correction (Bonferroni / Holm)
-- Effect size: Cohen's d
-- Power-analysis check (was the experiment adequately sized?)
+- 548 observations are **137 locations × 4 weeks** — not independent. Naive OLS SEs are too narrow; the notebook reports both naive and cluster-robust-on-`LocationID` SEs so the inflation is visible.
+- Multiple-comparison correction (Bonferroni on 3 pairwise t-tests).
+- Effect size: Cohen's d (P1-vs-P2 d = 0.68 moderate-large; P1-vs-P3 d = 0.16 negligible).
+- Interaction F = 4.93, p = 0.0007 — the Simpson's-paradox check is statistically real, not just visual.
 
-## Deployment
+## Deployment sketch
 
-- Dashboard summarizing per-arm sales + 95% CI + lift estimate vs. control
-- Decision rule: launch winning promotion globally if lift > 5% with p < 0.01 (corrected)
+- Dashboard summarising per-arm sales + 95% CI (clustered) + lift estimate vs. the reference arm.
+- Decision rule: launch winning promotion if (a) ANOVA p < 0.01 AND (b) clustered pairwise p < 0.01 vs. all alternatives AND (c) Cohen's d > 0.3 AND (d) winner holds within every market-size stratum.
 
 ## Business outcome
 
-- Statistically defensible promotion-rollout decision
-- Stratification surfaces interaction effects (does promo 3 work better in Small markets?)
-- Pipeline reusable for any randomized marketing or product experiment
+- Statistically defensible promotion-rollout decision with clustered inference.
+- Formal interaction test confirms the market-size × promotion interaction (visible in the stratified mean table).
+- The flat-prior "Bayesian" layer is a convenience read, not a true informative-prior analysis; a proper hierarchical model with store random intercepts would further widen the posteriors.
