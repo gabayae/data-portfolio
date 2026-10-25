@@ -7,42 +7,48 @@
 
 ## Question métier
 
-Peut-on prévoir la consommation à 3–6 mois de médicaments essentiels par district pour faire baisser **à la fois** les ruptures de stock et les sur-stocks, et permettre aux responsables logistiques de prendre des décisions de réapprovisionnement et de redistribution inter-districts avec des intervalles de prévision calibrés ?
+Peut-on prévoir la consommation mensuelle de médicaments essentiels (ARV, HRDT) pour que les responsables logistiques planifient les réapprovisionnements et réduisent les ruptures ? Le Rwanda est le pays-cible (105 observations mensuelles, 2007–2015, 94 mois non-nuls) dans un jeu de données public réel de 10 324 expéditions PEPFAR/USAID SCMS sur 43 pays.
 
-## Données et EDA
+## Données
 
-- **Source (réelle) :** entrepôt national de la chaîne d'approvisionnement en santé (tables livraisons + dispensations). Aucun jeu de données entièrement public n'existe ; ce carnet génère des données mensuelles synthétiques mais réalistes (12 SKU × 10 districts × 60 mois). Remplacer `load_data()` par la requête SQL réelle au moment du branchement.
-- **Cibles d'EDA :**
-  - Saisonnalité annuelle (pics de paludisme autour des saisons des pluies)
-  - Rupture structurelle pendant la COVID-19 (début 2020)
-  - Demande intermittente pour les SKU à faible rotation (régime de Croston)
-  - Reporting retardé / manquant des districts ruraux
-  - Tendance (croissance démographique, expansions de programmes)
+- **Source :** registres d'expéditions réels PEPFAR / USAID Supply Chain Management System (SCMS) — [apoorvwatsky/supply-chain-shipment-pricing-data](https://www.kaggle.com/datasets/apoorvwatsky/supply-chain-shipment-pricing-data). 10 324 expéditions sur 43 pays, 2006–2015. Agrégées en unités mensuelles livrées ; le Rwanda est la série modélisée (105 mois, 94 non-nuls).
+- La mention antérieure dans le README d'un « fallback synthétique 12 SKU × 10 districts × 60 mois » est retirée — le carnet modélise directement l'agrégat Rwanda réel.
 
 ## Modélisation
 
-| Famille | Modèles |
+| Famille | Modèle |
 |---|---|
-| Séries temporelles classiques | SARIMA, lissage exponentiel (ETS) |
-| Espace d'états | UnobservedComponents (tendance + saisonnier + AR) |
-| ML pour la prévision | Régresseur gradient-boosté avec features lag/rolling/calendaire |
-| Demande intermittente | Méthode de Croston pour les SKU à faible rotation |
+| Séries temporelles classiques | SARIMA(1,1,1)(1,1,1)₁₂ |
+| Espace d'états | UnobservedComponents (local-linear-trend + saisonnier stochastique) |
+| Lissage exponentiel | Holt-Winters additif triple |
+| ML pour la prévision | `GradientBoostingRegressor` sur features lag/calendrier/rolling |
+| Baseline de référence | Naïf-saisonnier (mois prochain = même mois il y a un an) |
 
 ## Validation
 
-- Backtest à origine glissante, horizon 12 mois, ré-ajustement mensuel
-- Métriques : **MAPE**, **WAPE**, biais, couverture des intervalles de prévision
-- Évaluation par niveau : district × catégorie de SKU
-- Baselines : naïf-saisonnier, ETS
+- **Backtest à origine glissante, 18 folds à un pas d'avance**, les quatre candidats ré-ajustés à chaque origine sur données d'entraînement uniquement.
+- Métrique : WAPE (robuste aux mois à ventes nulles, contrairement au MAPE vanilla).
+- Chiffres en tête sur ce run :
 
-## Déploiement
+| Modèle | WAPE | Gain vs naïf |
+|---|---|---|
+| **GBM (récursif 1 pas)** | **0,863** | **24 % d'amélioration** |
+| SARIMA | 0,941 | 17 % d'amélioration |
+| Naïf-saisonnier | 1,130 | — |
+| Holt-Winters | 1,143 | −1 % (pire) |
 
-- Tableau de bord Streamlit avec backend FastAPI
-- Ré-entraînement mensuel via pipeline Python ordonnancé tirant depuis l'entrepôt
-- Prévisions + intervalles écrits dans une table Postgres lue par le tableau de bord
+Un WAPE dans cette fourchette est un score *absolu* faible ; cela reflète la difficulté réelle des données mensuelles de chaîne logistique santé à demande intermittente (94 mois non-nuls sur 105), pas une faiblesse des modèles. Le gain de 24 % du GBM sur le naïf-saisonnier est le résultat honnête.
+
+- **Couverture IP 95 % de SARIMA** sur les 18 folds glissants : **18/18 = 100 %**, demi-largeur moyenne ≈ 385k unités — intervalles trop larges (sur-couverture par rapport au nominal 95 %), pas calibrés. L'IC Clopper-Pearson autour de 18/18 est environ [0,81 ; 1,00], donc l'échantillon est compatible avec toute vraie couverture ≥ 81 %.
+
+## Esquisse de déploiement
+
+- Ré-entraînement mensuel par série (pays × catégorie de produit) ; artefacts versionnés.
+- Pas un système de production — le carnet s'arrête à la prévision hors-ligne sur l'extraction PEPFAR réelle.
 
 ## Résultat métier
 
-- Visibilité à 3 mois avec intervalles calibrés pour les responsables logistiques
-- Quantités de réapprovisionnement et décisions de redistribution inter-districts éclairées par les prévisions
-- Réunion S&OP mensuelle raccourcie (chiffres validés au lieu de chiffres débattus)
+- Visibilité à 12 mois sur les unités mensuelles livrées PEPFAR au Rwanda ; le GBM est le choix opérationnel sur ce run selon le WAPE à origine glissante.
+- Régime de demande intermittente : s'attendre à un WAPE dans la fourchette 0,8–1,0 sur les agrégats mensuels de chaîne logistique santé ; les prévisions d'intervalle importent plus que les prévisions ponctuelles pour les décisions de réapprovisionnement.
+
+**Prochaines itérations :** réconciliation hiérarchique (pays → région → global), régresseurs exogènes (lancements de programmes, cycles de financement), méthode de Croston par SKU à faible rotation.
