@@ -5,6 +5,8 @@
 
 # Churn Prediction — MTN Nigeria Telecom
 
+> **Dataset note.** This Kaggle snapshot (974 MTN Nigeria customer rows) is approximately random-uniform in the covariates we tested — see the sister notebook `08-customer-survival-mtn-tenure/README.md` for details. Logistic AUC and RF F1 collapse; XGBoost AUC = 0.71 reflects non-linear interactions in high-cardinality one-hots, not substantively interpretable signal. **This notebook is a teaching demo of binary-churn classification end-to-end** — logistic regression, random forest, XGBoost, ROC / PR / calibration diagnostics, retention-queue ranking. For a real benchmark see the IBM Watson Telco Customer Churn dataset (7,043 customers).
+
 ## Business question
 
 Which customers are most likely to churn in the next quarter, and which features drive their risk? A binary classifier ranks customers by churn probability so retention campaigns can target the highest-risk segment.

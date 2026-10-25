@@ -5,6 +5,8 @@
 
 # Customer Survival Analysis — MTN Nigeria Telecom
 
+> **Dataset note.** This Kaggle snapshot (974 MTN Nigeria customer rows) is approximately random-uniform in the covariates we tested; `Date of Purchase` is Jan–Mar 2025 for every row while tenure ranges 1–60 months (logically impossible), and chi² on `Satisfaction × Churn` returns $p = 0.48$. **This notebook is a teaching demo of the mechanics of survival analysis** — Kaplan–Meier, Cox PH, Weibull AFT, log-rank, C-index. The numerical hazard ratios and PH diagnostics are not substantively interpretable. For a real benchmark see `lifelines.datasets.load_lung()`, the SUPPORT dataset, or the IBM Watson Telco Customer Churn dataset (7,043 customers).
+
 ## Business question
 
 Beyond a binary "will they churn?", how does churn risk *change with tenure*? Survival analysis lets us:

@@ -5,6 +5,8 @@
 
 # Analyse de survie client — Télécoms MTN Nigeria
 
+> **Note sur les données.** Ce snapshot Kaggle (974 lignes clients MTN Nigeria) est approximativement uniforme aléatoire sur les covariables testées ; la `Date of Purchase` est Jan–Mar 2025 pour chaque ligne alors que l'ancienneté va de 1 à 60 mois (impossible logiquement), et le chi² sur `Satisfaction × Churn` renvoie $p = 0{,}48$. **Ce carnet est une démonstration pédagogique de la mécanique de l'analyse de survie** — Kaplan–Meier, Cox PH, Weibull AFT, log-rank, C-index. Les hazard ratios et diagnostics PH ne sont pas interprétables substantivement. Pour un vrai benchmark : `lifelines.datasets.load_lung()`, le jeu SUPPORT, ou le IBM Watson Telco Customer Churn (7 043 clients).
+
 ## Question métier
 
 Au-delà d'un binaire « va-t-il churner ? », comment le risque de churn *évolue-t-il avec l'ancienneté* ? L'analyse de survie permet :
