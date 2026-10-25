@@ -236,9 +236,9 @@ TECHNIQUES = {
 }
 
 TOOLS = {
-    "Languages & data": ["Python", "SQL", "pandas", "NumPy", "SciPy", "PostgreSQL"],
-    "Modeling libraries": ["statsmodels", "scikit-learn", "XGBoost", "LightGBM", "lifelines"],
-    "Engineering & viz": ["FastAPI", "Streamlit", "Docker", "Git", "Jupyter", "matplotlib", "seaborn", "LaTeX"],
+    "Languages & data": ["Python", "pandas", "NumPy", "SciPy"],
+    "Modeling libraries": ["statsmodels", "scikit-learn", "XGBoost", "lifelines"],
+    "Engineering & viz": ["Streamlit", "Git", "Jupyter", "matplotlib", "seaborn", "LaTeX"],
 }
 
 # ── Process ───────────────────────────────────────────────────────────────────

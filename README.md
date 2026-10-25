@@ -56,9 +56,9 @@ Browse all five at [`/case-studies/`](https://gabayae.github.io/data-portfolio/c
 
 ## Tech stack
 
-- **Languages:** Python, SQL
-- **Time-series:** SARIMA, UnobservedComponents (state-space, Kalman filter), Prophet, ETS / Holt-Winters, ARIMA
-- **ML:** scikit-learn (GradientBoostingRegressor, RandomForest, LogisticRegression), XGBoost, LightGBM
+- **Languages:** Python
+- **Time-series:** SARIMA, UnobservedComponents (state-space, Kalman filter), ETS / Holt-Winters, ARIMA
+- **ML:** scikit-learn (GradientBoostingRegressor, RandomForest, LogisticRegression), XGBoost
 - **GLM / generalized:** statsmodels (Poisson, Gamma, Tweedie, Cox PH, Weibull AFT, OLS)
 - **Survival:** lifelines (KaplanMeier, CoxPHFitter, WeibullAFTFitter)
 - **Hierarchical reconciliation:** MinT-OLS
