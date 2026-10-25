@@ -29,20 +29,21 @@ Lancer `python download_data.py`.
 | Famille | Modèle |
 |---|---|
 | Régression linéaire | OLS sur log-prix avec quartier + type de bien + chambres |
-| GBM | LightGBM / GradientBoostingRegressor avec quartier en one-hot + features extraites |
+| GBM | `GradientBoostingRegressor` avec quartier en one-hot + features extraites |
 
 ## Validation
 
-- Découpage aléatoire 80/20 ; métriques : R², MAE sur log-prix, MAPE
-- Comparaison directe OLS vs GBM
+- Découpage aléatoire 80/20 (aléatoire car ce sont des annonces à dates non spécifiées, pas une prévision).
+- Métriques à double échelle : **R²(log) 0,58, R²(niveau) implicitement plus bas ; MAPE brut 146 %, RMSE 366M NGN** pour le GBM. OLS : **R²(log) 0,51, MAPE brut 179 %, RMSE 396M NGN**. Le R² log est confortable ; la MAPE brute est honnête sur les limites — sur une cible de médiane ~50M NGN, se tromper routinièrement de plus que le vrai prix signifie que c'est un outil de classement, pas d'évaluation ponctuelle.
+- Priorité de `parse_type` corrigée en « le plus spécifique d'abord » pour que `"semi-detached house"` → `semi-detached` (pas `house`), `"detached duplex"` → `detached` (pas `duplex`), etc.
 
-## Déploiement
+## Esquisse de déploiement
 
-- API `POST /property-valuation` retournant estimation de prix + intervalle 80 %
-- Tableau de bord agent immobilier avec superpositions de distributions par quartier
+- La sortie du modèle sert au *classement* d'annonces contre les baselines de quartier, pas à l'ancrage d'évaluations individuelles (la MAPE brute est trop large).
+- Un déploiement d'estimation ponctuelle demanderait soit (a) un couple quantile-GBM (`loss='quantile'`, `alpha=0,1/0,9`) pour produire des intervalles honnêtes, soit (b) des features plus riches (surface, année de construction, état) absentes de cette collecte.
 
 ## Résultat métier
 
-- Agents immobiliers et acheteurs ancrent leurs prix sur un modèle plutôt que des intuitions
-- Les prêteurs hypothécaires obtiennent une référence d'évaluation explicable
-- Le même pipeline s'étend trivialement à Abuja, Ibadan, Port Harcourt avec des données taggées par quartier
+- Esquisse méthodologique pour les prix résidentiels à Lagos sur une extraction Kaggle gratuite.
+- L'usage honnête est le tri comparatif au niveau quartier × type × chambres ; l'incertitude brute est trop large pour ancrer des expertises individuelles.
+- Le pipeline s'étend trivialement à Abuja, Ibadan, Port Harcourt avec la même structure de collecte.

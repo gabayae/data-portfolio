@@ -29,20 +29,21 @@ Run `python download_data.py`.
 | Family | Model |
 |---|---|
 | Linear regression | OLS on log-price with neighborhood + property-type + bedrooms |
-| GBM | LightGBM / GradientBoostingRegressor with one-hot neighborhood + parsed features |
+| GBM | `GradientBoostingRegressor` with one-hot neighborhood + parsed features |
 
 ## Validation
 
-- 80/20 random split; metrics: R², MAE on log-price, MAPE
-- Compare OLS vs. GBM head-to-head
+- 80/20 random split (random because these are listings at unspecified dates, not a forecast).
+- Dual-scale metrics: **R²(log) 0.58, R²(level) implicit lower; raw-NGN MAPE 146%, RMSE 366M NGN** for GBM. OLS: **R²(log) 0.51, raw-NGN MAPE 179%, RMSE 396M NGN**. The log-scale R² is comfortable; the raw-scale MAPE is honest about the limits — on a target with median ~₦50M, routinely being off by more than the true price means this is a ranking tool, not a point-valuation tool.
+- `parse_type` priority fixed to most-specific-first so `"semi-detached house"` → `semi-detached` (not `house`), `"detached duplex"` → `detached` (not `duplex`), etc.
 
-## Deployment
+## Deployment sketch
 
-- API `POST /property-valuation` returning price estimate + 80% interval
-- Estate-agent dashboard with neighborhood-level distribution overlays
+- Model output is suitable for *ranking* listings against neighborhood baselines, not for anchoring individual-property valuations (the raw-scale MAPE is too wide for that).
+- Point-estimate deployment would require either (a) a quantile-GBM pair (`loss='quantile'`, `alpha=0.1/0.9`) to produce honest intervals, or (b) richer features (floor area, year built, condition) that this scrape does not include.
 
 ## Business outcome
 
-- Estate agents and buyers anchor pricing on a model rather than vibes
-- Mortgage lenders get an explainable valuation reference
-- Same pipeline trivially extends to Abuja, Ibadan, Port Harcourt with neighborhood-tagged data
+- Methodology stub for Lagos residential prices on a free Kaggle extract.
+- The honest usage pattern is comparable-sorting at the neighborhood × type × bedrooms level; the raw-scale uncertainty is too wide to anchor individual appraisals.
+- Pipeline extends trivially to Abuja, Ibadan, Port Harcourt with the same scrape structure.
