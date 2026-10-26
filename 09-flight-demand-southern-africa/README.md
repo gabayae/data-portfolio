@@ -38,7 +38,7 @@ Run `python download_data.py` (Kaggle CLI required).
 
 ## Deployment sketch
 
-- Not a production system — scope is too narrow (31-day window) for a planning service.
+- 31 days is too narrow to productionise. A planning service would want 6+ months of history, booking dates (so lead time becomes a real feature), and route-level stability checks before any pricing recommendation goes out the door.
 - Longer scrapes (6+ months) with booking-date metadata would unlock the lead-time pricing dynamic the current scrape cannot support.
 
 ## Business outcome

@@ -44,7 +44,7 @@ Lancer `python download_data.py`.
 ## Esquisse de déploiement
 
 - Un service de triage microfinance nécessiterait une résolution par grappe plutôt que par ménage, et devrait être ré-entraîné à chaque nouvelle vague d'enquête.
-- Pas un système de production — le carnet s'arrête à la modélisation hors-ligne.
+- Tout déploiement nécessiterait un join sur l'identifiant de grappe à partir des données brutes d'enquête, pour que le GroupKFold corresponde au vrai plan d'échantillonnage plutôt qu'à une grille lat/lon 1° ad-hoc.
 
 ## Résultat métier
 

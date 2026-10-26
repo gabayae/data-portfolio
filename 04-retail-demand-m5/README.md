@@ -30,7 +30,7 @@ Produce coherent SKU × store × week forecasts — a category forecast must equ
 ## Validation
 
 - **8-week held-out test**, per-series RMSSE at every hierarchy level (not just TOTAL+BOTTOM), each series scaled by its own training-naive error per the canonical M5 WRMSSE protocol.
-- Headline numbers on this run:
+- Headline numbers:
 
 | Level | pre-recon mean RMSSE | post-recon mean RMSSE | Δ |
 |---|---|---|---|

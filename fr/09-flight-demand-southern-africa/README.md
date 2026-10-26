@@ -38,7 +38,7 @@ Lancer `python download_data.py` (Kaggle CLI requis).
 
 ## Esquisse de déploiement
 
-- Pas un système de production — le périmètre est trop étroit (fenêtre de 31 jours) pour un service de planification.
+- 31 jours est trop étroit pour mettre en production. Un service de planification demanderait 6+ mois d'historique, des dates de réservation (pour que le délai avant départ devienne une vraie feature), et des contrôles de stabilité au niveau route avant toute recommandation tarifaire.
 - Des collectes plus longues (6+ mois) avec métadonnées de date de réservation débloqueraient la dynamique tarifaire que la collecte actuelle ne peut pas porter.
 
 ## Résultat métier

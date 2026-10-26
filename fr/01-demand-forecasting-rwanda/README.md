@@ -28,7 +28,7 @@ Peut-on prévoir la consommation mensuelle de médicaments essentiels (ARV, HRDT
 
 - **Backtest à origine glissante, 18 folds à un pas d'avance**, les quatre candidats ré-ajustés à chaque origine sur données d'entraînement uniquement.
 - Métrique : WAPE (robuste aux mois à ventes nulles, contrairement au MAPE vanilla).
-- Chiffres en tête sur ce run :
+- Chiffres en tête :
 
 | Modèle | WAPE | Gain vs naïf |
 |---|---|---|
@@ -44,11 +44,11 @@ Un WAPE dans cette fourchette est un score *absolu* faible. Cela reflète la dif
 ## Esquisse de déploiement
 
 - Ré-entraînement mensuel par série (pays × catégorie de produit) ; artefacts versionnés.
-- Pas un système de production — le carnet s'arrête à la prévision hors-ligne sur l'extraction PEPFAR réelle.
+- Le carnet s'arrête à la prévision hors-ligne sur l'extraction PEPFAR réelle. Un déploiement nécessiterait un service d'inférence connecté à l'entrepôt SCMS et des alertes sur la dérive inter-folds.
 
 ## Résultat métier
 
-- Visibilité à 12 mois sur les unités mensuelles livrées PEPFAR au Rwanda ; le GBM est le choix opérationnel sur ce run selon le WAPE à origine glissante.
+- Visibilité à 12 mois sur les unités mensuelles livrées PEPFAR au Rwanda. Le GBM mène selon le WAPE à origine glissante.
 - Régime de demande intermittente : s'attendre à un WAPE dans la fourchette 0,8–1,0 sur les agrégats mensuels de chaîne logistique santé ; les prévisions d'intervalle importent plus que les prévisions ponctuelles pour les décisions de réapprovisionnement.
 
 **Prochaines itérations :** réconciliation hiérarchique (pays → région → global), régresseurs exogènes (lancements de programmes, cycles de financement), méthode de Croston par SKU à faible rotation.

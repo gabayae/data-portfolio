@@ -34,7 +34,7 @@ Can mobile clinics be scheduled across underserved counties to maximize populati
 
 ## Deployment sketch
 
-- Streamlit interface for district health officers — the capped LP output is the deployable candidate; Q-learning's greedy policy collapsed to a single-county visit pattern on this run and should not be deployed as-is.
+- Streamlit interface for district health officers: the capped LP output is what you ship. Q-learning's greedy policy collapsed to a single-county visit pattern and should not be deployed as-is.
 - Re-train monthly as visit data accumulates.
 
 ## Business outcome

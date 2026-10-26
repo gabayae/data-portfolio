@@ -28,7 +28,7 @@ Can we forecast monthly consumption of essential medicines (ARV, HRDT) so supply
 
 - **Rolling-origin backtest, 18 one-step-ahead folds**, all four candidates re-fit at each origin on train-only data.
 - Metric: WAPE (robust to zero-sales months, unlike vanilla MAPE).
-- Headline numbers on this run:
+- Headline numbers:
 
 | Model | WAPE | Lift over naive |
 |---|---|---|
@@ -44,11 +44,11 @@ WAPE in this range is a weak *absolute* score. It reflects the real difficulty o
 ## Deployment sketch
 
 - Monthly retrain per (country × product-group) series; artifacts versioned.
-- Not a production system — the notebook stops at offline forecasting on the real PEPFAR extract.
+- The notebook ends at offline forecasting on the real PEPFAR extract. A production rollout would need an inference service against the SCMS warehouse and alerting on fold drift.
 
 ## Business outcome
 
-- 12-month forward visibility on Rwanda PEPFAR monthly delivered units; GBM is the operational pick on this run under rolling-origin WAPE.
+- 12-month forward visibility on Rwanda PEPFAR monthly delivered units. GBM leads under rolling-origin WAPE.
 - Intermittent-demand regime: expect WAPE in the 0.8–1.0 range on monthly health-supply-chain aggregates; interval forecasts matter more than point forecasts for reorder decisions.
 
 **Next iterations:** hierarchical reconciliation (country → region → global), exogenous regressors (program rollouts, funding cycles), Croston's method per slow-moving SKU.

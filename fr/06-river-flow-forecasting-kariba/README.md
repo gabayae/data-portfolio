@@ -51,11 +51,11 @@ Lancer `python download_data.py` pour télécharger (nécessite Kaggle CLI confi
 | Naïf-dernier | 0,085 % | 0,501 | — |
 | GBM à un pas d'avance avec exog (contexte) | 0,013 % | 0,069 | — |
 
-SARIMA gagne la comparaison à armes égales à **18 cm de RMSE** en prévision multi-pas 30 jours. C'est le seul intervalle bien calibré du lot (demi-largeur moyenne IP 95 % de SARIMA ≈ 56 cm, 30/30 avec IC CP [0,88 ; 1,00]). La variante GBM mode récursif se dégrade à 51 cm, essentiellement à égalité avec le naïf-dernier, parce que les covariables de *décision opérateur* (`turbine_discharge`, `total_outflow`) ne peuvent pas être conditionnées à l'horizon 30 jours. Le « RMSE 7 cm du GBM » précédemment en titre était une évaluation à un pas d'avance avec le débit du jour précédent révélé, conservé dans le tableau comme contexte plutôt que comme chiffre déployable.
+SARIMA gagne la comparaison à armes égales à **18 cm de RMSE** sur l'horizon multi-pas 30 jours, et son IP 95 % tient (demi-largeur moyenne ≈ 56 cm, 30/30 avec IC CP [0,88 ; 1,00]). Faire tourner le GBM en vrai mode récursif le fait chuter à 51 cm de RMSE, essentiellement à égalité avec le naïf-dernier, car `turbine_discharge` et `total_outflow` sont des *décisions* opérateur — pas des covariables prévisibles à 30 jours. Le « RMSE 7 cm du GBM » précédemment en titre était une évaluation à un pas d'avance avec le débit du jour précédent révélé ; il reste dans le tableau comme contexte, pas comme chiffre de planification.
 
 ## Esquisse de déploiement
 
-- SARIMA est le choix opérationnel pour une prévision de planification à 30 jours sur ce dataset : IP 95 % calibré + plus bas RMSE multi-pas de la comparaison.
+- Pour une planification 30 jours, SARIMA est ce qui part en prod : IP 95 % calibré, et le plus bas RMSE multi-pas de la comparaison.
 - Un service temps-réel à un pas d'avance (rafraîchissement J+1 avec débit de la veille connu) pourrait utiliser la variante GBM-avec-exog pour une précision ponctuelle sensiblement plus serrée ; les cas d'usage sont différents.
 
 ## Résultat métier

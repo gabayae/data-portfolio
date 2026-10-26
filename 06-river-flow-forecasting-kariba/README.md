@@ -51,11 +51,11 @@ Run `python download_data.py` to fetch (requires Kaggle CLI configured).
 | Naive-last | 0.085% | 0.501 | — |
 | GBM 1-step-ahead w/ exog (context) | 0.013% | 0.069 | — |
 
-SARIMA wins the like-for-like comparison at **18 cm RMSE** on 30-day multi-step forecasting. It is the only well-calibrated interval in the set (SARIMA 95% PI mean half-width ≈ 56 cm, 30/30 coverage with CP CI [0.88, 1.00]). The GBM recursive-mode variant degrades to 51 cm RMSE, essentially tied with naive-last, because the operator-decision covariates (`turbine_discharge`, `total_outflow`) cannot be conditioned on at 30-day horizon. The previously headlined "7 cm RMSE GBM" was a 1-step-ahead evaluation with revealed previous-day discharge, retained in the table as context rather than as the deployable number.
+SARIMA wins the like-for-like comparison at **18 cm RMSE** across the 30-day multi-step horizon, and its 95% PI holds up (SARIMA 95% PI mean half-width ≈ 56 cm, 30/30 coverage with CP CI [0.88, 1.00]). Running the GBM in true recursive mode drops it to 51 cm RMSE, essentially tied with naive-last, because `turbine_discharge` and `total_outflow` are operator *decisions* — not forecastable covariates 30 days out. The previously headlined "7 cm RMSE GBM" was a 1-step-ahead evaluation with revealed previous-day discharge; it stays in the table as context, not as the planning number.
 
 ## Deployment sketch
 
-- SARIMA is the operational pick for a 30-day planning forecast on this dataset: calibrated 95% PI + lowest multi-step RMSE in the comparison.
+- For 30-day planning, SARIMA is what gets shipped: calibrated 95% PI plus the lowest multi-step RMSE in the comparison.
 - A real-time 1-step-ahead service (next-day refresh with yesterday's discharge known) could use the GBM-with-exog variant for substantially tighter point accuracy; the use cases differ.
 
 ## Business outcome

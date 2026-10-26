@@ -30,7 +30,7 @@ Produire des prévisions cohérentes SKU × magasin × semaine — la prévision
 ## Validation
 
 - **Test holdout 8 semaines**, RMSSE par série à chaque niveau de la hiérarchie (pas seulement TOTAL+BOTTOM), chaque série mise à l'échelle par sa propre erreur naïve d'entraînement selon le protocole canonique M5 WRMSSE.
-- Chiffres en tête sur ce run :
+- Chiffres en tête :
 
 | Niveau | RMSSE moyen pré-recon | RMSSE moyen post-recon | Δ |
 |---|---|---|---|

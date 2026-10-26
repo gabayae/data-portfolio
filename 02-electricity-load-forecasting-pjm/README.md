@@ -39,12 +39,12 @@ Can we produce day-ahead hourly load forecasts accurate enough to support energy
 | SARIMA (multi-step) | 14.5% | 6,676 | 54/60 (CP CI [0.79, 0.96]) |
 | UC state-space (multi-step) | 19.3% | 8,295 | 60/60 (CP CI [0.94, 1.00]) |
 
-GBM beats SARIMA by 38% MAPE once both are evaluated as 60-day multi-step forecasts. The UC state-space variant *lost* to SARIMA on this run (−33% lift). The 1-step-ahead GBM (MAPE 6.2%) is reported in the notebook as context, labeled as such — it assumes revealed previous-day load, which is not a 60-day forecast.
+GBM beats SARIMA by 38% MAPE once both produce a 60-day multi-step forecast. The UC state-space variant *lost* to SARIMA by 33% MAPE here. The 1-step-ahead GBM (MAPE 6.2%) is in the notebook as a labeled baseline; it assumes yesterday's load is already known at inference time, so it isn't a horizon forecast.
 
 ## Deployment sketch
 
-- The recursive GBM is the operational pick on this run; SARIMA offers the only well-calibrated 95% PI (54/60 inside the band).
-- Scheduled retrain + pickled artifact; not a production system — the notebook stops at offline forecasting on real PJME data.
+- The recursive GBM leads on point error; SARIMA is the only candidate whose 95% PI survives Clopper-Pearson scrutiny (54/60 inside the band).
+- Scheduled retrain + pickled artifact. The notebook is offline; wiring it to a procurement bidding loop would need latency targets, model-staleness alerts, and reconciliation against actual meter data.
 
 ## Business outcome
 

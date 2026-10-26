@@ -44,7 +44,7 @@ Run `python download_data.py`.
 ## Deployment sketch
 
 - A microfinance-triage service would need per-cluster rather than per-household resolution, and should be re-trained whenever a new survey batch lands.
-- Not a production system — the notebook stops at offline modeling.
+- Any deployment would need a cluster-ID join from the survey raw data, so GroupKFold corresponds to the actual sampling design rather than an ad-hoc 1-degree lat/lon grid.
 
 ## Business outcome
 
