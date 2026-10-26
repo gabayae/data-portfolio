@@ -244,7 +244,7 @@ footer a { color: #ffd7c5; }
     <span class="case-hero__eyebrow">Case study · Health Ops · Stochastic Optimization</span>
     <h1 class="case-hero__title">Mobile-clinic scheduling — Kenya</h1>
     <p class="case-hero__sub">
-      Real-data MDP on 7,876 KMPDC-licensed Kenyan health facilities and the SHA per-facility payment time-series. Three policies — manual round-robin, capped linear program, tabular Q-learning — compared on patients-served, travel cost, and equity. The honest finding: the algorithm matters less than how the constraints are written.
+      Real-data MDP on 7,876 KMPDC-licensed Kenyan health facilities and the SHA per-facility payment time-series. Three policies (manual round-robin, capped linear program, tabular Q-learning) compared on patients-served, travel cost, and equity. The finding that holds up: the algorithm matters less than how the constraints are written.
     </p>
     <div class="case-hero__meta">
       <span class="case-hero__readtime"><strong>Read</strong> · 7 min · 1,395 words</span>
@@ -381,7 +381,7 @@ footer a { color: #ffd7c5; }
     </table>
 
     <div class="callout">
-      <strong>The honest reading.</strong> Q-learning's "+122% coverage lift" is a coverage lift only if you read "coverage" as patients-served. Read in the equity sense most health programmes use it — visits to the bottom-quartile-utilisation catchments — Q-learning's coverage is <em>worse</em> than manual round-robin's. Q-learning never visits Wajir, Migori, or Mandera. Its policy is to sit in Nairobi all 180 days. That's a feature of the demand-only objective, not a bug in Q-learning.
+      <strong>Reading the +122% carefully.</strong> Q-learning's "+122% coverage lift" is a coverage lift only if you read "coverage" as patients-served. Read in the equity sense most health programmes use it (visits to the bottom-quartile-utilisation catchments), Q-learning's coverage is <em>worse</em> than manual round-robin's. Q-learning never visits Wajir, Migori, or Mandera. Its policy is to sit in Nairobi all 180 days. That's a feature of the demand-only objective, not a bug in Q-learning.
     </div>
 
     <h2 id="tradeoffs">Trade-offs</h2>

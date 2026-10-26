@@ -395,7 +395,7 @@ footer a { color: #ffd7c5; }
     <h2 id="lessons">Leçons</h2>
     <ol>
       <li><strong>Choisissez la métrique que votre consommateur aval utilise réellement, puis choisissez le modèle.</strong> Tweedie gagne sur le Gini global ; Poisson + Gamma gagne sur le lift du décile supérieur. Si votre moteur de tarification segmente par paliers, la bonne réponse n'est pas le modèle au Gini le plus élevé.</li>
-      <li><strong>Une surdispersion légère ne rend pas Tweedie obligatoire.</strong> Var/Moy = 1,083 signifie que Poisson n'est pas mal spécifié. La victoire de Tweedie est réelle mais modeste ; le vrai différenciateur est l'adéquation à la philosophie de modélisation (un modèle vs. deux).</li>
+      <li><strong>Une surdispersion légère ne rend pas Tweedie obligatoire.</strong> Var/Moy = 1,083 signifie que Poisson n'est pas mal spécifié. La victoire de Tweedie est modeste ; ce qui différencie les deux approches est la philosophie de modélisation elle-même (un modèle vs. deux).</li>
       <li><strong>Les GLM battent toujours le ML non contraint sur ce type de données.</strong> Sans priors de monotonie et régularisation des variables, un GBM est structurellement trop flexible pour le ratio signal/bruit de l'assurance auto. Le bon déploiement ML dans ce domaine est le boosting à contraintes monotones plus la calibration — la version non contrainte est un point de recherche, pas un gain de production.</li>
     </ol>
 

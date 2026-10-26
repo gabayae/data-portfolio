@@ -393,7 +393,7 @@ footer a { color: #ffd7c5; }
     <h2 id="lessons">Lessons</h2>
     <ol>
       <li><strong>Pick the metric your downstream consumer actually uses, then pick the model.</strong> Tweedie wins overall Gini; Poisson + Gamma wins top-decile lift. If your rating engine bins into tiers, the right answer is not the higher-Gini model.</li>
-      <li><strong>Mild overdispersion is not Tweedie-mandatory.</strong> Var/Mean = 1.083 means Poisson isn't badly mis-specified. Tweedie's win is real but modest; the real differentiator is the modelling-philosophy fit (one model vs. two).</li>
+      <li><strong>Mild overdispersion is not Tweedie-mandatory.</strong> Var/Mean = 1.083 means Poisson isn't badly mis-specified. Tweedie's win is modest; what differentiates the two approaches is the modelling philosophy itself (one model vs. two).</li>
       <li><strong>GLMs still beat unconstrained ML on this kind of data.</strong> Without monotonicity priors and feature regularisation, a GBM is structurally too flexible for the signal-to-noise ratio of motor insurance. The right ML deployment in this domain is monotonic-constrained boosting plus calibration. The unconstrained version is a research point, not a production lift.</li>
     </ol>
 

@@ -59,6 +59,6 @@ Run `python download_data.py` to fetch fresh data (no auth required).
 
 ## Business outcome
 
-- 30-day forward visibility on solar irradiance with directional 95% PIs — supports dispatch and battery-sizing decisions for utility and pay-as-you-go solar.
+- Daily solar irradiance predicted a month out, with 95% PIs that read directional on n=90. Enough to support dispatch and battery-sizing conversations for utility and pay-as-you-go solar.
 - At this latitude, climatology is a strong baseline; the ML lift comes from same-day weather, not from the time-series structure.
 - Fully reproducible from a free, programmatic data source — easy to audit.

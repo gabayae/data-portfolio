@@ -44,6 +44,6 @@ Run `python download_data.py`.
 
 ## Business outcome
 
-- Methodology stub for Lagos residential prices on a free Kaggle extract.
+- A working residential-price model on a free Kaggle Lagos scrape; the pipeline is the point, not the predictions.
 - Usable for comparable-sorting at the neighborhood × type × bedrooms level. The raw-scale uncertainty is too wide to anchor individual appraisals.
 - The same pipeline would run on Abuja, Ibadan, or Port Harcourt scrapes with the same structure.

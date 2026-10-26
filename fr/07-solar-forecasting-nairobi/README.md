@@ -59,6 +59,6 @@ Lancer `python download_data.py` pour récupérer des données fraîches (sans a
 
 ## Résultat métier
 
-- Visibilité à 30 jours sur l'irradiance solaire avec IP 95 % directionnels — appuie les décisions de dispatch et de dimensionnement batterie pour le solaire grande échelle et le pay-as-you-go.
+- Irradiance solaire journalière prédite à un mois, avec IP 95 % directionnels sur n=90. De quoi appuyer les discussions de dispatch et de dimensionnement batterie pour le solaire grande échelle et le pay-as-you-go.
 - À cette latitude, la climatologie est une baseline forte ; le gain du ML vient de la météo du jour, pas de la structure temporelle.
 - Entièrement reproductible depuis une source de données gratuite et programmatique — facile à auditer.

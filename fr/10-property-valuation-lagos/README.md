@@ -44,6 +44,6 @@ Lancer `python download_data.py`.
 
 ## Résultat métier
 
-- Esquisse méthodologique pour les prix résidentiels à Lagos sur une extraction Kaggle gratuite.
+- Un modèle de prix résidentiels fonctionnel sur une collecte Kaggle Lagos gratuite ; c'est le pipeline qui compte, pas les prédictions.
 - Utilisable pour le tri comparatif au niveau quartier × type × chambres. L'incertitude brute est trop large pour ancrer des expertises individuelles.
 - Le même pipeline tournerait sur des collectes Abuja, Ibadan ou Port Harcourt avec la même structure.

@@ -48,4 +48,4 @@ Run `python download_data.py`.
 
 ## Business outcome
 
-- Methodology stub for geospatial regression on survey data; the sample-size and spatial-leakage caveats above must be respected before any underwriting use.
+- Geospatial regression on survey data, with the sample-size and spatial-leakage caveats above as hard preconditions before any underwriting use.

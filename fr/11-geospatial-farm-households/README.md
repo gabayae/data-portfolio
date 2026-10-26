@@ -48,4 +48,4 @@ Lancer `python download_data.py`.
 
 ## Résultat métier
 
-- Esquisse méthodologique de régression géospatiale sur données d'enquête ; les mises en garde ci-dessus (taille d'échantillon, fuite spatiale) doivent être respectées avant tout usage en souscription.
+- Régression géospatiale sur données d'enquête, avec les mises en garde ci-dessus (taille d'échantillon, fuite spatiale) comme préconditions strictes avant tout usage en souscription.
