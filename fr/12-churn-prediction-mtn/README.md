@@ -46,7 +46,7 @@ Lancer `python download_data.py`.
 | Random Forest | 0,59 | 0,36 | 0,34 | 1,16× | 0,38 | 1,30× |
 | LogReg | 0,48 | 0,27 | 0,20 | 0,68× | 0,30 | 1,03× |
 
-Seule la file top-50 de XGBoost porte un lift significatif (1,78× vs aléatoire). La top-50 de la LogReg est *pire* qu'aléatoire — signe que le scoring linéaire capte de l'anti-signal sur ces données (quasi-aléatoires). Voir la note dataset en haut pour la lecture honnête.
+Seule la file top-50 de XGBoost porte un lift significatif (1,78× vs aléatoire). La top-50 de la LogReg est *pire* qu'aléatoire, signe que le scoring linéaire capte de l'anti-signal sur ces données (quasi-aléatoires). Voir la note dataset en haut pour le contexte.
 
 ## Esquisse de déploiement
 

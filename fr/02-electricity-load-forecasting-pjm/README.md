@@ -31,7 +31,7 @@ Peut-on produire des prévisions horaires de charge à J+1 suffisamment précise
 - Backtest à holdout de 60 jours en fin de série.
 - Métriques : MAPE, RMSE, couverture des IP 95 % avec IC Clopper-Pearson.
 
-**Prévisions multi-pas 60 jours (comparaison à armes égales) :**
+**Prévisions multi-pas 60 jours, à armes égales :**
 
 | Modèle | MAPE | RMSE (MW) | Couverture IP 95 % |
 |---|---|---|---|
@@ -39,7 +39,7 @@ Peut-on produire des prévisions horaires de charge à J+1 suffisamment précise
 | SARIMA (multi-pas) | 14,5 % | 6 676 | 54/60 (IC CP [0,79 ; 0,96]) |
 | UC espace d'états (multi-pas) | 19,3 % | 8 295 | 60/60 (IC CP [0,94 ; 1,00]) |
 
-**Le GBM bat SARIMA de 38 % de MAPE en comparaison équitable mode récursif.** La variante UC a *perdu* face à SARIMA sur ce run (−33 % de gain). Le reporting antérieur confondait le GBM récursif avec une variante à un pas d'avance qui suppose la charge de la veille révélée — la variante à un pas d'avance (MAPE 6,2 %) reste rapportée dans le carnet comme contexte, étiquetée comme telle.
+Le GBM bat SARIMA de 38 % de MAPE une fois les deux évalués comme prévisions multi-pas 60 jours. La variante UC a *perdu* face à SARIMA sur ce run (−33 % de gain). Le GBM à un pas d'avance (MAPE 6,2 %) est rapporté dans le carnet comme contexte, étiqueté comme tel — il suppose la charge de la veille révélée, ce qui n'est pas une prévision 60 jours.
 
 ## Esquisse de déploiement
 

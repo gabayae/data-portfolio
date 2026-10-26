@@ -39,7 +39,7 @@ Produire des prévisions cohérentes SKU × magasin × semaine — la prévision
 | STATE×DEPT (15 séries) | 1,59 | 1,57 | **−0,02 (amélioration)** |
 | BOTTOM (130 séries) | 1,305 | 1,299 | −0,006 (négligeable) |
 
-Le résultat honnête : **la cohérence est par construction** (les sommes bottom égalent TOTAL par algèbre linéaire) ; la **réduction d'erreur mesurable** apparaît aux niveaux intermédiaires où MinT fait d'habitude son travail (STATE, STATE×DEPT) ; le TOTAL se dégrade légèrement car la réconciliation tire l'agrégat SARIMA vers la somme bottom-up ; le BOTTOM bouge à peine.
+Ce que disent les chiffres : la cohérence tient par construction (les sommes bottom égalent TOTAL par algèbre linéaire). La réduction d'erreur mesurable n'apparaît qu'aux niveaux intermédiaires où MinT fait d'habitude son travail (STATE, STATE×DEPT). Le TOTAL se dégrade légèrement car la réconciliation tire l'agrégat SARIMA vers la somme bottom-up ; le BOTTOM bouge à peine.
 
 ## Esquisse de déploiement
 

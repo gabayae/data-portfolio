@@ -46,7 +46,7 @@ Run `python download_data.py`.
 | Random Forest | 0.59 | 0.36 | 0.34 | 1.16× | 0.38 | 1.30× |
 | LogReg | 0.48 | 0.27 | 0.20 | 0.68× | 0.30 | 1.03× |
 
-Only XGBoost's top-50 queue carries meaningful lift (1.78× over random). LogReg's top-50 is actually *worse* than random — a telltale that linear scoring is picking up anti-signal on this (near-random) data. See the dataset note above for the honest reading.
+Only XGBoost's top-50 queue carries meaningful lift (1.78× over random). LogReg's top-50 is actually *worse* than random, a telltale that linear scoring is picking up anti-signal on this (near-random) data. See the dataset note at the top for context.
 
 ## Deployment sketch
 

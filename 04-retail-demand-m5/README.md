@@ -39,7 +39,7 @@ Produce coherent SKU × store × week forecasts — a category forecast must equ
 | STATE×DEPT (15 series) | 1.59 | 1.57 | **−0.02 (improves)** |
 | BOTTOM (130 series) | 1.305 | 1.299 | −0.006 (negligible) |
 
-The honest story: **coherence is by construction** (bottom sums match TOTAL by linear algebra); **measurable error reduction** shows up at the mid-levels where MinT typically earns its keep (STATE, STATE×DEPT); the TOTAL slightly worsens because reconciliation pulls the SARIMA aggregate toward the bottom-up sum; BOTTOM barely moves.
+What the numbers say: coherence holds by construction (bottom sums match TOTAL by linear algebra). Measurable error reduction only shows up at the mid-levels where MinT typically earns its keep (STATE, STATE×DEPT). TOTAL slightly worsens because reconciliation pulls the SARIMA aggregate toward the bottom-up sum; BOTTOM barely moves.
 
 ## Deployment sketch
 

@@ -30,7 +30,7 @@ Can mobile clinics be scheduled across underserved counties to maximize populati
 
 - Simulated rollouts against the manual schedule and the capped LP baseline
 - Metrics: patients served, travel distance (km), coverage of low-demand counties
-- Policies are not budget-matched — manual round-robin incurs 87 km/day of mandatory travel; Q-learning is allowed to not travel at all. See the case study for the honest comparison.
+- Policies are not budget-matched: manual round-robin incurs 87 km/day of mandatory travel; Q-learning is allowed to not travel at all. See the case study for the full breakdown.
 
 ## Deployment sketch
 
@@ -39,6 +39,6 @@ Can mobile clinics be scheduled across underserved counties to maximize populati
 
 ## Business outcome
 
-- The honest headline is the capped LP's **+39% coverage** over the manual schedule, achieved with an explicit equity constraint that forces visits to low-demand counties.
+- Capped LP achieves **+39% coverage** over the manual schedule, with an explicit equity constraint that forces visits to low-demand counties. That is the deployable number.
 - Q-learning's reported **+122%** vs manual comes from a degenerate greedy policy (`total_travel_km = 0`, `low_demand_visits = 0`); see the case-study callout. Reward-shaping is doing most of the work during training and does not carry over to evaluation.
 - Headline lesson: *the constraint formulation matters more than the algorithm.* On this problem a capped LP with equity is more defensible than a hard-to-stabilize RL policy.

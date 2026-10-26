@@ -49,7 +49,7 @@ Lancer `python download_data.py` pour récupérer des données fraîches (sans a
 - Test mis de côté sur 90 jours
 - Métriques : MAPE, RMSE, couverture empirique des IP 95 %
 - Baselines : naïf-dernier, naïf-saisonnier (lag 365 jours), climatologie mensuelle (calculée **sur le train seul** — pas sur la série complète)
-- MAPE en tête sur ce run : **GBM 9,4 % · climatologie mensuelle 12,6 % · SARIMA 13,8 % · UC 19,6 %**. Le résultat honnête : à la latitude de Nairobi l'enveloppe saisonnière porte l'essentiel de la prédictibilité (la climatologie bat SARIMA) ; le GBM gagne en erreur ponctuelle uniquement parce qu'il voit les covariables nuage/humidité du jour.
+- MAPE en tête sur ce run : **GBM 9,4 % · climatologie mensuelle 12,6 % · SARIMA 13,8 % · UC 19,6 %**. À la latitude de Nairobi l'enveloppe saisonnière porte l'essentiel de la prédictibilité : la climatologie bat SARIMA. Le GBM gagne en erreur ponctuelle uniquement parce qu'il voit les covariables nuage/humidité du jour.
 - Couverture empirique des IP 95 % : SARIMA 89/90, UC 89/90 — l'IC Clopper-Pearson autour de 89/90 est environ [0,94 ; 1,00], donc ces échantillons sont compatibles avec toute vraie couverture ≥ 94 %. Les intervalles sont directionnels, pas formellement calibrés à cette taille d'échantillon.
 
 ## Esquisse de déploiement

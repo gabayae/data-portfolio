@@ -20,7 +20,7 @@
 <meta property="og:locale:alternate" content="en_US">
 <meta property="og:url" content="https://gabayae.github.io/data-portfolio/fr/case-studies/kariba/">
 <meta property="og:title" content="Étude de cas — Prévision du débit du lac Kariba">
-<meta property="og:description" content="SARIMA gagne la prévision honnête à 30 jours du niveau du lac Kariba à 18 cm de RMSE avec IP 95 % calibré. Le 7 cm du GBM est à un pas d'avance avec vérité révélée, pas une prévision 30 jours. Données réelles du barrage du Zambèze.">
+<meta property="og:description" content="SARIMA gagne la prévision à 30 jours du niveau du lac Kariba à 18 cm de RMSE avec IP 95 % calibré. Le 7 cm du GBM est un chiffre à un pas d'avance avec vérité révélée, pas une prévision 30 jours. Données réelles du barrage du Zambèze.">
 <meta property="og:image" content="https://gabayae.github.io/data-portfolio/case-studies/kariba/og-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -254,7 +254,7 @@ footer a { color: #ffd7c5; }
     <span class="case-hero__eyebrow">Étude de cas · Hydroélectricité · Séries temporelles</span>
     <h1 class="case-hero__title">Prévision du débit fluvial — lac Kariba</h1>
     <p class="case-hero__sub">
-      Prévision journalière du niveau du plus grand réservoir artificiel au monde, sur données réelles de la Zambezi River Authority — horizon 30 jours. SARIMA avec IP 95 % calibré s'impose comme le gagnant opérationnel à 18 cm de RMSE ; le 7 cm du GBM précédemment en titre était un résultat à un pas d'avance avec vérité révélée qui ne survit pas à une évaluation multi-pas récursive équitable.
+      Prévision journalière du niveau du plus grand réservoir artificiel au monde, sur données réelles de la Zambezi River Authority, horizon 30 jours. SARIMA avec IP 95 % calibré s'impose à 18 cm de RMSE. Le 7 cm du GBM précédemment en titre était un résultat à un pas d'avance avec vérité révélée, qui ne survit pas à une évaluation multi-pas récursive à armes égales.
     </p>
     <div class="case-hero__meta">
       <span class="case-hero__readtime"><strong>Lecture</strong> · 8 min · 1658 mots</span>
@@ -405,7 +405,7 @@ footer a { color: #ffd7c5; }
     </figure>
 
     <div class="callout">
-      <strong>Le titre honnête pour une planification 30 jours : SARIMA à 18 cm de RMSE.</strong> Sur un niveau qui varie dans une bande opérationnelle de ~7 m, 18 cm est une erreur relative de ~2,5 %, et SARIMA est le seul candidat avec un IP 95 % calibré (30/30 à l'intérieur de la bande, IC CP [0,88 ; 1,00]). Le GBM avec vérité révélée atteint 7 cm à un pas d'avance — un cas d'usage différent, plus contraint (service de rafraîchissement J+1, pas de planification à horizon) — et ne doit pas être présenté comme une prévision 30 jours.
+      <strong>Pour une planification 30 jours, SARIMA à 18 cm de RMSE est le titre.</strong> Sur un niveau qui varie dans une bande opérationnelle de ~7 m, 18 cm est une erreur relative de ~2,5 %, et SARIMA est le seul candidat avec un IP 95 % calibré (30/30 à l'intérieur de la bande, IC CP [0,88 ; 1,00]). Le GBM avec vérité révélée atteint 7 cm à un pas d'avance ; c'est un cas d'usage différent, plus contraint (service de rafraîchissement J+1, pas de planification à horizon), et ne doit pas être présenté comme une prévision 30 jours.
     </div>
 
     <h2 id="tradeoffs">Compromis</h2>

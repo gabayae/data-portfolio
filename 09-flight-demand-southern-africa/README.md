@@ -44,4 +44,4 @@ Run `python download_data.py` (Kaggle CLI required).
 ## Business outcome
 
 - Methodology stub for daily volume + conditional price on short route-scrape data.
-- Honest finding: GBM reproduces within-cell means ± noise on this scrape; no evidence of a pricing-curve learned beyond the lookup baseline. The SARIMA 2% MAPE on 6 test points is directional, not evidence of skill.
+- The GBM reproduces within-cell means ± noise on this scrape — no evidence of a pricing-curve learned beyond the lookup baseline. The SARIMA 2% MAPE on 6 test points is directional, not evidence of skill.

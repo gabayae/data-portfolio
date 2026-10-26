@@ -37,9 +37,9 @@ Peut-on prévoir la consommation mensuelle de médicaments essentiels (ARV, HRDT
 | Naïf-saisonnier | 1,130 | — |
 | Holt-Winters | 1,143 | −1 % (pire) |
 
-Un WAPE dans cette fourchette est un score *absolu* faible ; cela reflète la difficulté réelle des données mensuelles de chaîne logistique santé à demande intermittente (94 mois non-nuls sur 105), pas une faiblesse des modèles. Le gain de 24 % du GBM sur le naïf-saisonnier est le résultat honnête.
+Un WAPE dans cette fourchette est un score *absolu* faible. Cela reflète la difficulté réelle des données mensuelles de chaîne logistique santé à demande intermittente (94 mois non-nuls sur 105), pas une faiblesse des modèles. Le gain de 24 % du GBM sur le naïf-saisonnier est ce que le backtest reporte.
 
-- **Couverture IP 95 % de SARIMA** sur les 18 folds glissants : **18/18 = 100 %**, demi-largeur moyenne ≈ 385k unités — intervalles trop larges (sur-couverture par rapport au nominal 95 %), pas calibrés. L'IC Clopper-Pearson autour de 18/18 est environ [0,81 ; 1,00], donc l'échantillon est compatible avec toute vraie couverture ≥ 81 %.
+- **Couverture IP 95 % de SARIMA** sur les 18 folds glissants : **18/18 = 100 %**, demi-largeur moyenne ≈ 385k unités. Intervalles trop larges (sur-couverture par rapport au nominal 95 %), pas calibrés. L'IC Clopper-Pearson autour de 18/18 est environ [0,81 ; 1,00], donc l'échantillon est compatible avec toute vraie couverture ≥ 81 %.
 
 ## Esquisse de déploiement
 

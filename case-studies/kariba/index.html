@@ -18,7 +18,7 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://gabayae.github.io/data-portfolio/case-studies/kariba/">
 <meta property="og:title" content="Case study — Lake Kariba River Flow Forecasting">
-<meta property="og:description" content="SARIMA wins the honest 30-day Lake Kariba lake-level forecast at 18 cm RMSE with calibrated 95% PI. GBM 7 cm is 1-step-ahead with revealed truth, not 30-day forecast. Real Zambezi reservoir data.">
+<meta property="og:description" content="SARIMA wins the 30-day Lake Kariba lake-level forecast at 18 cm RMSE with a calibrated 95% PI. GBM 7 cm is a 1-step-ahead number with revealed truth, not a 30-day forecast. Real Zambezi reservoir data.">
 <meta property="og:image" content="https://gabayae.github.io/data-portfolio/case-studies/kariba/og-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -376,7 +376,7 @@ footer a { color: #ffd7c5; }
       <li><strong>Exogenous covariates</strong>: <code>turbine_discharge</code> and <code>total_outflow</code>, lag-1 and 7-day rolling means</li>
     </ul>
     <p>
-      <strong>Honest reading of the exog story.</strong> At 1-step-ahead with revealed previous-day discharge, the GBM reaches 7 cm RMSE — but this is not a 30-day planning forecast: `turbine_discharge` and `total_outflow` are operator <em>decisions</em>, not known covariates 30 days out. Running the GBM in true recursive 30-step mode (target-only features, own predictions fed back) degrades to 51 cm RMSE — essentially tied with naive-last. The structural relationship "tomorrow's lake level = today's level + (inflow − outflow)" is only learnable when outflow is actually knowable. For 30-day planning, SARIMA's 18 cm RMSE is the real operational number.
+      <strong>What the exog story actually says.</strong> At 1-step-ahead with revealed previous-day discharge, the GBM reaches 7 cm RMSE. That is not a 30-day planning forecast: `turbine_discharge` and `total_outflow` are operator <em>decisions</em>, not known covariates 30 days out. Running the GBM in true recursive 30-step mode (target-only features, own predictions fed back) degrades to 51 cm RMSE, essentially tied with naive-last. The structural relationship "tomorrow's lake level = today's level + (inflow − outflow)" is only learnable when outflow is actually knowable. For 30-day planning, SARIMA's 18 cm RMSE is the operational number.
     </p>
 
     <h2 id="results">Results</h2>
@@ -402,7 +402,7 @@ footer a { color: #ffd7c5; }
     </figure>
 
     <div class="callout">
-      <strong>The honest headline on 30-day planning: SARIMA at 18 cm RMSE.</strong> On a level that varies within a ~7 m operational band, 18 cm is a relative error of ~2.5%, and SARIMA is the only candidate with a calibrated 95% PI (30/30 inside the band, CP CI [0.88, 1.00]). The GBM with revealed-truth exog hits 7 cm 1-step-ahead — a different, more constrained use case (next-day refresh service, not horizon planning) — and should not be marketed as a 30-day forecast.
+      <strong>For 30-day planning, SARIMA at 18 cm RMSE is the headline.</strong> On a level that varies within a ~7 m operational band, 18 cm is a relative error of ~2.5%, and SARIMA is the only candidate with a calibrated 95% PI (30/30 inside the band, CP CI [0.88, 1.00]). The GBM with revealed-truth exog hits 7 cm 1-step-ahead; that is a different, more constrained use case (next-day refresh service, not horizon planning), and should not be marketed as a 30-day forecast.
     </div>
 
     <h2 id="tradeoffs">Trade-offs</h2>

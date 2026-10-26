@@ -45,7 +45,7 @@ Peut-on produire des estimations de sinistres attendus au niveau de la police qu
 | GBM (lissage Duan) | 0,211 | 1,45 |
 | GBM (rétro-transformation naïve) | 0,211 | 1,45 |
 
-Deux métriques différentes choisissent deux modèles différents. **Tweedie gagne au Gini ; Poisson + Gamma gagne au lift top-décile.** Le choix est actuariel — une tarification orientée Gini favorise Tweedie ; un programme à exposition réassurance en queue haute favorise Poisson + Gamma.
+Deux métriques choisissent deux modèles. Tweedie gagne au Gini (classement global) ; Poisson + Gamma gagne au lift top-décile (segmentation queue haute). Le choix est actuariel : une tarification orientée Gini favorise Tweedie ; un programme à exposition réassurance en queue haute favorise Poisson + Gamma.
 
 ## Esquisse de déploiement
 
@@ -55,4 +55,4 @@ Deux métriques différentes choisissent deux modèles différents. **Tweedie ga
 ## Résultat métier
 
 - Lift de segmentation mesurable (Gini 0,31 Tweedie, lift 2,66 Poisson + Gamma) tout en préservant l'explicabilité niveau GLM.
-- Le challenger GBM sous-performe les deux GLM en segmentation sur ce jeu — rappel que pour la tarification actuarielle, les modèles structurels peuvent battre le ML non contraint.
+- Le challenger GBM sous-performe les deux GLM en segmentation sur ce jeu. Pour la tarification actuarielle, les modèles structurels peuvent battre le ML non contraint.

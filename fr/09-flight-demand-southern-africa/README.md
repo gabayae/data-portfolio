@@ -44,4 +44,4 @@ Lancer `python download_data.py` (Kaggle CLI requis).
 ## Résultat métier
 
 - Esquisse méthodologique de volume journalier + prix conditionnel sur une collecte courte.
-- Résultat honnête : le GBM reproduit les moyennes de cellules ± bruit sur cette collecte ; pas d'évidence d'apprentissage d'une courbe tarifaire au-delà du lookup. Le 2 % MAPE SARIMA sur 6 points de test est directionnel, pas une preuve de skill.
+- Le GBM reproduit les moyennes de cellules ± bruit sur cette collecte — pas d'évidence d'apprentissage d'une courbe tarifaire au-delà du lookup. Le 2 % MAPE SARIMA sur 6 points de test est directionnel, pas une preuve de skill.

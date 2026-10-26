@@ -31,7 +31,7 @@ Can we produce day-ahead hourly load forecasts accurate enough to support energy
 - 60-day held-out backtest at the end of the series.
 - Metrics: MAPE, RMSE, 95% prediction-interval coverage with Clopper-Pearson CI.
 
-**60-day multi-step forecasts (apples-to-apples):**
+**60-day multi-step forecasts, like-for-like:**
 
 | Model | MAPE | RMSE (MW) | 95% PI coverage |
 |---|---|---|---|
@@ -39,7 +39,7 @@ Can we produce day-ahead hourly load forecasts accurate enough to support energy
 | SARIMA (multi-step) | 14.5% | 6,676 | 54/60 (CP CI [0.79, 0.96]) |
 | UC state-space (multi-step) | 19.3% | 8,295 | 60/60 (CP CI [0.94, 1.00]) |
 
-**GBM beats SARIMA by 38% MAPE under fair recursive-mode comparison.** The UC state-space variant *lost* to SARIMA on this run (−33% lift). Previous reporting conflated the recursive GBM number with a 1-step-ahead variant that assumes revealed previous-day load — the 1-step-ahead variant (MAPE 6.2%) is still reported in the notebook as context, labeled accordingly.
+GBM beats SARIMA by 38% MAPE once both are evaluated as 60-day multi-step forecasts. The UC state-space variant *lost* to SARIMA on this run (−33% lift). The 1-step-ahead GBM (MAPE 6.2%) is reported in the notebook as context, labeled as such — it assumes revealed previous-day load, which is not a 60-day forecast.
 
 ## Deployment sketch
 

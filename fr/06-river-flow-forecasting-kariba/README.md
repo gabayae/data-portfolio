@@ -51,7 +51,7 @@ Lancer `python download_data.py` pour télécharger (nécessite Kaggle CLI confi
 | Naïf-dernier | 0,085 % | 0,501 | — |
 | GBM à un pas d'avance avec exog (contexte) | 0,013 % | 0,069 | — |
 
-**SARIMA gagne la comparaison honnête** à **18 cm de RMSE** en prévision multi-pas 30 jours ; c'est le seul intervalle bien calibré du lot (demi-largeur moyenne IP 95 % de SARIMA ≈ 56 cm, 30/30 avec IC CP [0,88 ; 1,00]). La variante GBM mode récursif se dégrade à 51 cm — essentiellement à égalité avec le naïf-dernier — parce que les covariables de *décision opérateur* (`turbine_discharge`, `total_outflow`) ne peuvent pas être conditionnées à l'horizon 30 jours. Le « RMSE 7 cm du GBM » précédemment en titre était une évaluation à un pas d'avance avec le débit du jour précédent révélé ; conservé dans le tableau comme contexte, pas comme chiffre déployable.
+SARIMA gagne la comparaison à armes égales à **18 cm de RMSE** en prévision multi-pas 30 jours. C'est le seul intervalle bien calibré du lot (demi-largeur moyenne IP 95 % de SARIMA ≈ 56 cm, 30/30 avec IC CP [0,88 ; 1,00]). La variante GBM mode récursif se dégrade à 51 cm, essentiellement à égalité avec le naïf-dernier, parce que les covariables de *décision opérateur* (`turbine_discharge`, `total_outflow`) ne peuvent pas être conditionnées à l'horizon 30 jours. Le « RMSE 7 cm du GBM » précédemment en titre était une évaluation à un pas d'avance avec le débit du jour précédent révélé, conservé dans le tableau comme contexte plutôt que comme chiffre déployable.
 
 ## Esquisse de déploiement
 

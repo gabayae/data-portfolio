@@ -30,7 +30,7 @@ Peut-on planifier des cliniques mobiles à travers les comtés sous-desservis po
 
 - Simulations contre le planning manuel et la baseline PL plafonnée
 - Métriques : patients servis, distance parcourue (km), couverture des comtés à faible demande
-- Les politiques ne sont pas à budget équivalent — le round-robin manuel engage 87 km/jour de déplacement obligatoire ; Q-learning peut choisir de ne pas se déplacer. Voir l'étude de cas pour la comparaison honnête.
+- Les politiques ne sont pas à budget équivalent : le round-robin manuel engage 87 km/jour de déplacement obligatoire ; Q-learning peut choisir de ne pas se déplacer. Voir l'étude de cas pour l'analyse complète.
 
 ## Esquisse de déploiement
 
@@ -39,6 +39,6 @@ Peut-on planifier des cliniques mobiles à travers les comtés sous-desservis po
 
 ## Résultat métier
 
-- Le vrai titre : **+39 % de couverture** de la PL plafonnée vs le planning manuel, obtenu avec une contrainte d'équité qui force les visites aux comtés à faible demande.
+- La PL plafonnée atteint **+39 % de couverture** vs le planning manuel, avec une contrainte d'équité qui force les visites aux comtés à faible demande. C'est le chiffre déployable.
 - Le **+122 %** du Q-learning vs manuel vient d'une politique greedy dégénérée (`total_travel_km = 0`, `low_demand_visits = 0`) ; voir l'encadré de l'étude de cas. Le reward-shaping fait l'essentiel du travail à l'entraînement et ne tient pas à l'évaluation.
 - Leçon de fond : *la formulation des contraintes compte plus que l'algorithme.* Sur ce problème une PL plafonnée avec équité est plus défendable qu'une politique RL difficile à stabiliser.

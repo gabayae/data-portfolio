@@ -49,7 +49,7 @@ Run `python download_data.py` to fetch fresh data (no auth required).
 - 90-day held-out test
 - Metrics: MAPE, RMSE, 95% PI empirical coverage
 - Baselines: naive-last, naive-seasonal (365-day lag), monthly climatology (computed on **train only** — not the full series)
-- Headline MAPEs on this run: **GBM 9.4% · monthly climatology 12.6% · SARIMA 13.8% · UC 19.6%**. The honest finding is that at Nairobi's latitude the seasonal envelope carries most of the predictability (climatology beats SARIMA); GBM wins on point error only because it sees same-day cloud and humidity covariates.
+- Headline MAPEs on this run: **GBM 9.4% · monthly climatology 12.6% · SARIMA 13.8% · UC 19.6%**. At Nairobi's latitude the seasonal envelope carries most of the predictability — climatology beats SARIMA. GBM wins on point error only because it sees same-day cloud and humidity covariates.
 - 95% PI empirical coverage: SARIMA 89/90, UC 89/90 — Clopper-Pearson 95% CI around 89/90 is roughly [0.94, 1.00], so these samples are consistent with any true coverage ≥ 94%. The intervals are directional, not formally calibrated at this sample size.
 
 ## Deployment sketch

@@ -45,7 +45,7 @@ Can we produce policy-level expected-loss estimates that improve on the incumben
 | GBM (Duan smearing) | 0.211 | 1.45 |
 | GBM (naive back-transform) | 0.211 | 1.45 |
 
-Two different metrics pick two different models. **Tweedie wins Gini (best overall ranking); Poisson + Gamma wins top-decile lift (best upper-tail segmentation).** The choice is actuarial — Gini-oriented pricing favours Tweedie; a reinsurance-driven program with upper-tail exposure favours Poisson + Gamma.
+Two metrics pick two models. Tweedie wins Gini (overall ranking); Poisson + Gamma wins top-decile lift (upper-tail segmentation). The choice is actuarial: Gini-oriented pricing favours Tweedie; a reinsurance-driven program with upper-tail exposure favours Poisson + Gamma.
 
 ## Deployment sketch
 
@@ -55,4 +55,4 @@ Two different metrics pick two different models. **Tweedie wins Gini (best overa
 ## Business outcome
 
 - Measurable segmentation lift (Gini 0.31 Tweedie, lift 2.66 Poisson + Gamma) while preserving GLM-level explainability.
-- GBM challenger underperforms both GLMs on segmentation on this dataset — a reminder that for actuarial pricing, structural models can beat unconstrained ML.
+- The GBM challenger underperforms both GLMs on segmentation here. For actuarial pricing, structural models can beat unconstrained ML.

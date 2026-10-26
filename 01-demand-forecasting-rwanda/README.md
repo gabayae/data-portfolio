@@ -37,9 +37,9 @@ Can we forecast monthly consumption of essential medicines (ARV, HRDT) so supply
 | Naive-seasonal | 1.130 | — |
 | Holt-Winters | 1.143 | −1% (worse) |
 
-WAPE in this range is a weak *absolute* score; it reflects the realistic difficulty of intermittent-demand monthly health-supply-chain data (94 non-zero months out of 105), not weakness in the models. The 24% lift of GBM over naive-seasonal is the honest finding.
+WAPE in this range is a weak *absolute* score. It reflects the real difficulty of intermittent-demand monthly health-supply-chain data (94 non-zero months out of 105), not weakness in the models. The 24% lift of GBM over naive-seasonal is what the backtest is reporting.
 
-- **SARIMA 95% PI coverage** on the 18 rolling folds: **18/18 = 100%**, mean half-width ≈ 385k units — intervals are too wide (over-covered relative to the 95% nominal), not calibrated. Clopper-Pearson 95% CI around 18/18 is roughly [0.81, 1.00], so the sample is consistent with any true coverage ≥ 81%.
+- **SARIMA 95% PI coverage** on the 18 rolling folds: **18/18 = 100%**, mean half-width ≈ 385k units. Intervals are too wide (over-covered relative to the 95% nominal), not calibrated. Clopper-Pearson 95% CI around 18/18 is roughly [0.81, 1.00], so the sample is consistent with any true coverage ≥ 81%.
 
 ## Deployment sketch
 

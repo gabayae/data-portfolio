@@ -45,5 +45,5 @@ Run `python download_data.py`.
 ## Business outcome
 
 - Methodology stub for Lagos residential prices on a free Kaggle extract.
-- The honest usage pattern is comparable-sorting at the neighborhood × type × bedrooms level; the raw-scale uncertainty is too wide to anchor individual appraisals.
-- Pipeline extends trivially to Abuja, Ibadan, Port Harcourt with the same scrape structure.
+- Usable for comparable-sorting at the neighborhood × type × bedrooms level. The raw-scale uncertainty is too wide to anchor individual appraisals.
+- The same pipeline would run on Abuja, Ibadan, or Port Harcourt scrapes with the same structure.
