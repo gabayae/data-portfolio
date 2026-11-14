@@ -35,46 +35,37 @@ Run `python download_data.py`.
 
 - 80/20 random split (random because these are listings at unspecified dates, not a forecast).
 - Dual-scale metrics: **R²(log) 0.58, R²(level) implicit lower; raw-NGN MAPE 146%, RMSE 366M NGN** for GBM. OLS: **R²(log) 0.51, raw-NGN MAPE 179%, RMSE 396M NGN**. The log-scale R² is comfortable; the raw-scale MAPE is honest about the limits — on a target with median ~₦50M, routinely being off by more than the true price means this is a ranking tool, not a point-valuation tool.
+- **Ranking quality:** Overall Spearman ρ = **0.748 [95% CI: 0.722, 0.773]** on log-price (B=1000 bootstrap on the test fold). Per-neighborhood ρ (n ≥ 25 only) spans a wide range:
+
+  | Submarket (n ≥ 25) | n | Spearman ρ |
+  |---|---|---|
+  | Ajah | 119 | 0.75 |
+  | Ogba | 40 | 0.73 |
+  | Sangotedo | 73 | 0.72 |
+  | Surulere | 47 | 0.72 |
+  | Ikoyi | 132 | 0.65 |
+  | Ojo | 70 | 0.64 |
+  | VI | 57 | 0.59 |
+  | Ikeja | 133 | 0.55 |
+  | Lekki | 516 | 0.49 |
+  | Amuwo-Odofin | 40 | 0.46 |
+  | Other | 322 | 0.43 |
+  | Ikorodu | 65 | 0.42 |
+  | Ibeju-Lekki | 163 | 0.41 |
+  | Kosofe | 60 | 0.38 |
+  | Ipaja | 41 | 0.28 |
+  | Yaba | 44 | 0.22 |
+
+  The ranking claim holds strongly in five submarkets (Ajah, Ogba, Sangotedo, Surulere, Ikoyi — all ρ > 0.6). It is moderate in the largest submarket (Lekki, ρ=0.49 on n=516), and weak in three (Yaba, Ipaja, Kosofe — all ρ < 0.4). A deployment should disclose the per-submarket variance, not just the aggregate ρ.
 - `parse_type` priority fixed to most-specific-first so `"semi-detached house"` → `semi-detached` (not `house`), `"detached duplex"` → `detached` (not `duplex`), etc.
 
 ## Deployment sketch
 
-- Model output is suitable for *ranking* listings against neighborhood baselines, not for anchoring individual-property valuations (the raw-scale MAPE is too wide for that).
+- Model output is suitable for *ranking* at aggregate level (Spearman ρ = 0.748 overall) and in the stronger submarkets (Ajah, Ogba, Sangotedo, Surulere, Ikoyi all ρ > 0.6), not for anchoring individual-property valuations (raw-scale MAPE too wide). In the weak-ρ submarkets (Yaba ρ=0.22, Ipaja ρ=0.28, Kosofe ρ=0.38) even the ranking claim doesn't hold cleanly and a dashboard should flag those listings as low-confidence.
 - Point-estimate deployment would require either (a) a quantile-GBM pair (`loss='quantile'`, `alpha=0.1/0.9`) to produce honest intervals, or (b) richer features (floor area, year built, condition) that this scrape does not include.
 
 ## Business outcome
 
 - A working residential-price model on a free Kaggle Lagos scrape; the pipeline is the point, not the predictions.
-- Usable for comparable-sorting at the neighborhood × type × bedrooms level. The raw-scale uncertainty is too wide to anchor individual appraisals.
+- Usable for ranking at aggregate level (Spearman ρ = 0.748 [0.722, 0.773]) and in the five stronger submarkets (all ρ > 0.6). Raw-scale uncertainty remains too wide to anchor individual appraisals; the per-submarket ρ table in Validation is the honest surface the deployment UI should expose.
 - The same pipeline would run on Abuja, Ibadan, or Port Harcourt scrapes with the same structure.
-
-## TODO — Spearman ρ on the ranking claim
-
-The "usable for ranking" claim should be backed by a rank-correlation number, not just the R²(log). A stratified Spearman ρ (overall + per-neighborhood) belongs in the Validation section so readers can verify how reliably the model orders listings within a submarket. Snippet ready to paste as a new notebook cell after the GBM evaluation:
-
-```python
-# Spearman ρ — overall and per-neighborhood (stratified ranking quality)
-from scipy.stats import spearmanr
-import numpy as np
-
-rho_all, p_all = spearmanr(y_test, pred_gbm)
-print(f"Overall Spearman ρ (GBM): {rho_all:.3f}  (p={p_all:.1e})")
-
-# Bootstrap 95% CI on ρ (1000 resamples)
-rng = np.random.default_rng(42)
-rhos = np.empty(1000)
-for b in range(1000):
-    idx = rng.integers(0, len(y_test), size=len(y_test))
-    rhos[b], _ = spearmanr(y_test[idx], pred_gbm[idx])
-lo, hi = np.percentile(rhos, [2.5, 97.5])
-print(f"Overall Spearman ρ 95% CI: [{lo:.3f}, {hi:.3f}]")
-
-# Per-neighborhood ρ — only where n >= 25
-print("\nPer-neighborhood Spearman ρ (n >= 25):")
-for nbhd, grp in test_df.groupby('Neighbourhood'):
-    if len(grp) < 25: continue
-    rho_i, _ = spearmanr(grp['y_true'], grp['y_pred'])
-    print(f"  {nbhd:<20s}  n={len(grp):4d}  ρ={rho_i:+.3f}")
-```
-
-A Spearman ρ above ~0.6 (overall) with most neighborhoods above 0.5 is the honest evidence that backs "usable for ranking". Below that, the ranking claim is weaker than the Deployment sketch implies and the README should be updated.
