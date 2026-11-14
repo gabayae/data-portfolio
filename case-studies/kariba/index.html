@@ -286,10 +286,10 @@ footer a { color: #ffd7c5; }
 
     <h2 id="summary">Summary</h2>
     <p class="lede">
-      A gradient-boosted regressor that uses real-time turbine discharge as an exogenous covariate forecasts Lake Kariba's daily lake-level with <strong>7 cm RMSE</strong> across a 30-day horizon. SARIMA gets 18 cm; an unobserved-components state-space model, 24 cm; the naive last-observation baseline, 50 cm. Both SARIMA and the state-space model deliver well-calibrated prediction intervals (95–100% empirical coverage of the nominal 95% level), making them the better choice for risk-aware dispatch decisions even though their point forecasts trail.
+      On a fair 30-day horizon, classical SARIMA forecasts Lake Kariba's daily lake-level with <strong>18 cm RMSE</strong> and 30/30 empirical coverage of a nominal 95% prediction interval (Clopper–Pearson 95% CI [0.88, 1.00]) — the only method here that combines a usable point error with calibrated uncertainty. An unobserved-components state-space model reaches 24 cm; a naive last-observation baseline, 50 cm. A gradient-boosted regressor gets to 7 cm RMSE but only when it is handed the <em>actual</em> turbine discharge on each target day as an exogenous covariate — turbine discharge is an operator decision, not a 30-day-forecastable variable, so the GBM number is reported as 1-step-with-revealed-truth context, not as a deployable 30-day forecast.
     </p>
     <p>
-      The same trade-off as PJM, in a higher-stakes setting: ML wins on point accuracy, structural models win on calibrated uncertainty. Ship the ensemble.
+      The structural model wins the fair comparison on both point accuracy and calibrated uncertainty. A real 30-day planning service would layer rainfall or inflow forecasts (CHIRPS, NASA POWER) on top of SARIMA as true exogenous inputs.
     </p>
 
     <h2 id="stakes">Why this matters</h2>

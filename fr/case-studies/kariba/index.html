@@ -288,10 +288,10 @@ footer a { color: #ffd7c5; }
 
     <h2 id="summary">Résumé</h2>
     <p class="lede">
-      Un régresseur gradient boosté utilisant le débit turbiné en temps réel comme covariable exogène prévoit le niveau journalier du lac Kariba avec <strong>7 cm de RMSE</strong> sur un horizon de 30 jours — contre 18 cm pour SARIMA, 24 cm pour un modèle à espace d'états (composantes non observées) et 50 cm pour la référence naïve « dernière observation ». SARIMA et l'espace d'états offrent tous deux des intervalles de prédiction bien calibrés (couverture empirique de 95–100 % au niveau nominal 95 %), ce qui en fait le meilleur choix pour des décisions de dispatch conscientes du risque, même si leurs prévisions ponctuelles sont en retrait.
+      Sur un horizon équitable à 30 jours, un SARIMA classique prévoit le niveau journalier du lac Kariba avec <strong>18 cm de RMSE</strong> et une couverture empirique 30/30 d'un intervalle de prédiction nominal 95 % (IC Clopper–Pearson 95 % [0,88 ; 1,00]) — la seule méthode qui combine ici une erreur ponctuelle exploitable avec une incertitude calibrée. Un modèle à espace d'états (composantes non observées) atteint 24 cm ; une référence naïve « dernière observation », 50 cm. Un régresseur gradient boosté descend à 7 cm de RMSE mais uniquement lorsqu'on lui fournit le <em>débit turbiné réel</em> de chaque jour cible comme covariable exogène — or le débit turbiné est une décision d'exploitant, pas une variable prévisible à 30 jours, donc le chiffre GBM est reporté comme contexte 1-pas-avec-vérité-révélée, pas comme prévision 30 jours déployable.
     </p>
     <p>
-      Le même compromis que PJM, dans un contexte à plus forts enjeux : le ML gagne sur la précision ponctuelle, les modèles structurels gagnent sur l'incertitude calibrée. Livrez l'ensemble.
+      Le modèle structurel gagne la comparaison équitable à la fois sur la précision ponctuelle et sur l'incertitude calibrée. Un vrai service de planification à 30 jours superposerait des prévisions de pluie ou de débits entrants (CHIRPS, NASA POWER) à SARIMA comme véritables variables exogènes.
     </p>
 
     <h2 id="stakes">Pourquoi c'est important</h2>
