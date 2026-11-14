@@ -407,7 +407,7 @@ footer a { color: #ffd7c5; }
     <ol>
       <li><strong>Choisissez l'algorithme qui correspond à la structure de contraintes, pas à la métrique phare.</strong> Q-learning maximise les patients servis bruts d'une large marge, mais la PL est la réponse correcte au déploiement dans un cadre contraint et supervisé par un régulateur.</li>
       <li><strong>La « couverture » est une métrique ambiguë tant qu'on n'écrit pas la contrainte.</strong> Patients servis et équité du quartile inférieur sont deux interprétations raisonnables, et le classement des algorithmes s'inverse entre elles. Le chiffre phare de l'étude (+122 %) est honnête sous une définition et trompeur sous une autre — l'analyse approfondie lève l'ambiguïté.</li>
-      <li><strong>Cheap structural prior > expensive learned policy on small action spaces.</strong> 12 actions × 84 states is not a regime where reinforcement learning is the right tool. Direct value iteration or LP would converge faster, give interpretable shadow prices, and avoid the over-engineering trap.</li>
+      <li><strong>Un prior structurel bon marché &gt; une policy apprise coûteuse sur de petits espaces d'actions.</strong> 12 actions × 84 états n'est pas un régime où l'apprentissage par renforcement est le bon outil. L'itération sur la valeur ou un LP convergeraient plus vite, donneraient des prix duaux interprétables, et éviteraient le piège de la sur-ingénierie.</li>
     </ol>
 
     <div class="cta-row">

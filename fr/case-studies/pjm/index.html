@@ -195,7 +195,7 @@ footer a { color: #ffd7c5; }
   "@context": "https://schema.org",
   "@type": "Article",
   "headline": "Étude de cas — Prévision de charge horaire (PJM)",
-  "description": "Prévision horaire de charge à l",
+  "description": "Prévision horaire de charge à J+1 sur données réelles PJM East : SARIMA vs. espace d'états (UnobservedComponents + Fourier) vs. régresseur gradient boosté. GBM récursif 60 pas MAPE 9,0 % vs SARIMA 14,5 % une fois les deux évalués en multi-pas. Couverture IP SARIMA 54/60, bien calibrée.",
   "image": "https://gabayae.github.io/data-portfolio/case-studies/pjm/og-card.png",
   "url": "https://gabayae.github.io/data-portfolio/fr/case-studies/pjm/",
   "mainEntityOfPage": {
@@ -298,7 +298,7 @@ footer a { color: #ffd7c5; }
 
     <h2 id="summary">Résumé</h2>
     <p class="lede">
-      Un régresseur gradient boosté utilisant des variables construites — décalages, moyennes glissantes et harmoniques calendaires — bat SARIMA classique sur la charge PJM East à J+1 de plus de moitié — <strong>MAPE 6,2 % vs. 14,5 %</strong>. Un modèle structurel à espace d'états (UnobservedComponents avec Fourier annuel exogène) reste en retrait sur la précision ponctuelle, mais offre une calibration des intervalles de prédiction quasi parfaite (couverture empirique de 99 % au niveau nominal 95 %), ce qui compte pour un approvisionnement conscient du risque.
+      Une fois les trois modèles évalués en prévision multi-pas sur 60 jours, un régresseur gradient boosté — décalages, moyennes glissantes et harmoniques calendaires — bat SARIMA classique sur la charge PJM East à J+1 : <strong>GBM récursif 60 pas MAPE 9,0 % vs SARIMA 14,5 %</strong>, une réduction d'erreur ponctuelle de 38 %. La couverture IP 95 % de SARIMA est 54/60 ; l'IC Clopper-Pearson 95 % autour de ce taux est [0,79, 0,96], compatible avec le niveau nominal 95 % et le seul intervalle correctement calibré des trois. Un GBM évalué 1 pas d'avance avec la charge réelle de la veille atteint 6,2 % MAPE, mais c'est un benchmark 1-pas en ligne, pas une prévision 60 jours ; reporté dans le tableau pour contexte, pas comme chiffre principal.
     </p>
     <p>
       Le bon modèle dépend de ce que la salle des marchés cherche à optimiser. Si le seul objectif est l'erreur attendue la plus faible, GBM gagne ; si la salle dimensionne ses couvertures et a besoin de bandes d'incertitude honnêtes, l'espace d'états gagne.
