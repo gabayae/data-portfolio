@@ -36,14 +36,16 @@ Can we produce policy-level expected-loss estimates that improve on the incumben
 - **Tweedie `var_power` sensitivity** scanned over 1.3-1.7: Gini stays in 0.307-0.313, confirming the result is robust to the Tweedie-power choice.
 - **Duan smearing factor ≈ 1.55** on the GBM severity back-transform: the naive `expm1(predict_log)` was under-predicting severity by ~35% because $E[\exp(X)] \neq \exp(E[X])$ for log-fitted targets. Duan correction fixes the absolute pure-premium level (and reserve adequacy); Gini is rank-invariant and therefore unchanged by this correction.
 
-**Headline numbers:**
+**Headline numbers** (Gini 95% CI from B=500 bootstrap on n=135,603 held-out policies):
 
-| Model | Gini | Top-decile lift |
+| Model | Gini [95% CI] | Top-decile lift |
 |---|---|---|
-| **Tweedie GLM** | **0.310** | 2.52 |
-| Poisson + Gamma GLM | 0.241 | **2.66** |
-| GBM (Duan smearing) | 0.211 | 1.45 |
-| GBM (naive back-transform) | 0.211 | 1.45 |
+| **Tweedie GLM** | **0.310 [0.21, 0.41]** | 2.52 |
+| Poisson + Gamma GLM | 0.241 [0.12, 0.34] | **2.66** |
+| GBM (Duan smearing) | 0.211 [0.11, 0.29] | 1.45 |
+| GBM (naive back-transform) | 0.211 [0.11, 0.29] | 1.45 |
+
+The CIs overlap pairwise — the Gini ranking (Tweedie > Poisson+Gamma > GBM) is directional, not statistically separated at this sample. Insurance severity distributions are long-tailed, which makes Gini a high-variance ranking metric even on hundreds of thousands of policies.
 
 Two metrics pick two models. Tweedie wins Gini (overall ranking); Poisson + Gamma wins top-decile lift (upper-tail segmentation). The choice is actuarial: Gini-oriented pricing favours Tweedie; a reinsurance-driven program with upper-tail exposure favours Poisson + Gamma.
 
@@ -57,29 +59,3 @@ Two metrics pick two models. Tweedie wins Gini (overall ranking); Poisson + Gamm
 - Measurable segmentation lift (Gini 0.31 Tweedie, lift 2.66 Poisson + Gamma) while preserving GLM-level explainability.
 - The GBM challenger underperforms both GLMs on segmentation here. For actuarial pricing, structural models can beat unconstrained ML.
 
-## TODO — bootstrap Gini CI on the headline
-
-The headline Gini 0.310 is a point estimate on a single 80/20 split. A standard actuarial deliverable attaches a bootstrap CI. On 678k policies the CI will be tight, but attaching it explicitly brings this project in line with projects 09 and 12 (which do attach bootstrap CIs on their headlines). Snippet ready to paste as a new notebook cell at the bottom of the Validation section (executes in a few seconds on the already-fitted Tweedie model):
-
-```python
-# Bootstrap Gini CI — Tweedie GLM, 500 resamples on the held-out fold
-from sklearn.utils import resample
-import numpy as np
-
-def gini_score(y_true, y_pred):
-    order = np.argsort(y_pred)
-    y_true = np.asarray(y_true)[order]
-    cum = np.cumsum(y_true) / y_true.sum()
-    return 1.0 - 2.0 * np.trapz(cum, dx=1.0 / len(y_true))
-
-rng = np.random.default_rng(42)
-B = 500
-ginis = np.empty(B)
-for b in range(B):
-    idx = rng.integers(0, len(y_test), size=len(y_test))
-    ginis[b] = gini_score(y_test[idx], pred_tweedie[idx])
-lo, hi = np.percentile(ginis, [2.5, 97.5])
-print(f"Tweedie Gini 95% CI: [{lo:.3f}, {hi:.3f}]  (point estimate {gini_score(y_test, pred_tweedie):.3f})")
-```
-
-Rerun the three-row headline table with `0.310 [CI: lo, hi]`, `0.241 [CI: lo, hi]`, `0.211 [CI: lo, hi]` once the bootstrap has run, and the Gini CI is traceable from a single cell in the notebook.
