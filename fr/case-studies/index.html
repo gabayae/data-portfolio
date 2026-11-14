@@ -155,7 +155,7 @@ footer a { color: #ffd7c5; }
     <div class="cs-card__body">
       <span class="cs-card__eyebrow">Énergie · Séries temporelles</span>
       <h2 class="cs-card__title">Prévision de charge horaire — PJM East</h2>
-      <div class="cs-card__metric">GBM MAPE 6,2 % · couverture IP UC 99 %</div>
+      <div class="cs-card__metric">GBM MAPE 9,0 % · IP SARIMA 54/60</div>
       <p class="cs-card__lede">Prévisions de charge à J+1 et court-terme sur 16 ans de consommation horaire PJME réelle — SARIMA, espace d'états (UnobservedComponents + Fourier exogène) et modèles gradient boostés comparés. Le « meilleur » modèle dépend de qui lit, achats ou gestion du risque.</p>
       <div class="cs-card__chips">
         <span class="cs-card__chip">SARIMA</span><span class="cs-card__chip">UnobservedComponents</span><span class="cs-card__chip">Fourier exog</span><span class="cs-card__chip">GBM</span><span class="cs-card__chip">Consommation horaire PJM</span>
@@ -174,8 +174,8 @@ footer a { color: #ffd7c5; }
     <div class="cs-card__body">
       <span class="cs-card__eyebrow">Hydroélectricité · Séries temporelles</span>
       <h2 class="cs-card__title">Prévision du débit fluvial — lac Kariba</h2>
-      <div class="cs-card__metric">GBM RMSE 7 cm · couverture IP SARIMA 100 %</div>
-      <p class="cs-card__lede">Prévision journalière du niveau du plus grand réservoir artificiel au monde, sur données réelles de la Zambezi River Authority. Un RMSE de 7 cm sur une bande opérationnelle de 7 m transforme « allons-nous franchir les seuils de sécurité turbine dans les 30 prochains jours ? » d'une devinette en probabilité calibrée.</p>
+      <div class="cs-card__metric">SARIMA RMSE 18 cm · IP 95 % 30/30</div>
+      <p class="cs-card__lede">Prévision journalière du niveau du plus grand réservoir artificiel au monde, sur données réelles de la Zambezi River Authority. Un RMSE SARIMA de 18 cm sur un horizon 30 jours avec IP 95 % calibré 30/30 transforme « allons-nous franchir les seuils de sécurité turbine dans les 30 prochains jours ? » d'une devinette en probabilité calibrée.</p>
       <div class="cs-card__chips">
         <span class="cs-card__chip">SARIMA</span><span class="cs-card__chip">State-space</span><span class="cs-card__chip">GBM avec exog.</span><span class="cs-card__chip">Réservoir lac Kariba</span><span class="cs-card__chip">Bassin du Zambèze</span>
       </div>

@@ -153,7 +153,7 @@ footer a { color: #ffd7c5; }
     <div class="cs-card__body">
       <span class="cs-card__eyebrow">Energy · Time-series</span>
       <h2 class="cs-card__title">Hourly load forecasting — PJM East</h2>
-      <div class="cs-card__metric">GBM 6.2% MAPE · UC PI coverage 99%</div>
+      <div class="cs-card__metric">GBM 9.0% MAPE · SARIMA PI 54/60</div>
       <p class="cs-card__lede">Day-ahead and short-horizon load forecasts on 16 years of real PJME hourly consumption — comparing SARIMA, state-space (UnobservedComponents + Fourier exog), and gradient-boosted forecasters. The "best" model depends on whether procurement or risk teams are reading.</p>
       <div class="cs-card__chips">
         <span class="cs-card__chip">SARIMA</span><span class="cs-card__chip">UnobservedComponents</span><span class="cs-card__chip">Fourier exog</span><span class="cs-card__chip">GBM</span><span class="cs-card__chip">PJM Hourly Consumption</span>
@@ -172,8 +172,8 @@ footer a { color: #ffd7c5; }
     <div class="cs-card__body">
       <span class="cs-card__eyebrow">Hydropower · Time-series</span>
       <h2 class="cs-card__title">River flow forecasting — Lake Kariba</h2>
-      <div class="cs-card__metric">GBM 7 cm RMSE · SARIMA PI coverage 100%</div>
-      <p class="cs-card__lede">Daily lake-level forecasting for the world's largest man-made reservoir, on real Zambezi River Authority data. A 7 cm RMSE on a 7 m operational band turns "are we going to breach turbine safety thresholds in the next 30 days?" from a guess into a calibrated probability.</p>
+      <div class="cs-card__metric">SARIMA 18 cm RMSE · 95% PI 30/30</div>
+      <p class="cs-card__lede">Daily lake-level forecasting for the world's largest man-made reservoir, on real Zambezi River Authority data. SARIMA 18 cm RMSE across a 30-day horizon with calibrated 30/30 95% PI turns "are we going to breach turbine safety thresholds in the next 30 days?" from a guess into a calibrated probability.</p>
       <div class="cs-card__chips">
         <span class="cs-card__chip">SARIMA</span><span class="cs-card__chip">State-space</span><span class="cs-card__chip">GBM with exog</span><span class="cs-card__chip">Lake Kariba reservoir</span><span class="cs-card__chip">Zambezi basin</span>
       </div>
