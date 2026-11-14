@@ -18,6 +18,8 @@
 <meta name="theme-color" content="#0f2a4a">
 
 <meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:url" content="https://gabayae.github.io/data-portfolio/case-studies/kenya/">
 <meta property="og:title" content="Case study — Kenya mobile-clinic scheduling (MDP / Q-learning)">
 <meta property="og:description" content="Q-learning, capped LP, and manual round-robin compared on real KMPDC + SHA data. Q-learning hits +122% coverage; capped LP +39% with explicit diversification.">
@@ -270,7 +272,7 @@ footer a { color: #ffd7c5; }
     <span class="case-hero__eyebrow">Case study · Health Ops · Stochastic Optimization</span>
     <h1 class="case-hero__title">Mobile-clinic scheduling — Kenya</h1>
     <p class="case-hero__sub">
-      Real-data MDP on 7,876 KMPDC-licensed Kenyan health facilities and the SHA per-facility payment time-series. Three policies (manual round-robin, capped linear program, tabular Q-learning) compared on patients-served, travel cost, and equity. The finding that holds up: the algorithm matters less than how the constraints are written.
+      Real-data MDP on 7,876 KMPDC-licensed Kenyan health facilities and the SHA per-facility payment time-series. Three policies (manual round-robin, capped linear program, tabular Q-learning) compared on patients-served, travel cost, and equity. The operational finding: capped LP serves 4 counties for +39% coverage; unconstrained Q-learning concentrates on 1 county for +122% raw patients-served but near-zero geographic equity.
     </p>
     <div class="case-hero__meta">
       <span class="case-hero__readtime"><strong>Read</strong> · 7 min · 1,395 words</span>

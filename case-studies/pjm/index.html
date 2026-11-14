@@ -17,6 +17,8 @@
 <link rel="manifest" href="/data-portfolio/site.webmanifest">
 
 <meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:url" content="https://gabayae.github.io/data-portfolio/case-studies/pjm/">
 <meta property="og:title" content="Case study — PJM Hourly Load Forecasting">
 <meta property="og:description" content="GBM recursive 60-step 9.0% MAPE on real PJM East load data under a like-for-like multi-step comparison. SARIMA, state-space, and ML benchmarks on a 60-day held-out window.">
@@ -325,7 +327,7 @@ footer a { color: #ffd7c5; }
       Once all three models produce a 60-day multi-step forecast, a gradient-boosted regressor with engineered lag, rolling, and harmonic-calendar features beats classical SARIMA on day-ahead PJM East load: <strong>GBM recursive 60-step MAPE 9.0% vs SARIMA 14.5%</strong>, a 38% point-error reduction. SARIMA's 95% PI coverage is 54/60; the Clopper-Pearson 95% CI around that rate is [0.79, 0.96], consistent with the nominal 95% level and the only well-calibrated interval of the three. A GBM evaluated 1-step-ahead with revealed previous-day load reaches 6.2% MAPE, but that is an online 1-step benchmark, not a 60-day forecast; reported in the table for context, not as the headline.
     </p>
     <p>
-      The right model depends on what the trading desk is optimising for. If the only goal is the lowest expected error, GBM wins; if the desk is sizing hedges and needs honest uncertainty bands, state-space wins.
+      The right model depends on what the trading desk is optimising for: lowest point error → GBM; honest 95% uncertainty band → UC state-space. Ship both.
     </p>
 
     <h2 id="question">The business question</h2>
@@ -412,7 +414,7 @@ footer a { color: #ffd7c5; }
     </figure>
 
     <div class="callout">
-      <strong>The trade-off in one line.</strong> If the question is "what's tomorrow's load?", GBM wins (~57% MAPE reduction over SARIMA). If the question is "give me a 95%-confident range for tomorrow's load," state-space wins — its empirical coverage matches the nominal level closely, while GBM has no native interval at all (would need quantile-regression boosting or conformal prediction to compete on this dimension).
+      <strong>The trade-off in one line.</strong> GBM wins on point accuracy (~57% MAPE reduction over SARIMA). State-space wins on honest uncertainty bands — its empirical coverage matches the nominal 95% level closely, while GBM has no native interval at all (would need quantile-regression boosting or conformal prediction to compete on this dimension).
     </div>
 
     <h2 id="tradeoffs">Trade-offs</h2>
