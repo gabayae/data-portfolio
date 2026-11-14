@@ -427,7 +427,7 @@ footer a { color: #ffd7c5; }
 
     <h2 id="lessons">Leçons</h2>
     <ol>
-      <li><strong>Les covariables exogènes dominent lorsqu'elles existent.</strong> La réduction de 60 % du RMSE (SARIMA → GBM) est presque entièrement attribuable à l'inclusion du débit turbiné dans les variables. Choisir les bonnes entrées bat choisir le bon algorithme.</li>
+      <li><strong>Les covariables exogènes dominent lorsqu'elles sont réellement connaissables à l'instant de prédiction.</strong> Le débit turbiné est une décision d'exploitant, pas une variable exogène prévisible à 30 jours. Un véritable service de planification à 30 jours devrait utiliser des prévisions de pluie/débits entrants (CHIRPS, NASA POWER) comme véritables variables exogènes à la place.</li>
       <li><strong>Les cibles lentes à fort enjeu ont besoin d'IP calibrés, pas seulement d'un MAPE bas.</strong> Sur ce type d'actif, « quelle est la probabilité de franchir le seuil opérationnel dans les 30 prochains jours » est la question qui pilote les décisions. La couverture 30/30 de SARIMA avec IC CP [0,88 ; 1,00] et demi-largeur moyenne de 56 cm est le résumé opérationnellement utile.</li>
       <li><strong>Les données ouvertes africaines réelles sont suffisantes.</strong> Le lac Kariba est un réservoir transfrontalier entre deux pays africains ; les données journalières existent et sont publiquement accessibles sur Kaggle. Le modèle s'étendrait proprement à Cahora Bassa et à d'autres barrages africains une fois des données équivalentes publiées.</li>
     </ol>
