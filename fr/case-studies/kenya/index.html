@@ -376,14 +376,14 @@ footer a { color: #ffd7c5; }
         <tr><th>Politique</th><th>Patients/jour</th><th>Déplacement total (km)</th><th>Comtés desservis</th><th>Gain de couverture vs manuel</th></tr>
       </thead>
       <tbody>
-        <tr><td>Rotation manuelle</td><td class="num">37.3</td><td class="num">87,304</td><td class="num">12</td><td class="num">—</td></tr>
-        <tr><td>PL (plafond 25 % par comté)</td><td class="num">52.0</td><td class="num">60,121</td><td class="num">4</td><td class="num">+39%</td></tr>
-        <tr class="winner"><td>Q-learning (sans plafond)</td><td class="num">82.8</td><td class="num">0</td><td class="num">1</td><td class="num">+122%</td></tr>
+        <tr><td>Rotation manuelle</td><td class="num">37,3</td><td class="num">87 304</td><td class="num">12</td><td class="num">—</td></tr>
+        <tr><td>PL (plafond 25 % par comté)</td><td class="num">52,0</td><td class="num">60 121</td><td class="num">4</td><td class="num">+39 %</td></tr>
+        <tr class="winner"><td>Q-learning (sans plafond)</td><td class="num">82,8</td><td class="num">0</td><td class="num">1</td><td class="num">+122 %</td></tr>
       </tbody>
     </table>
 
     <div class="callout">
-      <strong>Lire le +122 % avec attention.</strong> Le « +122 % de gain de couverture » du Q-learning n'est un gain de couverture que si l'on entend « couverture » comme « patients servis ». Au sens d'équité que la plupart des programmes de santé utilisent (visites aux bassins du quartile inférieur d'utilisation), la couverture du Q-learning est <em>pire</em> que celle de la rotation manuelle. Le Q-learning ne visite jamais Wajir, Migori ou Mandera. Sa politique est de rester à Nairobi pendant les 180 jours. C'est une propriété de l'objectif centré sur la demande, pas un bug du Q-learning.
+      <strong>Lire le +122 % avec attention.</strong> Le « +122 % de gain de couverture » du Q-learning n'est un gain de couverture que si l'on entend « couverture » comme « patients servis ». Au sens d'équité que la plupart des programmes de santé utilisent (visites aux bassins du quartile inférieur d'utilisation), la couverture du Q-learning est <em>pire</em> que celle de la rotation manuelle. Le Q-learning ne visite jamais Wajir, Migori ou Mandera. Sa politique est de rester à Nairobi pendant les 180 jours. C'est un artefact de l'objectif centré sur la demande, pas une défaillance du Q-learning.
     </div>
 
     <h2 id="tradeoffs">Compromis</h2>

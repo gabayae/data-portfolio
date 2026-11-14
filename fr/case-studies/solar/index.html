@@ -337,7 +337,7 @@ footer a { color: #ffd7c5; }
 
     <figure class="figure">
       <img src="/data-portfolio/case-studies/solar/plot-03.png" alt="Matrice de corrélation des variables NASA POWER pour Nairobi" loading="lazy" width="666" height="490">
-      <figcaption><strong>Figure 3.</strong> Matrice de corrélation. L'irradiance corrèle fortement avec la couverture nuageuse (négatif, ~−0,7) et l'humidité (négatif, ~−0,4). La température est faiblement positive — c'est l'irradiance qui pilote la température, pas l'inverse. Le signal de couverture nuageuse est le levier qui permet au GBM de battre SARIMA : la nébulosité du jour est une vérité-terrain à laquelle SARIMA n'a pas accès via la seule irradiance retardée.</figcaption>
+      <figcaption><strong>Figure 3.</strong> Matrice de corrélation. L'irradiance corrèle fortement avec la couverture nuageuse (négatif, ~−0,7) et l'humidité (négatif, ~−0,4). La température est faiblement positive — c'est l'irradiance qui pilote la température, pas l'inverse. Le signal de couverture nuageuse est ce qui permet au GBM de battre SARIMA : la nébulosité du jour est une vérité-terrain à laquelle SARIMA n'a pas accès via la seule irradiance retardée.</figcaption>
     </figure>
 
     <h2 id="approach">Approche de modélisation</h2>
@@ -364,7 +364,7 @@ footer a { color: #ffd7c5; }
       <li><strong>Variables météo exogènes</strong> : <code>T2M</code>, <code>RH2M</code>, <code>WS2M</code>, <code>PRECTOTCORR</code>, <code>CLOUD_AMT</code>: chacune au lag-1 et en moyenne glissante 7 jours</li>
     </ul>
     <p>
-      Les covariables nuageuse et d'humidité sont le levier. SARIMA et UC ne travaillent que sur l'irradiance retardée ; le GBM reçoit aussi la couverture nuageuse et les précipitations de la veille. L'écart de MAPE est principalement attribuable à cet avantage informationnel.
+      Les covariables nuageuse et d'humidité sont la source du gain. SARIMA et UC ne travaillent que sur l'irradiance retardée ; le GBM reçoit aussi la couverture nuageuse et les précipitations de la veille. L'écart de MAPE est principalement attribuable à cet avantage informationnel.
     </p>
 
     <h3>Baselines</h3>
@@ -395,7 +395,7 @@ footer a { color: #ffd7c5; }
     </figure>
 
     <div class="callout">
-      <strong>La climatologie est un baseline solide — et c'est une fonctionnalité, pas un bug.</strong> La climatologie mensuelle — calculée uniquement sur la fenêtre d'entraînement, sans fuite du test — atteint 12,6 % de MAPE et bat les 13,8 % de SARIMA. Cela vous dit que le plafond de prévisibilité d'une série d'irradiance à cette latitude est essentiellement l'enveloppe saisonnière : connaître le mois calendaire vous donne l'essentiel de ce qui est connaissable. Le gain de 9,4 % du GBM par rapport à la climatologie vient presque entièrement des covariables nuageuse + humidité du jour — la part qui <em>ne peut pas</em> être devinée à partir du seul calendrier.
+      <strong>La climatologie est un baseline solide, et le plafond de prévisibilité est saisonnier, pas technique.</strong> La climatologie mensuelle — calculée uniquement sur la fenêtre d'entraînement, sans fuite du test — atteint 12,6 % de MAPE et bat les 13,8 % de SARIMA. Cela vous dit que le plafond de prévisibilité d'une série d'irradiance à cette latitude est essentiellement l'enveloppe saisonnière : connaître le mois calendaire vous donne l'essentiel de ce qui est connaissable. Le gain de 9,4 % du GBM par rapport à la climatologie vient presque entièrement des covariables nuageuse + humidité du jour — la part qui <em>ne peut pas</em> être devinée à partir du seul calendrier.
     </div>
 
     <h2 id="tradeoffs">Compromis</h2>

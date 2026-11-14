@@ -337,7 +337,7 @@ footer a { color: #ffd7c5; }
 
     <figure class="figure">
       <img src="plot-03.png" alt="Correlation matrix of NASA POWER variables for Nairobi" loading="lazy" width="666" height="490">
-      <figcaption><strong>Figure 3.</strong> Correlation matrix. Irradiance correlates strongly with cloud cover (negative, ~−0.7) and humidity (negative, ~−0.4). Temperature is weakly positive: irradiance drives temperature, not the reverse. The cloud-cover signal is the lever that lets the GBM beat SARIMA: same-day cloud is a ground truth SARIMA can't access from lagged irradiance alone.</figcaption>
+      <figcaption><strong>Figure 3.</strong> Correlation matrix. Irradiance correlates strongly with cloud cover (negative, ~−0.7) and humidity (negative, ~−0.4). Temperature is weakly positive: irradiance drives temperature, not the reverse. The cloud-cover signal is what lets the GBM beat SARIMA: same-day cloud is a ground truth SARIMA can't access from lagged irradiance alone.</figcaption>
     </figure>
 
     <h2 id="approach">Modelling approach</h2>
@@ -364,7 +364,7 @@ footer a { color: #ffd7c5; }
       <li><strong>Weather exogenous variables</strong>: <code>T2M</code>, <code>RH2M</code>, <code>WS2M</code>, <code>PRECTOTCORR</code>, <code>CLOUD_AMT</code>: each at lag-1 and 7-day rolling mean</li>
     </ul>
     <p>
-      The cloud and humidity covariates are the lever. SARIMA and UC work only on lagged irradiance; GBM also gets yesterday's cloud cover and precipitation. The MAPE gap is mostly attributable to that information advantage.
+      The cloud and humidity covariates are where the gain comes from. SARIMA and UC work only on lagged irradiance; GBM also gets yesterday's cloud cover and precipitation. The MAPE gap is mostly attributable to that information advantage.
     </p>
 
     <h3>Baselines</h3>
@@ -395,7 +395,7 @@ footer a { color: #ffd7c5; }
     </figure>
 
     <div class="callout">
-      <strong>Climatology is a strong baseline. That's a feature, not a bug.</strong> Monthly climatology — computed on the training window only, no test-set leakage — hits 12.6% MAPE and beats SARIMA's 13.8%. It tells you the predictability ceiling for an irradiance series at this latitude is mostly the seasonal envelope: knowing the calendar month gives you most of what's knowable. The GBM's 9.4% gain over climatology comes almost entirely from same-day cloud and humidity covariates: the part that <em>can't</em> be guessed from the calendar alone.
+      <strong>Climatology is a strong baseline, and the ceiling is seasonal, not technical.</strong> Monthly climatology — computed on the training window only, no test-set leakage — hits 12.6% MAPE and beats SARIMA's 13.8%. It tells you the predictability ceiling for an irradiance series at this latitude is mostly the seasonal envelope: knowing the calendar month gives you most of what's knowable. The GBM's 9.4% gain over climatology comes almost entirely from same-day cloud and humidity covariates: the part that <em>can't</em> be guessed from the calendar alone.
     </div>
 
     <h2 id="tradeoffs">Trade-offs</h2>

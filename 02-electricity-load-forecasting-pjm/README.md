@@ -39,7 +39,7 @@ Can we produce day-ahead hourly load forecasts accurate enough to support energy
 | SARIMA (multi-step) | 14.5% | 6,676 | 54/60 (CP CI [0.79, 0.96]) |
 | UC state-space (multi-step) | 19.3% | 8,295 | 60/60 (CP CI [0.94, 1.00]) |
 
-GBM beats SARIMA by 38% MAPE once both produce a 60-day multi-step forecast. The UC state-space variant *lost* to SARIMA by 33% MAPE here. The 1-step-ahead GBM (MAPE 6.2%) is in the notebook as a labeled baseline; it assumes yesterday's load is already known at inference time, so it isn't a horizon forecast.
+GBM beats SARIMA by 5.5 percentage points of MAPE (a 38% relative reduction) once both produce a 60-day multi-step forecast. The UC state-space variant *lost* to SARIMA by 4.8 points of MAPE (a 33% relative worsening) here. The 1-step-ahead GBM (MAPE 6.2%) is in the notebook as a labeled baseline; it assumes yesterday's load is already known at inference time, so it isn't a horizon forecast.
 
 ## Deployment sketch
 
