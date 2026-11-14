@@ -96,6 +96,16 @@ jupyter nbconvert --to notebook --execute notebook.ipynb
 
 Each notebook is self-contained — open it on GitHub and the rendered plots and tables are visible without running anything.
 
+## Run on Google Colab
+
+Every project README carries an **[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/gabayae/data-portfolio/)** badge next to the GitHub notebook link. Clicking it opens the notebook in Colab; the first cell is a Colab-only setup block that installs the non-default packages (`lifelines`, `xgboost`) and clones the repo so relative `data/` paths resolve.
+
+**What to expect:**
+
+- **No credentials needed** for projects **07** (Solar — NASA POWER open API) and **11** (Geospatial farm-households — open data). Click the badge, run all, it works.
+- **Kaggle authentication needed** for the other 11 projects. The setup cell prints the exact instruction: upload your `kaggle.json` token to `/root/.kaggle/` in the Colab session, then run `!python download_data.py` from the project directory.
+- **Outputs are already saved in the notebook JSON** — if you only want to read the code and see the plots and tables, skip the execution and just scroll.
+
 ## Streamlit twin
 
 `portfolio_app.py` is an interactive twin of `index.html` — same content, same color palette, with project filtering and clickable cards. Run it locally:

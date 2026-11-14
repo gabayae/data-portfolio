@@ -1,5 +1,5 @@
 <!-- nav-chip -->
-[← Portfolio](https://gabayae.github.io/data-portfolio/) · [Case study](https://gabayae.github.io/data-portfolio/case-studies/solar/) · [Notebook](https://github.com/gabayae/data-portfolio/blob/main/07-solar-forecasting-nairobi/notebook.ipynb)
+[← Portfolio](https://gabayae.github.io/data-portfolio/) · [Case study](https://gabayae.github.io/data-portfolio/case-studies/solar/) · [Notebook](https://github.com/gabayae/data-portfolio/blob/main/07-solar-forecasting-nairobi/notebook.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/gabayae/data-portfolio/blob/main/07-solar-forecasting-nairobi/notebook.ipynb)
 
 ---
 
