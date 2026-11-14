@@ -347,12 +347,12 @@ h3 { font-size: 1.35rem; }
 .tool-group__title { font-family: var(--font-serif); font-size: 1rem; color: var(--color-primary); margin-bottom: 0.75rem; }
 .tool-group__items { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .tool-pill { padding: 0.25rem 0.7rem; background: var(--color-surface-alt); border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.82rem; color: var(--color-ink); }
-.toolkit-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.25rem 0 2rem; padding: 1.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
+.toolkit-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; margin: 1.5rem 0 2rem; padding: 2rem 1.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
 @media (min-width: 720px) { .toolkit-strip { grid-template-columns: repeat(8, 1fr); } }
-.toolkit-strip .toolkit-item { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; padding: 0.5rem; text-decoration: none; color: var(--color-ink); transition: transform 0.15s ease; }
-.toolkit-strip .toolkit-item:hover { transform: translateY(-2px); text-decoration: none; }
-.toolkit-strip img { max-width: 44px; height: auto; }
-.toolkit-strip .toolkit-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.01em; }
+.toolkit-strip .toolkit-item { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 0.5rem; text-decoration: none; color: var(--color-ink); transition: transform 0.15s ease; }
+.toolkit-strip .toolkit-item:hover { transform: translateY(-3px); text-decoration: none; }
+.toolkit-strip img { width: 56px; height: 56px; }
+.toolkit-strip .toolkit-label { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.01em; }
 
 /* ── 12. Contact ─────────────────────────────────────────────────────── */
 .contact__intro { text-align: center; color: var(--color-muted); max-width: 32rem; margin: 0 auto 2.5rem; }
@@ -966,19 +966,6 @@ h3 { font-size: 1.35rem; }
       </div>
     </div>
 
-    <h3 class="skills__subtitle">Boîte à outils</h3>
-
-    <div class="toolkit-strip">
-      <a href="https://www.python.org/" target="_blank" rel="noopener" class="toolkit-item"><img src="/data-portfolio/assets/img/toolkit/python.svg" alt="Python" loading="lazy" width="44" height="44"><div class="toolkit-label">Python</div></a>
-      <a href="https://jupyter.org/" target="_blank" rel="noopener" class="toolkit-item"><img src="/data-portfolio/assets/img/toolkit/jupyter.svg" alt="Jupyter" loading="lazy" width="44" height="44"><div class="toolkit-label">Jupyter</div></a>
-      <a href="https://pandas.pydata.org/" target="_blank" rel="noopener" class="toolkit-item"><img src="/data-portfolio/assets/img/toolkit/pandas.svg" alt="pandas" loading="lazy" width="44" height="44"><div class="toolkit-label">pandas</div></a>
-      <a href="https://numpy.org/" target="_blank" rel="noopener" class="toolkit-item"><img src="/data-portfolio/assets/img/toolkit/numpy.svg" alt="NumPy" loading="lazy" width="44" height="44"><div class="toolkit-label">NumPy</div></a>
-      <a href="https://scikit-learn.org/" target="_blank" rel="noopener" class="toolkit-item"><img src="/data-portfolio/assets/img/toolkit/scikitlearn.svg" alt="scikit-learn" loading="lazy" width="44" height="44"><div class="toolkit-label">scikit-learn</div></a>
-      <a href="https://streamlit.io/" target="_blank" rel="noopener" class="toolkit-item"><img src="/data-portfolio/assets/img/toolkit/streamlit.svg" alt="Streamlit" loading="lazy" width="44" height="44"><div class="toolkit-label">Streamlit</div></a>
-      <a href="https://www.docker.com/" target="_blank" rel="noopener" class="toolkit-item"><img src="/data-portfolio/assets/img/toolkit/docker.svg" alt="Docker" loading="lazy" width="44" height="44"><div class="toolkit-label">Docker</div></a>
-      <a href="https://www.kaggle.com/" target="_blank" rel="noopener" class="toolkit-item"><img src="/data-portfolio/assets/img/toolkit/kaggle.svg" alt="Kaggle" loading="lazy" width="44" height="44"><div class="toolkit-label">Kaggle</div></a>
-    </div>
-
     <div class="tools-grid">
       <div class="tool-group">
         <h4 class="tool-group__title">Langages & données</h4>
@@ -996,8 +983,33 @@ h3 { font-size: 1.35rem; }
   </div>
 </section>
 
+<!-- ─── Boîte à outils (section standalone — brand-logo strip + lien de référence) ─── -->
+<section class="section" id="toolkit">
+  <div class="container">
+    <div class="section__head">
+      <span class="eyebrow">La stack derrière le travail</span>
+      <h2>Boîte à outils</h2>
+    </div>
+
+    <p class="about__text" style="margin-bottom: 1rem;">
+      Huit outils-clés — une ligne, un clic sur chacun ouvre la page officielle du projet.
+    </p>
+
+    <div class="toolkit-strip">
+      <a href="https://www.python.org/" target="_blank" rel="noopener" class="toolkit-item"><img src="/data-portfolio/assets/img/toolkit/python.svg" alt="Python" loading="lazy" width="56" height="56"><div class="toolkit-label">Python</div></a>
+      <a href="https://jupyter.org/" target="_blank" rel="noopener" class="toolkit-item"><img src="/data-portfolio/assets/img/toolkit/jupyter.svg" alt="Jupyter" loading="lazy" width="56" height="56"><div class="toolkit-label">Jupyter</div></a>
+      <a href="https://pandas.pydata.org/" target="_blank" rel="noopener" class="toolkit-item"><img src="/data-portfolio/assets/img/toolkit/pandas.svg" alt="pandas" loading="lazy" width="56" height="56"><div class="toolkit-label">pandas</div></a>
+      <a href="https://numpy.org/" target="_blank" rel="noopener" class="toolkit-item"><img src="/data-portfolio/assets/img/toolkit/numpy.svg" alt="NumPy" loading="lazy" width="56" height="56"><div class="toolkit-label">NumPy</div></a>
+      <a href="https://scikit-learn.org/" target="_blank" rel="noopener" class="toolkit-item"><img src="/data-portfolio/assets/img/toolkit/scikitlearn.svg" alt="scikit-learn" loading="lazy" width="56" height="56"><div class="toolkit-label">scikit-learn</div></a>
+      <a href="https://streamlit.io/" target="_blank" rel="noopener" class="toolkit-item"><img src="/data-portfolio/assets/img/toolkit/streamlit.svg" alt="Streamlit" loading="lazy" width="56" height="56"><div class="toolkit-label">Streamlit</div></a>
+      <a href="https://www.docker.com/" target="_blank" rel="noopener" class="toolkit-item"><img src="/data-portfolio/assets/img/toolkit/docker.svg" alt="Docker" loading="lazy" width="56" height="56"><div class="toolkit-label">Docker</div></a>
+      <a href="https://www.kaggle.com/" target="_blank" rel="noopener" class="toolkit-item"><img src="/data-portfolio/assets/img/toolkit/kaggle.svg" alt="Kaggle" loading="lazy" width="56" height="56"><div class="toolkit-label">Kaggle</div></a>
+    </div>
+  </div>
+</section>
+
 <!-- ─── Background ──────────────────────────────────────────────────── -->
-<section class="section" id="background">
+<section class="section section-alt" id="background">
   <div class="container">
     <div class="section__head">
       <span class="eyebrow">Qui</span>
