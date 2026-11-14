@@ -31,7 +31,6 @@ Run `python download_data.py`.
 | One-way ANOVA | Joint test across all three promotions |
 | OLS with covariate adjustment + cluster-robust SEs on `LocationID` | Honest inference under store-level clustering |
 | Formal interaction test `C(Promotion) × C(MarketSize)` | Simpson's-paradox guard with p-value |
-| Flat-prior Normal-Normal posterior on each arm's mean | `P(a > b)` as a direct probability (acknowledging the flat improper prior, not a true informative Bayesian analysis) |
 
 ## Validation
 
@@ -49,4 +48,4 @@ Run `python download_data.py`.
 
 - Statistically defensible promotion-rollout decision with clustered inference.
 - Formal interaction test confirms the market-size × promotion interaction (visible in the stratified mean table).
-- The flat-prior "Bayesian" layer is a convenience read, not a true informative-prior analysis; a proper hierarchical model with store random intercepts would further widen the posteriors.
+- Next iteration: a proper hierarchical model with store random intercepts (e.g. `pymc` partial-pooling on `LocationID`) would widen the posteriors and allow informative-prior posterior probability statements such as `P(P1 > P2)`.

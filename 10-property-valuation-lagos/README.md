@@ -47,3 +47,34 @@ Run `python download_data.py`.
 - A working residential-price model on a free Kaggle Lagos scrape; the pipeline is the point, not the predictions.
 - Usable for comparable-sorting at the neighborhood × type × bedrooms level. The raw-scale uncertainty is too wide to anchor individual appraisals.
 - The same pipeline would run on Abuja, Ibadan, or Port Harcourt scrapes with the same structure.
+
+## TODO — Spearman ρ on the ranking claim
+
+The "usable for ranking" claim should be backed by a rank-correlation number, not just the R²(log). A stratified Spearman ρ (overall + per-neighborhood) belongs in the Validation section so readers can verify how reliably the model orders listings within a submarket. Snippet ready to paste as a new notebook cell after the GBM evaluation:
+
+```python
+# Spearman ρ — overall and per-neighborhood (stratified ranking quality)
+from scipy.stats import spearmanr
+import numpy as np
+
+rho_all, p_all = spearmanr(y_test, pred_gbm)
+print(f"Overall Spearman ρ (GBM): {rho_all:.3f}  (p={p_all:.1e})")
+
+# Bootstrap 95% CI on ρ (1000 resamples)
+rng = np.random.default_rng(42)
+rhos = np.empty(1000)
+for b in range(1000):
+    idx = rng.integers(0, len(y_test), size=len(y_test))
+    rhos[b], _ = spearmanr(y_test[idx], pred_gbm[idx])
+lo, hi = np.percentile(rhos, [2.5, 97.5])
+print(f"Overall Spearman ρ 95% CI: [{lo:.3f}, {hi:.3f}]")
+
+# Per-neighborhood ρ — only where n >= 25
+print("\nPer-neighborhood Spearman ρ (n >= 25):")
+for nbhd, grp in test_df.groupby('Neighbourhood'):
+    if len(grp) < 25: continue
+    rho_i, _ = spearmanr(grp['y_true'], grp['y_pred'])
+    print(f"  {nbhd:<20s}  n={len(grp):4d}  ρ={rho_i:+.3f}")
+```
+
+A Spearman ρ above ~0.6 (overall) with most neighborhoods above 0.5 is the honest evidence that backs "usable for ranking". Below that, the ranking claim is weaker than the Deployment sketch implies and the README should be updated.

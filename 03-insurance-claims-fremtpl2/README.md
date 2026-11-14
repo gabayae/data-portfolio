@@ -56,3 +56,30 @@ Two metrics pick two models. Tweedie wins Gini (overall ranking); Poisson + Gamm
 
 - Measurable segmentation lift (Gini 0.31 Tweedie, lift 2.66 Poisson + Gamma) while preserving GLM-level explainability.
 - The GBM challenger underperforms both GLMs on segmentation here. For actuarial pricing, structural models can beat unconstrained ML.
+
+## TODO — bootstrap Gini CI on the headline
+
+The headline Gini 0.310 is a point estimate on a single 80/20 split. A standard actuarial deliverable attaches a bootstrap CI. On 678k policies the CI will be tight, but attaching it explicitly brings this project in line with projects 09 and 12 (which do attach bootstrap CIs on their headlines). Snippet ready to paste as a new notebook cell at the bottom of the Validation section (executes in a few seconds on the already-fitted Tweedie model):
+
+```python
+# Bootstrap Gini CI — Tweedie GLM, 500 resamples on the held-out fold
+from sklearn.utils import resample
+import numpy as np
+
+def gini_score(y_true, y_pred):
+    order = np.argsort(y_pred)
+    y_true = np.asarray(y_true)[order]
+    cum = np.cumsum(y_true) / y_true.sum()
+    return 1.0 - 2.0 * np.trapz(cum, dx=1.0 / len(y_true))
+
+rng = np.random.default_rng(42)
+B = 500
+ginis = np.empty(B)
+for b in range(B):
+    idx = rng.integers(0, len(y_test), size=len(y_test))
+    ginis[b] = gini_score(y_test[idx], pred_tweedie[idx])
+lo, hi = np.percentile(ginis, [2.5, 97.5])
+print(f"Tweedie Gini 95% CI: [{lo:.3f}, {hi:.3f}]  (point estimate {gini_score(y_test, pred_tweedie):.3f})")
+```
+
+Rerun the three-row headline table with `0.310 [CI: lo, hi]`, `0.241 [CI: lo, hi]`, `0.211 [CI: lo, hi]` once the bootstrap has run, and the Gini CI is traceable from a single cell in the notebook.

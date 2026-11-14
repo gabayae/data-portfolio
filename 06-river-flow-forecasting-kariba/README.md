@@ -40,6 +40,7 @@ Run `python download_data.py` to fetch (requires Kaggle CLI configured).
 
 - 30-day held-out window, two GBM variants compared side-by-side.
 - Metrics: MAPE, RMSE in metres, 95% PI coverage with Clopper-Pearson CI.
+- **Scale context:** lake-level mean ≈ **479.4 m** over the training window (std 1.9 m, operational band 475.6 – 482.8 m). So SARIMA's 0.027% MAPE = 0.027% × 479.4 m ≈ **13 cm mean absolute error**, consistent with the 18 cm RMSE. The small MAPE is a scale artefact of a narrow-band target — read the RMSE in metres, not the MAPE percentage, to judge the operational error.
 
 **Headline numbers:**
 
