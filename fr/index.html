@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<script>(function(){try{var s=localStorage.getItem('theme');var t=s||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yaé Gaba — Portfolio en science des données</title>
 <meta name="description" content="13 projets de science des données et apprentissage automatique sur données publiques réelles : prévision, séries temporelles, GLM, analyse de survie, réconciliation hiérarchique, optimisation stochastique, expérimentation.">
@@ -81,6 +82,50 @@
   --container: 72rem;
   --transition: 0.2s ease;
 }
+
+/* ── Dark mode — warm-dark palette to match the cream+terracotta vibe ── */
+[data-theme="dark"] {
+  --color-bg: #15181f;
+  --color-surface: #1f242d;
+  --color-surface-alt: #1a1e26;
+  --color-ink: #e8e3d8;
+  --color-muted: #9aa2ad;
+  --color-border: #2e343f;
+  --color-primary: #9bb8e0;
+  --color-primary-hover: #b8ccea;
+  --color-primary-soft: rgba(155, 184, 224, 0.12);
+  --color-accent: #e88b70;
+  --color-accent-hover: #f0a28a;
+  --color-accent-soft: rgba(232, 139, 112, 0.15);
+  --color-success: #6aa88a;
+
+  --cat-timeseries-bg: rgba(232, 139, 112, 0.14);
+  --cat-timeseries-fg: #f0a28a;
+  --cat-regression-bg: rgba(155, 184, 224, 0.14);
+  --cat-regression-fg: #b8ccea;
+  --cat-classification-bg: rgba(170, 130, 170, 0.14);
+  --cat-classification-fg: #c5a0c5;
+  --cat-survival-bg: rgba(145, 118, 184, 0.14);
+  --cat-survival-fg: #b298d8;
+  --cat-spatial-bg: rgba(90, 160, 175, 0.14);
+  --cat-spatial-fg: #80c0ce;
+  --cat-optimization-bg: rgba(106, 168, 138, 0.14);
+  --cat-optimization-fg: #8dcaa8;
+  --cat-experimentation-bg: rgba(200, 170, 70, 0.14);
+  --cat-experimentation-fg: #d4b870;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Theme toggle button in nav */
+.theme-toggle { background: transparent; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 0.3rem 0.5rem; cursor: pointer; color: var(--color-muted); display: inline-flex; align-items: center; transition: color 0.2s, border-color 0.2s; }
+.theme-toggle:hover { color: var(--color-accent); border-color: var(--color-accent); }
+.theme-toggle svg { width: 1.1rem; height: 1.1rem; }
+.theme-toggle__moon { display: inline-block; }
+.theme-toggle__sun { display: none; }
+[data-theme="dark"] .theme-toggle__moon { display: none; }
+[data-theme="dark"] .theme-toggle__sun { display: inline-block; }
 
 /* ── 2. Reset & base ─────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -521,6 +566,7 @@ h3 { font-size: 1.35rem; }
       <li><a href="#background">Parcours</a></li>
       <li><a href="#contact">Contact</a></li>
       <li><span class="lang-switch" aria-label="Sélecteur de langue"><a href="../">EN</a><a href="./" class="active">FR</a></span></li>
+      <li><button id="theme-toggle" class="theme-toggle" aria-label="Basculer en mode sombre" title="Basculer en mode sombre"><svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></li>
     </ul>
   </div>
 </nav>
@@ -1130,6 +1176,17 @@ h3 { font-size: 1.35rem; }
       c.style.display = (f === 'all' || cats.split(/\s+/).includes(f)) ? '' : 'none';
     });
   });
+
+  // Toggle mode sombre : flippe data-theme sur <html>, persiste dans localStorage.
+  const themeBtn = document.getElementById('theme-toggle');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) { /* storage bloqué */ }
+    });
+  }
 </script>
 </body>
 </html>
