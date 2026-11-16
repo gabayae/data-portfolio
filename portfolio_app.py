@@ -303,9 +303,8 @@ st.write("")
 st.markdown('<br><span class="eyebrow">Who</span>', unsafe_allow_html=True)
 st.markdown("## Background")
 st.markdown(
-    f"PhD in Mathematics (Topology) from the University of Cape Town. Career split between "
-    f"rigorous applied mathematics and hands-on data science, with 10+ years across healthcare, "
-    f"finance, energy, insurance, retail, and government environments. Co-author of "
+    f"Career split between rigorous applied mathematics and hands-on data science, with 10+ years "
+    f"across healthcare, finance, energy, insurance, retail, and government environments. Co-author of "
     f"[The Shape of Data]({cfg.BOOK}) (No Starch Press, 2024) — a graduate-level textbook on "
     f"geometry-based machine learning. h-index 12 across 18+ peer-reviewed papers. Bilingual EN/FR."
 )
